@@ -61,6 +61,7 @@
       background: var(--panel);
       box-shadow: var(--shadow);
       backdrop-filter: blur(16px);
+      overflow: hidden;
     }
 
     .hero {
@@ -226,6 +227,8 @@
       align-items: start;
       justify-content: space-between;
       gap: 12px;
+      flex-wrap: wrap;
+      min-width: 0;
       margin-bottom: 14px;
     }
 
@@ -364,6 +367,7 @@
     input[type="month"] {
       min-width: 0;
       width: 100%;
+      max-width: 100%;
     }
 
     input:focus,
@@ -426,6 +430,12 @@
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
+      min-width: 0;
+    }
+
+    .actions button,
+    .actions label {
+      max-width: 100%;
     }
 
     .records-list {
@@ -565,10 +575,13 @@
       color: var(--muted);
       font-size: 0.92rem;
       line-height: 1.45;
+      overflow-wrap: anywhere;
     }
 
     code {
       color: #d6ecff;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     @media (max-width: 1024px) {
@@ -847,6 +860,11 @@
         </div>
         <div class="actions">
           <button class="secondary tiny" id="exportCsvBtn">Monats-CSV exportieren</button>
+          <button class="secondary tiny" id="exportBackupBtn">Backup exportieren</button>
+          <label class="secondary tiny" for="importBackupInput" style="display:inline-flex;align-items:center;justify-content:center;">
+            Backup importieren
+          </label>
+          <input id="importBackupInput" type="file" accept="application/json" style="display:none;">
           <button class="danger tiny" id="clearRecordsBtn">Alle Trades löschen</button>
         </div>
       </div>
@@ -915,6 +933,8 @@
       saveRecordBtn: document.getElementById("saveRecordBtn"),
       newTradeBtn: document.getElementById("newTradeBtn"),
       exportCsvBtn: document.getElementById("exportCsvBtn"),
+      exportBackupBtn: document.getElementById("exportBackupBtn"),
+      importBackupInput: document.getElementById("importBackupInput"),
       clearRecordsBtn: document.getElementById("clearRecordsBtn"),
       showJournalBtn: document.getElementById("showJournalBtn"),
       showTradesBtn: document.getElementById("showTradesBtn"),
@@ -951,7 +971,7 @@
     let currentEditId = null;
 
     ui.startAccountSize.value = settings.startAccountSize || "";
-    ui.exportMonth.value = new Date().toISOString().slice(0, 7);
+    ui.exportMonth.value = getLocalYearMonth();
     ui.recordMonthFilter.value = "";
 
     renderRecords();
@@ -967,6 +987,8 @@
     ui.saveRecordBtn.addEventListener("click", saveCurrentTrade);
     ui.newTradeBtn.addEventListener("click", resetEditor);
     ui.exportCsvBtn.addEventListener("click", exportMonthlyCsv);
+    ui.exportBackupBtn.addEventListener("click", exportBackup);
+    ui.importBackupInput.addEventListener("change", importBackup);
     ui.clearRecordsBtn.addEventListener("click", clearAllRecords);
     ui.recordStateFilter.addEventListener("change", renderRecords);
     ui.recordMonthFilter.addEventListener("input", renderRecords);
@@ -1202,7 +1224,7 @@
 
     function saveCurrentTrade() {
       const record = collectFormData();
-      if (!record["Post date"]) record["Post date"] = new Date().toISOString().slice(0, 10);
+      if (!record["Post date"]) record["Post date"] = getLocalIsoDate();
       if (!record["Coin"]) record["Coin"] = inferCoinFromNotes(record["Notes"]) || "OPEN-TRADE";
       if (!record["Direction"]) record["Direction"] = inferDirection(record["Notes"]) || "Long";
 
@@ -1509,6 +1531,52 @@
       setStatus("Monats-CSV exportiert", `${monthRecords.length} geschlossene Trade(s) aus ${ui.exportMonth.value} wurden lokal heruntergeladen.`);
     }
 
+    function exportBackup() {
+      const payload = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        settings,
+        records
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `trade-journal-backup-${getLocalIsoDate()}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+      setStatus("Backup exportiert", `${records.length} Trade(s) wurden als JSON-Backup lokal gespeichert.`);
+    }
+
+    async function importBackup(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      try {
+        const text = await file.text();
+        const parsed = JSON.parse(text);
+        const importedRecords = Array.isArray(parsed?.records) ? parsed.records : null;
+        if (!importedRecords) {
+          setStatus("Import fehlgeschlagen", "Die Datei enthält kein gültiges Trade-Journal-Backup.");
+          return;
+        }
+
+        records = importedRecords;
+        settings = typeof parsed.settings === "object" && parsed.settings ? parsed.settings : settings;
+        saveJson(STORAGE_KEY, records);
+        saveJson(SETTINGS_KEY, settings);
+        ui.startAccountSize.value = settings.startAccountSize || "";
+        renderRecords();
+        renderMetrics();
+        setStatus("Backup importiert", `${records.length} Trade(s) wurden erfolgreich wiederhergestellt.`);
+      } catch (error) {
+        console.error(error);
+        setStatus("Import fehlgeschlagen", "Die Backup-Datei konnte nicht gelesen werden.");
+      } finally {
+        ui.importBackupInput.value = "";
+      }
+    }
+
     function clearAllRecords() {
       if (!records.length) return;
       const confirmed = window.confirm("Wirklich alle gespeicherten Trades löschen?");
@@ -1654,9 +1722,9 @@
       if (!match) return "";
       const [, mm, dd] = match;
       const year = new Date().getFullYear();
-      const date = new Date(year, Number(mm) - 1, Number(dd));
-      if (Number.isNaN(date.getTime())) return "";
-      return date.toISOString().slice(0, 10);
+      const month = String(Number(mm)).padStart(2, "0");
+      const day = String(Number(dd)).padStart(2, "0");
+      return `${year}-${month}-${day}`;
     }
 
     function inferSession(shortDateTime) {
@@ -1684,6 +1752,18 @@
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       }).format(value);
+    }
+
+    function getLocalIsoDate() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function getLocalYearMonth() {
+      return getLocalIsoDate().slice(0, 7);
     }
 
     function setStatus(title, message) {
