@@ -1229,7 +1229,7 @@
     }
 
     function saveCurrentTrade() {
-      const record = collectFormData();
+      const record = normalizeRecordForSave(collectFormData());
       if (!record["Post date"]) record["Post date"] = getLocalIsoDate();
       if (!record["Coin"]) record["Coin"] = inferCoinFromNotes(record["Notes"]) || "OPEN-TRADE";
       if (!record["Direction"]) record["Direction"] = inferDirection(record["Notes"]) || "Long";
@@ -1287,6 +1287,34 @@
         "Emotions": fields.emotions.value.trim(),
         "Win or Loss?": fields.result.value
       };
+    }
+
+    function normalizeRecordForSave(record) {
+      const normalized = { ...record };
+      const pnlRaw = String(normalized["$ PnL"] || "").trim();
+      const result = String(normalized["Win or Loss?"] || "").trim();
+      const numericPnl = Number(pnlRaw);
+
+      if (pnlRaw && Number.isFinite(numericPnl)) {
+        if (result === "Loss" && numericPnl > 0) {
+          normalized["$ PnL"] = String(-Math.abs(numericPnl));
+        } else if (result === "Win" && numericPnl < 0) {
+          normalized["$ PnL"] = String(Math.abs(numericPnl));
+        } else if (result === "BE") {
+          normalized["$ PnL"] = "0";
+        } else {
+          normalized["$ PnL"] = String(numericPnl);
+        }
+      }
+
+      if (result) {
+        const inferredStatus = inferStatusFromResult(result);
+        if (!normalized["Status"] || ["Stop loss hit", "BE", "All TPs hit"].includes(normalized["Status"])) {
+          normalized["Status"] = inferredStatus;
+        }
+      }
+
+      return normalized;
     }
 
     function collectScreenshotMeta() {
