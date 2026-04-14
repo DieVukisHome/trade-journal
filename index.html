@@ -139,18 +139,21 @@
     }
 
     .nav {
-      display: inline-flex;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 8px;
       padding: 6px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.08);
+      width: min(100%, 360px);
     }
 
     .nav button {
       padding: 10px 14px;
       border-radius: 999px;
-      min-width: 92px;
+      min-width: 0;
+      width: 100%;
     }
 
     .nav button.active {
@@ -594,6 +597,7 @@
         <div class="nav">
           <button class="secondary active" id="showJournalBtn" type="button">Journal</button>
           <button class="secondary" id="showTradesBtn" type="button">Trades</button>
+          <button class="secondary" id="showExportBtn" type="button">Export</button>
         </div>
       </div>
       <div class="hero-top">
@@ -818,11 +822,13 @@
         <div class="empty">Noch keine gespeicherten Trades.</div>
       </div>
     </section>
+    </section>
 
+    <section class="view" id="exportView">
     <section class="panel">
       <div class="section-head">
         <div>
-          <h2>4. Monats-CSV exportieren</h2>
+          <h2>Export</h2>
         </div>
         <div class="actions">
           <button class="secondary tiny" id="exportCsvBtn">Monats-CSV exportieren</button>
@@ -897,8 +903,10 @@
       clearRecordsBtn: document.getElementById("clearRecordsBtn"),
       showJournalBtn: document.getElementById("showJournalBtn"),
       showTradesBtn: document.getElementById("showTradesBtn"),
+      showExportBtn: document.getElementById("showExportBtn"),
       journalView: document.getElementById("journalView"),
-      tradesView: document.getElementById("tradesView")
+      tradesView: document.getElementById("tradesView"),
+      exportView: document.getElementById("exportView")
     };
 
     const openImporter = createImporter({
@@ -949,6 +957,7 @@
     ui.recordMonthFilter.addEventListener("input", renderRecords);
     ui.showJournalBtn.addEventListener("click", () => setView("journal"));
     ui.showTradesBtn.addEventListener("click", () => setView("trades"));
+    ui.showExportBtn.addEventListener("click", () => setView("export"));
 
     fields.pnl.addEventListener("input", autoInferResult);
     fields.result.addEventListener("change", autoInferStatusFromResult);
@@ -1259,7 +1268,7 @@
       const ordered = records
         .slice()
         .filter((record) => matchesRecordFilters(record))
-        .sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""));
+        .sort(compareRecordsByDateDesc);
 
       if (!ordered.length) {
         ui.recordsList.innerHTML = '<div class="empty">Keine Trades passend zum aktuellen Filter.</div>';
@@ -1399,10 +1408,21 @@
 
     function setView(view) {
       const isJournal = view === "journal";
+      const isTrades = view === "trades";
+      const isExport = view === "export";
       ui.journalView.classList.toggle("active", isJournal);
-      ui.tradesView.classList.toggle("active", !isJournal);
+      ui.tradesView.classList.toggle("active", isTrades);
+      ui.exportView.classList.toggle("active", isExport);
       ui.showJournalBtn.classList.toggle("active", isJournal);
-      ui.showTradesBtn.classList.toggle("active", !isJournal);
+      ui.showTradesBtn.classList.toggle("active", isTrades);
+      ui.showExportBtn.classList.toggle("active", isExport);
+    }
+
+    function compareRecordsByDateDesc(a, b) {
+      const dateA = String(a["Post date"] || "");
+      const dateB = String(b["Post date"] || "");
+      if (dateA !== dateB) return dateB.localeCompare(dateA);
+      return String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""));
     }
 
     function autoInferResult() {
