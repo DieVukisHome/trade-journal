@@ -231,6 +231,8 @@
     }
 
     .drop-zone {
+      position: relative;
+      overflow: hidden;
       display: grid;
       place-items: center;
       min-height: 180px;
@@ -266,6 +268,16 @@
     .drop-zone span {
       color: var(--muted);
       line-height: 1.45;
+    }
+
+    .drop-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 2;
     }
 
     .preview-wrap {
@@ -305,6 +317,7 @@
     .field.full {
       display: grid;
       gap: 6px;
+      min-width: 0;
     }
 
     .field.full {
@@ -327,6 +340,8 @@
     select,
     textarea {
       width: 100%;
+      min-width: 0;
+      max-width: 100%;
       border: 1px solid rgba(255, 255, 255, 0.08);
       background: rgba(2, 9, 15, 0.7);
       color: var(--text);
@@ -339,6 +354,11 @@
     textarea {
       min-height: 92px;
       resize: vertical;
+    }
+
+    input[type="month"] {
+      min-width: 0;
+      width: 100%;
     }
 
     input:focus,
@@ -624,7 +644,7 @@
         <div>
           <h3>Open Trade Screenshot</h3>
           <label class="drop-zone" id="openDropZone">
-            <input id="openImageInput" type="file" accept="image/*" hidden>
+            <input id="openImageInput" type="file" accept="image/*">
             <div>
               <strong>Open-Screenshot auswählen</strong>
             </div>
@@ -642,7 +662,7 @@
         <div>
           <h3>Closed Trade Screenshot</h3>
           <label class="drop-zone" id="closeDropZone">
-            <input id="closeImageInput" type="file" accept="image/*" hidden>
+            <input id="closeImageInput" type="file" accept="image/*">
             <div>
               <strong>Closed-Screenshot auswählen</strong>
             </div>
@@ -939,7 +959,6 @@
         lastKey: ""
       };
 
-      config.dropZone.addEventListener("click", () => config.input.click());
       config.input.addEventListener("change", (event) => {
         const file = event.target.files?.[0];
         if (file) setImage(file);
