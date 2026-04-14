@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Trade Journal">
   <meta name="theme-color" content="#08111a">
-  <link rel="apple-touch-icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%23060d14"/><stop offset="55%" stop-color="%230b1823"/><stop offset="100%" stop-color="%23111f2d"/></linearGradient><linearGradient id="bull" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="%2348c993"/><stop offset="100%" stop-color="%237fe0bc"/></linearGradient><linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.14"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0.03"/></linearGradient></defs><rect width="180" height="180" rx="40" fill="url(%23bg)"/><rect x="18" y="18" width="144" height="144" rx="32" fill="url(%23glass)" stroke="%2335495d" stroke-opacity="0.55" stroke-width="2.5"/><path d="M42 121 L42 97" stroke="%2399afc2" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="34" y="101" width="16" height="18" rx="6" fill="%23f37a8d"/><path d="M67 111 L67 71" stroke="%2399afc2" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="59" y="79" width="16" height="28" rx="6" fill="url(%23bull)"/><path d="M92 122 L92 88" stroke="%2399afc2" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="84" y="92" width="16" height="24" rx="6" fill="url(%23bull)"/><path d="M117 103 L117 60" stroke="%2399afc2" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="109" y="68" width="16" height="29" rx="6" fill="%23f6c46f"/><path d="M40 132 C58 127 71 117 86 103 C95 95 104 90 117 83 C126 78 133 72 140 62" fill="none" stroke="url(%23bull)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="140" cy="62" r="8" fill="%237fc7ff"/><path d="M126 46 L144 46" stroke="%23dbe8f3" stroke-opacity="0.6" stroke-width="5" stroke-linecap="round"/><path d="M126 55 L152 55" stroke="%23dbe8f3" stroke-opacity="0.35" stroke-width="5" stroke-linecap="round"/></svg>'>
+  <link rel="apple-touch-icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%23030a10"/><stop offset="52%" stop-color="%230b1621"/><stop offset="100%" stop-color="%23111e2b"/></linearGradient><linearGradient id="bull" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="%2340c78d"/><stop offset="100%" stop-color="%2383e6c3"/></linearGradient><linearGradient id="bear" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%23ef6f84"/><stop offset="100%" stop-color="%23ff9aab"/></linearGradient></defs><rect width="180" height="180" rx="40" fill="url(%23bg)"/><rect x="16" y="16" width="148" height="148" rx="34" fill="none" stroke="%23344558" stroke-width="2.5"/><path d="M42 126 L42 92" stroke="%238fa8bb" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="34" y="100" width="16" height="18" rx="6" fill="url(%23bear)"/><path d="M67 116 L67 66" stroke="%238fa8bb" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="59" y="74" width="16" height="34" rx="6" fill="url(%23bull)"/><path d="M92 128 L92 84" stroke="%238fa8bb" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="84" y="92" width="16" height="28" rx="6" fill="url(%23bull)"/><path d="M117 106 L117 56" stroke="%238fa8bb" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="109" y="64" width="16" height="34" rx="6" fill="url(%23bull)"/><path d="M36 136 C53 129 70 119 84 104 C96 92 108 88 118 80 C128 73 135 64 144 50" fill="none" stroke="url(%23bull)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="144" cy="50" r="9" fill="%237fc7ff"/><path d="M38 42 H74" stroke="%23dbe8f3" stroke-opacity="0.65" stroke-width="5" stroke-linecap="round"/><path d="M38 54 H90" stroke="%23dbe8f3" stroke-opacity="0.3" stroke-width="5" stroke-linecap="round"/></svg>'>
   <style>
     :root {
       --bg: #07111a;
@@ -126,7 +126,7 @@
     }
 
     .metric-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .metric-card,
@@ -150,6 +150,14 @@
       font-size: 1.55rem;
       color: var(--text);
       letter-spacing: -0.03em;
+    }
+
+    .metric-card strong.positive {
+      color: var(--accent);
+    }
+
+    .metric-card strong.negative {
+      color: var(--danger);
     }
 
     .settings-box {
@@ -226,6 +234,10 @@
       display: grid;
       gap: 12px;
       margin-top: 14px;
+    }
+
+    .ocr-trigger {
+      display: none !important;
     }
 
     .preview-label {
@@ -536,16 +548,20 @@
             <strong id="metricAccount">-</strong>
           </div>
           <div class="metric-card">
-            <span>% Account PnL</span>
-            <strong id="metricPercent">-</strong>
-          </div>
-          <div class="metric-card">
             <span>Wins</span>
             <strong id="metricWins">0</strong>
           </div>
           <div class="metric-card">
             <span>Losses</span>
             <strong id="metricLosses">0</strong>
+          </div>
+          <div class="metric-card">
+            <span>Total</span>
+            <strong id="metricTotal">-</strong>
+          </div>
+          <div class="metric-card">
+            <span>% Account PnL</span>
+            <strong id="metricPercent">-</strong>
           </div>
         </div>
       </div>
@@ -571,7 +587,7 @@
             <div class="preview-label" id="openPreviewLabel"><strong>Open Screenshot</strong><span id="openFileName"></span></div>
             <img class="preview" id="openPreview" alt="Open trade preview">
             <div class="actions">
-              <button class="primary" id="runOpenOcrBtn" disabled>Open OCR starten</button>
+              <button class="primary ocr-trigger" id="runOpenOcrBtn" disabled>Open OCR starten</button>
               <button class="ghost" id="clearOpenImageBtn">Open Bild löschen</button>
             </div>
           </div>
@@ -589,7 +605,7 @@
             <div class="preview-label" id="closePreviewLabel"><strong>Closed Screenshot</strong><span id="closeFileName"></span></div>
             <img class="preview" id="closePreview" alt="Closed trade preview">
             <div class="actions">
-              <button class="primary" id="runCloseOcrBtn" disabled>Closed OCR starten</button>
+              <button class="primary ocr-trigger" id="runCloseOcrBtn" disabled>Closed OCR starten</button>
               <button class="ghost" id="clearCloseImageBtn">Closed Bild löschen</button>
             </div>
           </div>
@@ -795,6 +811,7 @@
       startAccountSize: document.getElementById("startAccountSize"),
       metricStart: document.getElementById("metricStart"),
       metricAccount: document.getElementById("metricAccount"),
+      metricTotal: document.getElementById("metricTotal"),
       metricPercent: document.getElementById("metricPercent"),
       metricWins: document.getElementById("metricWins"),
       metricLosses: document.getElementById("metricLosses"),
@@ -995,7 +1012,7 @@
       const lines = text.split("\n").map((line) => line.trim()).filter(Boolean);
       const joined = lines.join("\n");
       const symbolLine = extractSymbolLine(lines);
-      const coin = extractCoinFromSymbol(symbolLine);
+      const coin = extractCoinFromText(joined, lines) || extractCoinFromSymbol(symbolLine);
       const direction = inferDirection(joined);
       const openTime = extractFirstDateTime(joined, ["Time", "Open Time"]);
       const avgPrice = extractNumericAfterLabels(joined, ["Avg. Price", "Avg Price"]);
@@ -1027,7 +1044,7 @@
       const lines = text.split("\n").map((line) => line.trim()).filter(Boolean);
       const joined = lines.join("\n");
       const symbolLine = extractSymbolLine(lines);
-      const coin = extractCoinFromSymbol(symbolLine);
+      const coin = extractCoinFromText(joined, lines) || extractCoinFromSymbol(symbolLine);
       const direction = inferDirection(joined);
       const realizedPnl = parseSignedNumber(extractNumericAfterLabels(joined, ["Realized PnL(USDT)", "Realized PnL"]));
       const closedPnl = parseSignedNumber(extractNumericAfterLabels(joined, ["Closed PnL(USDT)", "Closed PnL"]));
@@ -1292,9 +1309,14 @@
 
       ui.metricStart.textContent = Number.isFinite(start) ? formatMoney(start) : "-";
       ui.metricAccount.textContent = accountSize !== null ? formatMoney(accountSize) : "-";
+      ui.metricTotal.textContent = totalPnl !== 0 ? formatSignedMoney(totalPnl) : "0.00";
       ui.metricPercent.textContent = percent !== null ? `${percent.toFixed(2)}%` : "-";
       ui.metricWins.textContent = String(wins);
       ui.metricLosses.textContent = String(losses);
+      ui.metricTotal.className = totalPnl > 0 ? "positive" : totalPnl < 0 ? "negative" : "";
+      ui.metricPercent.className = percent > 0 ? "positive" : percent < 0 ? "negative" : "";
+      ui.metricWins.className = wins > 0 ? "positive" : "";
+      ui.metricLosses.className = losses > 0 ? "negative" : "";
     }
 
     function autoInferResult() {
@@ -1427,6 +1449,18 @@
       return normalized.replace(/USDT$/, "");
     }
 
+    function extractCoinFromText(text, lines) {
+      const compact = String(text || "").toUpperCase().replace(/[^A-Z0-9]/g, " ");
+      const direct = compact.match(/\b([A-Z0-9]{2,20})USDT\b/);
+      if (direct) return direct[1];
+
+      const firstLine = String(lines?.[0] || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+      const firstMatch = firstLine.match(/^([A-Z0-9]{2,20})USDT$/);
+      if (firstMatch) return firstMatch[1];
+
+      return "";
+    }
+
     function extractNumericAfterLabels(text, labels) {
       for (const label of labels) {
         const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s*");
@@ -1523,6 +1557,11 @@
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       }).format(value);
+    }
+
+    function formatSignedMoney(value) {
+      const prefix = value > 0 ? "+" : "";
+      return `${prefix}${formatMoney(value)}`;
     }
 
     function setStatus(title, message) {
