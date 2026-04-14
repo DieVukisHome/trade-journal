@@ -95,15 +95,7 @@
       font-size: 1.2rem;
     }
 
-    .lede {
-      margin-top: 10px;
-      color: var(--muted);
-      max-width: 64ch;
-      line-height: 1.45;
-    }
-
     .hero-top,
-    .hero-grid,
     .workspace,
     .import-grid,
     .form-grid,
@@ -119,11 +111,6 @@
     .hero-top {
       grid-template-columns: 1.15fr 0.85fr;
       align-items: end;
-    }
-
-    .hero-grid {
-      margin-top: 20px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .chip-row {
@@ -153,7 +140,6 @@
     }
 
     .metric-card,
-    .hint-box,
     .status-box,
     .preview-label {
       border-radius: 18px;
@@ -163,7 +149,6 @@
     }
 
     .metric-card span,
-    .hint-box p,
     .status-box,
     .preview-label {
       color: var(--muted);
@@ -171,8 +156,8 @@
 
     .metric-card strong {
       display: block;
-      margin-top: 8px;
-      font-size: 1.4rem;
+      margin-top: 10px;
+      font-size: 1.55rem;
       color: var(--text);
       letter-spacing: -0.03em;
     }
@@ -184,11 +169,6 @@
       border-radius: 20px;
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02));
-    }
-
-    .settings-box p {
-      color: var(--muted);
-      line-height: 1.45;
     }
 
     .workspace {
@@ -267,7 +247,6 @@
     }
 
     .status-box strong,
-    .hint-box strong,
     .preview-label strong {
       display: block;
       color: var(--text);
@@ -521,8 +500,7 @@
 
       .form-grid,
       .filter-bar,
-      .record-grid,
-      .hero-grid {
+      .record-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -539,14 +517,8 @@
       <div class="hero-top">
         <div>
           <h1>Trade Journal</h1>
-          <p class="lede">
-            Erfasse einen Trade direkt beim Einstieg mit Screenshot und TradingView-Link, lade ihn später mit dem Closing-Screenshot wieder,
-            ergänze die restlichen Daten und exportiere am Monatsende nur die geschlossenen Trades als CSV.
-          </p>
         </div>
         <div class="settings-box">
-          <h2>Journal Setup</h2>
-          <p>Der Startwert wird lokal gespeichert und für die KPI-Kopfleiste verwendet.</p>
           <label class="field">
             <span>Start Account Size</span>
             <input id="startAccountSize" type="number" step="0.01" placeholder="z. B. 1200">
@@ -575,23 +547,12 @@
           <strong id="metricLosses">0</strong>
         </div>
       </div>
-      <div class="hero-grid">
-        <div class="hint-box">
-          <strong>Empfohlener Ablauf</strong>
-          Erst den Open-Screenshot hochladen, TV-Link speichern und den Trade als offenen Eintrag anlegen. Später denselben Eintrag laden, den Closed-Screenshot einlesen und aktualisieren.
-        </div>
-        <div class="hint-box">
-          <strong>Monats-Export</strong>
-          Die CSV enthält nur geschlossene Trades aus dem gewählten Monat, damit offene Positionen nicht versehentlich ins Sheet wandern.
-        </div>
-      </div>
     </section>
 
     <section class="panel workspace">
       <div class="section-head">
         <div>
           <h2>1. Screenshots importieren</h2>
-          <p>Open und Closed laufen als zwei getrennte OCR-Schritte, damit du Trades schon beim Einstieg anlegen kannst.</p>
         </div>
       </div>
 
@@ -602,7 +563,6 @@
             <input id="openImageInput" type="file" accept="image/*" hidden>
             <div>
               <strong>Open-Screenshot auswählen</strong>
-              <span>Ideal für Coin, Direction, Open Time und schnelle TV-Link-Erfassung.</span>
             </div>
           </label>
           <div class="preview-wrap">
@@ -621,7 +581,6 @@
             <input id="closeImageInput" type="file" accept="image/*" hidden>
             <div>
               <strong>Closed-Screenshot auswählen</strong>
-              <span>Für PnL, Close Time, Entry- und Avg.-Close-Preis sowie finalen Trade-Status.</span>
             </div>
           </label>
           <div class="preview-wrap">
@@ -645,7 +604,6 @@
       <div class="section-head">
         <div>
           <h2>2. Trade bearbeiten</h2>
-          <p>Ein offener Trade kann ohne PnL gespeichert werden. Später lädst du ihn aus der Liste und ergänzt den Closed-Screenshot.</p>
         </div>
       </div>
 
@@ -752,7 +710,6 @@
       <div class="section-head">
         <div>
           <h2>3. Trades</h2>
-          <p>Hier siehst du offene und geschlossene Trades sofort nach dem Speichern.</p>
         </div>
       </div>
       <div class="filter-bar">
@@ -778,7 +735,6 @@
       <div class="section-head">
         <div>
           <h2>4. Monats-CSV exportieren</h2>
-          <p>Exportiert werden nur geschlossene Trades aus dem ausgewählten Monat.</p>
         </div>
         <div class="actions">
           <button class="secondary tiny" id="exportCsvBtn">Monats-CSV exportieren</button>
@@ -903,11 +859,16 @@
 
     function createImporter(config) {
       const state = {
-        dataUrl: "",
+        objectUrl: "",
+        file: null,
         name: ""
       };
 
       config.dropZone.addEventListener("click", () => config.input.click());
+      config.dropZone.addEventListener("touchend", (event) => {
+        event.preventDefault();
+        config.input.click();
+      }, { passive: false });
       config.input.addEventListener("change", (event) => {
         const file = event.target.files?.[0];
         if (file) setImage(file);
@@ -933,34 +894,33 @@
       });
 
       config.runBtn.addEventListener("click", async () => {
-        if (!state.dataUrl) return;
-        await runOcrForMode(config.mode, state.dataUrl);
+        const source = state.file || state.objectUrl;
+        if (!source) return;
+        await runOcrForMode(config.mode, source);
       });
 
       config.clearBtn.addEventListener("click", clearImage);
 
       function setImage(file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          state.dataUrl = reader.result;
-          state.name = file.name;
-          config.preview.src = state.dataUrl;
-          config.preview.style.display = "block";
-          config.previewLabel.style.display = "block";
-          config.fileName.textContent = file.name;
-          config.runBtn.disabled = false;
-          setStatus(
-            config.mode === "open" ? "Open Screenshot geladen" : "Closed Screenshot geladen",
-            config.mode === "open"
-              ? "Du kannst jetzt Open OCR starten und den Trade als offenen Eintrag anlegen."
-              : "Du kannst jetzt Closed OCR starten und einen bestehenden Trade vervollständigen."
-          );
-        };
-        reader.readAsDataURL(file);
+        if (state.objectUrl) URL.revokeObjectURL(state.objectUrl);
+        state.file = file;
+        state.objectUrl = URL.createObjectURL(file);
+        state.name = file.name;
+        config.preview.src = state.objectUrl;
+        config.preview.style.display = "block";
+        config.previewLabel.style.display = "block";
+        config.fileName.textContent = file.name;
+        config.runBtn.disabled = false;
+        setStatus(
+          config.mode === "open" ? "Open Screenshot geladen" : "Closed Screenshot geladen",
+          config.mode === "open" ? "Bereit für Open OCR." : "Bereit für Closed OCR."
+        );
       }
 
       function clearImage() {
-        state.dataUrl = "";
+        if (state.objectUrl) URL.revokeObjectURL(state.objectUrl);
+        state.objectUrl = "";
+        state.file = null;
         state.name = "";
         config.preview.removeAttribute("src");
         config.preview.style.display = "none";
