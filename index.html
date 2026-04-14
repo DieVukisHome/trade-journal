@@ -10,7 +10,7 @@
   <meta name="theme-color" content="#08111a">
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="apple-touch-icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%23030a10"/><stop offset="52%" stop-color="%230b1621"/><stop offset="100%" stop-color="%23111e2b"/></linearGradient><linearGradient id="bull" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="%2340c78d"/><stop offset="100%" stop-color="%2383e6c3"/></linearGradient><linearGradient id="bear" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%23ef6f84"/><stop offset="100%" stop-color="%23ff9aab"/></linearGradient></defs><rect width="180" height="180" rx="40" fill="url(%23bg)"/><rect x="16" y="16" width="148" height="148" rx="34" fill="none" stroke="%23344558" stroke-width="2.5"/><path d="M42 126 L42 92" stroke="%238fa8bb" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="34" y="100" width="16" height="18" rx="6" fill="url(%23bear)"/><path d="M67 116 L67 66" stroke="%238fa8bb" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="59" y="74" width="16" height="34" rx="6" fill="url(%23bull)"/><path d="M92 128 L92 84" stroke="%238fa8bb" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="84" y="92" width="16" height="28" rx="6" fill="url(%23bull)"/><path d="M117 106 L117 56" stroke="%238fa8bb" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="109" y="64" width="16" height="34" rx="6" fill="url(%23bull)"/><path d="M36 136 C53 129 70 119 84 104 C96 92 108 88 118 80 C128 73 135 64 144 50" fill="none" stroke="url(%23bull)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="144" cy="50" r="9" fill="%237fc7ff"/><path d="M38 42 H74" stroke="%23dbe8f3" stroke-opacity="0.65" stroke-width="5" stroke-linecap="round"/><path d="M38 54 H90" stroke="%23dbe8f3" stroke-opacity="0.3" stroke-width="5" stroke-linecap="round"/></svg>'>
+  <link rel="apple-touch-icon" href="./icon.svg">
   <style>
     :root {
       --bg: #07111a;
@@ -356,7 +356,8 @@
       resize: vertical;
     }
 
-    input[type="month"] {
+    input[type="month"],
+    input.month-text {
       min-width: 0;
       width: 100%;
     }
@@ -809,7 +810,7 @@
         </label>
         <label class="field">
           <span>Monat</span>
-          <input id="recordMonthFilter" type="month">
+          <input id="recordMonthFilter" class="month-text" type="text" inputmode="numeric" placeholder="YYYY-MM">
         </label>
       </div>
       <div class="records-list" id="recordsList">
@@ -830,7 +831,7 @@
       <div class="form-grid" style="margin-bottom:14px;">
         <label class="field">
           <span>Export-Monat</span>
-          <input id="exportMonth" type="month">
+          <input id="exportMonth" class="month-text" type="text" inputmode="numeric" placeholder="YYYY-MM">
         </label>
       </div>
       <p class="footer-note">
@@ -944,7 +945,10 @@
     ui.exportCsvBtn.addEventListener("click", exportMonthlyCsv);
     ui.clearRecordsBtn.addEventListener("click", clearAllRecords);
     ui.recordStateFilter.addEventListener("change", renderRecords);
-    ui.recordMonthFilter.addEventListener("input", renderRecords);
+    ui.recordMonthFilter.addEventListener("input", () => {
+      ui.recordMonthFilter.value = sanitizeMonthValue(ui.recordMonthFilter.value);
+      renderRecords();
+    });
     ui.showJournalBtn.addEventListener("click", () => setView("journal"));
     ui.showTradesBtn.addEventListener("click", () => setView("trades"));
 
@@ -1338,7 +1342,7 @@
 
     function matchesRecordFilters(record) {
       const stateFilter = ui.recordStateFilter.value;
-      const monthFilter = ui.recordMonthFilter.value;
+      const monthFilter = sanitizeMonthValue(ui.recordMonthFilter.value);
       if (stateFilter !== "all" && record.tradeState !== stateFilter) return false;
       if (monthFilter && !String(record["Post date"] || "").startsWith(monthFilter)) return false;
       return true;
@@ -1440,6 +1444,7 @@
         return;
       }
 
+      ui.exportMonth.value = sanitizeMonthValue(ui.exportMonth.value);
       if (!ui.exportMonth.value) {
         setStatus("Monat fehlt", "Bitte wähle zuerst einen Export-Monat aus.");
         return;
@@ -1653,9 +1658,19 @@
       ui.ocrStatus.innerHTML = `<strong>${escapeHtml(title)}</strong>${escapeHtml(message)}`;
     }
 
+    function sanitizeMonthValue(value) {
+      const cleaned = String(value || "").replace(/[^\d-]/g, "").slice(0, 7);
+      const match = cleaned.match(/^(\d{4})-(\d{1,2})$/);
+      if (!match) return cleaned;
+      const month = match[2].padStart(2, "0").slice(0, 2);
+      return `${match[1]}-${month}`;
+    }
+
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+        navigator.serviceWorker.register("./service-worker.js").then((registration) => {
+          registration.update();
+        }).catch(() => {});
       });
     }
 
