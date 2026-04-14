@@ -837,7 +837,7 @@
 
     ui.startAccountSize.value = settings.startAccountSize || "";
     ui.exportMonth.value = new Date().toISOString().slice(0, 7);
-    ui.recordMonthFilter.value = new Date().toISOString().slice(0, 7);
+    ui.recordMonthFilter.value = "";
 
     renderRecords();
     renderMetrics();
@@ -903,7 +903,7 @@
 
       config.clearBtn.addEventListener("click", clearImage);
 
-      function setImage(file) {
+      async function setImage(file) {
         if (state.objectUrl) URL.revokeObjectURL(state.objectUrl);
         state.file = file;
         state.objectUrl = URL.createObjectURL(file);
@@ -918,7 +918,7 @@
           config.mode === "open" ? "Open Screenshot geladen" : "Closed Screenshot geladen",
           config.mode === "open" ? "Bereit für Open OCR." : "Bereit für Closed OCR."
         );
-        queueMicrotask(() => config.runBtn.click());
+        await runOcrForMode(config.mode, state.file || state.objectUrl);
       }
 
       function clearImage() {
@@ -995,7 +995,7 @@
       const lines = text.split("\n").map((line) => line.trim()).filter(Boolean);
       const joined = lines.join("\n");
       const symbolLine = extractSymbolLine(lines);
-      const coin = symbolLine.replace(/USDT$/i, "").trim();
+      const coin = extractCoinFromSymbol(symbolLine);
       const direction = inferDirection(joined);
       const openTime = extractFirstDateTime(joined, ["Time", "Open Time"]);
       const avgPrice = extractNumericAfterLabels(joined, ["Avg. Price", "Avg Price"]);
@@ -1027,7 +1027,7 @@
       const lines = text.split("\n").map((line) => line.trim()).filter(Boolean);
       const joined = lines.join("\n");
       const symbolLine = extractSymbolLine(lines);
-      const coin = symbolLine.replace(/USDT$/i, "").trim();
+      const coin = extractCoinFromSymbol(symbolLine);
       const direction = inferDirection(joined);
       const realizedPnl = parseSignedNumber(extractNumericAfterLabels(joined, ["Realized PnL(USDT)", "Realized PnL"]));
       const closedPnl = parseSignedNumber(extractNumericAfterLabels(joined, ["Closed PnL(USDT)", "Closed PnL"]));
@@ -1113,7 +1113,6 @@
       }
 
       saveJson(STORAGE_KEY, records);
-      renderRecords();
       renderMetrics();
       setStatus(
         tradeState === "closed" ? "Trade gespeichert" : "Offener Trade gespeichert",
@@ -1409,12 +1408,23 @@
     }
 
     function extractSymbolLine(lines) {
-      return lines.find((line) => /^[A-Z0-9._-]{3,20}USDT$/i.test(line))
-        || lines.find((line) => /^[A-Z0-9._-]{3,20}USO[T]?$/i.test(line))
-        || lines.find((line) => /^[A-Z0-9._-]{3,20}USD[T]?$/i.test(line))
-        || lines.find((line) => /USDT$/i.test(line))
-        || lines.find((line) => /USO[T]?$/i.test(line))
-        || "";
+      const normalizedLines = lines.map((line) => ({
+        raw: line,
+        normalized: line.toUpperCase().replace(/[^A-Z0-9]/g, "")
+      }));
+
+      const exact = normalizedLines.find((line) => /[A-Z0-9]{3,20}USDT$/.test(line.normalized));
+      if (exact) return exact.normalized;
+
+      const fuzzy = normalizedLines.find((line) => /[A-Z0-9]{3,20}US[DO0]T?$/.test(line.normalized));
+      if (fuzzy) return fuzzy.normalized.replace(/US[DO0]T?$/, "USDT");
+
+      return "";
+    }
+
+    function extractCoinFromSymbol(symbolLine) {
+      const normalized = String(symbolLine || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+      return normalized.replace(/USDT$/, "");
     }
 
     function extractNumericAfterLabels(text, labels) {
