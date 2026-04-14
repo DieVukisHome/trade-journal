@@ -8,6 +8,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Trade Journal">
   <meta name="theme-color" content="#08111a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%23030a10"/><stop offset="52%" stop-color="%230b1621"/><stop offset="100%" stop-color="%23111e2b"/></linearGradient><linearGradient id="bull" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="%2340c78d"/><stop offset="100%" stop-color="%2383e6c3"/></linearGradient><linearGradient id="bear" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%23ef6f84"/><stop offset="100%" stop-color="%23ff9aab"/></linearGradient></defs><rect width="180" height="180" rx="40" fill="url(%23bg)"/><rect x="16" y="16" width="148" height="148" rx="34" fill="none" stroke="%23344558" stroke-width="2.5"/><path d="M42 126 L42 92" stroke="%238fa8bb" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="34" y="100" width="16" height="18" rx="6" fill="url(%23bear)"/><path d="M67 116 L67 66" stroke="%238fa8bb" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="59" y="74" width="16" height="34" rx="6" fill="url(%23bull)"/><path d="M92 128 L92 84" stroke="%238fa8bb" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="84" y="92" width="16" height="28" rx="6" fill="url(%23bull)"/><path d="M117 106 L117 56" stroke="%238fa8bb" stroke-opacity="0.55" stroke-width="4" stroke-linecap="round"/><rect x="109" y="64" width="16" height="34" rx="6" fill="url(%23bull)"/><path d="M36 136 C53 129 70 119 84 104 C96 92 108 88 118 80 C128 73 135 64 144 50" fill="none" stroke="url(%23bull)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="144" cy="50" r="9" fill="%237fc7ff"/><path d="M38 42 H74" stroke="%23dbe8f3" stroke-opacity="0.65" stroke-width="5" stroke-linecap="round"/><path d="M38 54 H90" stroke="%23dbe8f3" stroke-opacity="0.3" stroke-width="5" stroke-linecap="round"/></svg>'>
   <style>
     :root {
@@ -95,6 +97,7 @@
       font-size: 1.2rem;
     }
 
+    .topbar,
     .hero-top,
     .dashboard-grid,
     .workspace,
@@ -109,8 +112,14 @@
       gap: 12px;
     }
 
+    .topbar {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 14px;
+    }
+
     .hero-top {
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 1fr;
       align-items: end;
     }
 
@@ -127,6 +136,27 @@
 
     .metric-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .nav {
+      display: inline-flex;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav button {
+      padding: 10px 14px;
+      border-radius: 999px;
+      min-width: 92px;
+    }
+
+    .nav button.active {
+      background: linear-gradient(135deg, var(--accent), #3eb6f8);
+      color: #031018;
+      font-weight: 700;
     }
 
     .metric-card,
@@ -167,6 +197,14 @@
       border-radius: 20px;
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02));
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
     }
 
     .workspace {
@@ -519,7 +557,8 @@
 
       .form-grid,
       .filter-bar,
-      .record-grid {
+      .record-grid,
+      .topbar {
         grid-template-columns: 1fr;
       }
     }
@@ -528,9 +567,14 @@
 <body>
   <main class="shell">
     <section class="hero">
-      <div class="hero-top">
+      <div class="topbar">
         <h1>Trade Journal</h1>
+        <div class="nav">
+          <button class="secondary active" id="showJournalBtn" type="button">Journal</button>
+          <button class="secondary" id="showTradesBtn" type="button">Trades</button>
+        </div>
       </div>
+      <div class="hero-top">
       <div class="dashboard-grid">
         <div class="settings-box">
           <label class="field">
@@ -540,12 +584,20 @@
         </div>
         <div class="metric-grid">
           <div class="metric-card">
-            <span>Start Account Size</span>
+            <span>Start Account</span>
             <strong id="metricStart">-</strong>
           </div>
           <div class="metric-card">
             <span>Account Size</span>
             <strong id="metricAccount">-</strong>
+          </div>
+          <div class="metric-card">
+            <span>% PnL</span>
+            <strong id="metricPercent">-</strong>
+          </div>
+          <div class="metric-card">
+            <span>Total</span>
+            <strong id="metricTotal">-</strong>
           </div>
           <div class="metric-card">
             <span>Wins</span>
@@ -555,18 +607,12 @@
             <span>Losses</span>
             <strong id="metricLosses">0</strong>
           </div>
-          <div class="metric-card">
-            <span>Total</span>
-            <strong id="metricTotal">-</strong>
-          </div>
-          <div class="metric-card">
-            <span>% Account PnL</span>
-            <strong id="metricPercent">-</strong>
-          </div>
         </div>
+      </div>
       </div>
     </section>
 
+    <section class="view active" id="journalView">
     <section class="panel workspace">
       <div class="section-head">
         <div>
@@ -723,11 +769,13 @@
         <button class="secondary" id="newTradeBtn">Neuen Trade starten</button>
       </div>
     </section>
+    </section>
 
+    <section class="view" id="tradesView">
     <section class="panel">
       <div class="section-head">
         <div>
-          <h2>3. Trades</h2>
+          <h2>Trades</h2>
         </div>
       </div>
       <div class="filter-bar">
@@ -768,6 +816,7 @@
       <p class="footer-note">
         CSV-Spalten: <code>Post date, session, Coin, Direction, 1% Risk, TF trade taken, Status, $ PnL, Did you follow your rules, TV link, Notes, Emotions, Win or Loss?</code>
       </p>
+    </section>
     </section>
   </main>
 
@@ -823,7 +872,11 @@
       saveRecordBtn: document.getElementById("saveRecordBtn"),
       newTradeBtn: document.getElementById("newTradeBtn"),
       exportCsvBtn: document.getElementById("exportCsvBtn"),
-      clearRecordsBtn: document.getElementById("clearRecordsBtn")
+      clearRecordsBtn: document.getElementById("clearRecordsBtn"),
+      showJournalBtn: document.getElementById("showJournalBtn"),
+      showTradesBtn: document.getElementById("showTradesBtn"),
+      journalView: document.getElementById("journalView"),
+      tradesView: document.getElementById("tradesView")
     };
 
     const openImporter = createImporter({
@@ -872,6 +925,8 @@
     ui.clearRecordsBtn.addEventListener("click", clearAllRecords);
     ui.recordStateFilter.addEventListener("change", renderRecords);
     ui.recordMonthFilter.addEventListener("input", renderRecords);
+    ui.showJournalBtn.addEventListener("click", () => setView("journal"));
+    ui.showTradesBtn.addEventListener("click", () => setView("trades"));
 
     fields.pnl.addEventListener("input", autoInferResult);
     fields.result.addEventListener("change", autoInferStatusFromResult);
@@ -880,14 +935,11 @@
       const state = {
         objectUrl: "",
         file: null,
-        name: ""
+        name: "",
+        lastKey: ""
       };
 
       config.dropZone.addEventListener("click", () => config.input.click());
-      config.dropZone.addEventListener("touchend", (event) => {
-        event.preventDefault();
-        config.input.click();
-      }, { passive: false });
       config.input.addEventListener("change", (event) => {
         const file = event.target.files?.[0];
         if (file) setImage(file);
@@ -921,6 +973,9 @@
       config.clearBtn.addEventListener("click", clearImage);
 
       async function setImage(file) {
+        const fileKey = `${file.name}-${file.size}-${file.lastModified}`;
+        if (fileKey === state.lastKey) return;
+        state.lastKey = fileKey;
         if (state.objectUrl) URL.revokeObjectURL(state.objectUrl);
         state.file = file;
         state.objectUrl = URL.createObjectURL(file);
@@ -950,6 +1005,7 @@
         config.fileName.textContent = "";
         config.input.value = "";
         config.runBtn.disabled = true;
+        state.lastKey = "";
       }
 
       return {
@@ -1138,7 +1194,7 @@
           : "Der offene Trade erscheint jetzt in der Liste und kann später mit dem Closed-Screenshot aktualisiert werden."
       );
       renderRecords();
-      document.getElementById("recordsList").scrollIntoView({ behavior: "smooth", block: "start" });
+      setView("trades");
       resetEditor();
     }
 
@@ -1292,7 +1348,7 @@
           ? "Der Trade ist im Formular geladen und kann angepasst werden."
           : "Der offene Trade ist geladen. Jetzt kannst du den Closed-Screenshot einlesen und aktualisieren.");
       }
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      setView("journal");
     }
 
     function renderMetrics() {
@@ -1302,6 +1358,7 @@
         const pnl = Number(record["$ PnL"]);
         return sum + (Number.isFinite(pnl) ? pnl : 0);
       }, 0);
+      const totalClosed = closed.length;
       const wins = closed.filter((record) => record["Win or Loss?"] === "Win").length;
       const losses = closed.filter((record) => record["Win or Loss?"] === "Loss").length;
       const accountSize = Number.isFinite(start) ? start + totalPnl : null;
@@ -1309,14 +1366,22 @@
 
       ui.metricStart.textContent = Number.isFinite(start) ? formatMoney(start) : "-";
       ui.metricAccount.textContent = accountSize !== null ? formatMoney(accountSize) : "-";
-      ui.metricTotal.textContent = totalPnl !== 0 ? formatSignedMoney(totalPnl) : "0.00";
+      ui.metricTotal.textContent = String(totalClosed);
       ui.metricPercent.textContent = percent !== null ? `${percent.toFixed(2)}%` : "-";
       ui.metricWins.textContent = String(wins);
       ui.metricLosses.textContent = String(losses);
-      ui.metricTotal.className = totalPnl > 0 ? "positive" : totalPnl < 0 ? "negative" : "";
+      ui.metricAccount.className = accountSize !== null && Number.isFinite(start) && accountSize > start ? "positive" : accountSize !== null && Number.isFinite(start) && accountSize < start ? "negative" : "";
       ui.metricPercent.className = percent > 0 ? "positive" : percent < 0 ? "negative" : "";
       ui.metricWins.className = wins > 0 ? "positive" : "";
       ui.metricLosses.className = losses > 0 ? "negative" : "";
+    }
+
+    function setView(view) {
+      const isJournal = view === "journal";
+      ui.journalView.classList.toggle("active", isJournal);
+      ui.tradesView.classList.toggle("active", !isJournal);
+      ui.showJournalBtn.classList.toggle("active", isJournal);
+      ui.showTradesBtn.classList.toggle("active", !isJournal);
     }
 
     function autoInferResult() {
@@ -1458,6 +1523,12 @@
       const firstMatch = firstLine.match(/^([A-Z0-9]{2,20})USDT$/);
       if (firstMatch) return firstMatch[1];
 
+      const topLines = (lines || []).slice(0, 3).map((line) => line.toUpperCase().replace(/[^A-Z0-9]/g, ""));
+      for (const line of topLines) {
+        const fuzzy = line.match(/^([A-Z0-9]{2,20})US[DO0]T?$/);
+        if (fuzzy) return fuzzy[1];
+      }
+
       return "";
     }
 
@@ -1559,13 +1630,14 @@
       }).format(value);
     }
 
-    function formatSignedMoney(value) {
-      const prefix = value > 0 ? "+" : "";
-      return `${prefix}${formatMoney(value)}`;
-    }
-
     function setStatus(title, message) {
       ui.ocrStatus.innerHTML = `<strong>${escapeHtml(title)}</strong>${escapeHtml(message)}`;
+    }
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+      });
     }
 
     function loadJson(key, fallback) {

@@ -1,0 +1,18 @@
+{
+  "name": "Trade Journal",
+  "short_name": "Trade Journal",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#07111a",
+  "theme_color": "#08111a",
+  "description": "Trade journal PWA for BingX screenshot OCR and monthly export.",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
