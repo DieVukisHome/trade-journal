@@ -860,6 +860,10 @@
         </div>
         <div class="actions">
           <button class="secondary tiny" id="exportCsvBtn">Monats-CSV exportieren</button>
+          <label class="secondary tiny" for="importCsvInput" style="display:inline-flex;align-items:center;justify-content:center;">
+            CSV importieren
+          </label>
+          <input id="importCsvInput" type="file" accept=".csv,text/csv" style="display:none;">
           <button class="secondary tiny" id="exportBackupBtn">Backup exportieren</button>
           <label class="secondary tiny" for="importBackupInput" style="display:inline-flex;align-items:center;justify-content:center;">
             Backup importieren
@@ -933,6 +937,7 @@
       saveRecordBtn: document.getElementById("saveRecordBtn"),
       newTradeBtn: document.getElementById("newTradeBtn"),
       exportCsvBtn: document.getElementById("exportCsvBtn"),
+      importCsvInput: document.getElementById("importCsvInput"),
       exportBackupBtn: document.getElementById("exportBackupBtn"),
       importBackupInput: document.getElementById("importBackupInput"),
       clearRecordsBtn: document.getElementById("clearRecordsBtn"),
@@ -987,6 +992,7 @@
     ui.saveRecordBtn.addEventListener("click", saveCurrentTrade);
     ui.newTradeBtn.addEventListener("click", resetEditor);
     ui.exportCsvBtn.addEventListener("click", exportMonthlyCsv);
+    ui.importCsvInput.addEventListener("change", importCsv);
     ui.exportBackupBtn.addEventListener("click", exportBackup);
     ui.importBackupInput.addEventListener("change", importBackup);
     ui.clearRecordsBtn.addEventListener("click", clearAllRecords);
@@ -1171,7 +1177,7 @@
       const direction = inferDirection(joined);
       const realizedPnl = parseSignedNumber(extractNumericAfterLabels(joined, ["Realized PnL(USDT)", "Realized PnL"]));
       const closedPnl = parseSignedNumber(extractNumericAfterLabels(joined, ["Closed PnL(USDT)", "Closed PnL"]));
-      const bestPnl = closedPnl !== "" ? closedPnl : realizedPnl;
+      const bestPnl = realizedPnl !== "" ? realizedPnl : closedPnl;
       const closeTime = extractFirstDateTime(joined, ["Close Time", "Closed Time"]);
       const openTime = extractFirstDateTime(joined, ["Open Time"]);
       const entryPrice = extractNumericAfterLabels(joined, ["Entry Price"]);
@@ -1548,6 +1554,59 @@
       setStatus("Backup exportiert", `${records.length} Trade(s) wurden als JSON-Backup lokal gespeichert.`);
     }
 
+    async function importCsv(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      try {
+        const text = await file.text();
+        const rows = parseCsv(text);
+        if (!rows.length) {
+          setStatus("CSV-Import fehlgeschlagen", "Die Datei enthält keine importierbaren Zeilen.");
+          return;
+        }
+
+        const normalizedRows = rows
+          .map(normalizeImportedCsvRow)
+          .filter((row) => Object.values(row).some(Boolean));
+
+        if (!normalizedRows.length) {
+          setStatus("CSV-Import fehlgeschlagen", "Es wurden keine gültigen Trades in der CSV gefunden.");
+          return;
+        }
+
+        const importedRecords = normalizedRows.map((row, index) => {
+          const pnl = row["$ PnL"];
+          const result = row["Win or Loss?"] || inferResult(pnl);
+          const status = row["Status"] || inferStatusFromResult(result);
+          const timestamp = new Date(Date.now() + index).toISOString();
+          return {
+            id: crypto.randomUUID(),
+            createdAt: timestamp,
+            updatedAt: timestamp,
+            tradeState: isClosedRecord({ ...row, "$ PnL": pnl, "Win or Loss?": result }) ? "closed" : "open",
+            openScreenshotName: "",
+            closeScreenshotName: "",
+            ...row,
+            "Status": status,
+            "$ PnL": pnl,
+            "Win or Loss?": result
+          };
+        });
+
+        records = importedRecords.concat(records);
+        saveJson(STORAGE_KEY, records);
+        renderRecords();
+        renderMetrics();
+        setStatus("CSV importiert", `${importedRecords.length} Trade(s) wurden deinem Journal hinzugefügt.`);
+      } catch (error) {
+        console.error(error);
+        setStatus("CSV-Import fehlgeschlagen", "Die CSV-Datei konnte nicht gelesen werden.");
+      } finally {
+        ui.importCsvInput.value = "";
+      }
+    }
+
     async function importBackup(event) {
       const file = event.target.files?.[0];
       if (!file) return;
@@ -1809,6 +1868,63 @@
 
     function escapeAttribute(value) {
       return escapeHtml(value);
+    }
+
+    function parseCsv(text) {
+      const rows = [];
+      let current = "";
+      let row = [];
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i += 1) {
+        const char = text[i];
+        const next = text[i + 1];
+
+        if (char === "\"") {
+          if (inQuotes && next === "\"") {
+            current += "\"";
+            i += 1;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === "," && !inQuotes) {
+          row.push(current);
+          current = "";
+        } else if ((char === "\n" || char === "\r") && !inQuotes) {
+          if (char === "\r" && next === "\n") i += 1;
+          row.push(current);
+          current = "";
+          if (row.some((cell) => cell !== "")) rows.push(row);
+          row = [];
+        } else {
+          current += char;
+        }
+      }
+
+      row.push(current);
+      if (row.some((cell) => cell !== "")) rows.push(row);
+      if (!rows.length) return [];
+
+      const header = rows[0].map((cell) => cell.trim());
+      return rows.slice(1).map((cells) => {
+        const entry = {};
+        header.forEach((key, index) => {
+          entry[key] = String(cells[index] ?? "").trim();
+        });
+        return entry;
+      });
+    }
+
+    function normalizeImportedCsvRow(row) {
+      const normalized = {};
+      CSV_HEADERS.forEach((header) => {
+        normalized[header] = String(row[header] ?? "").trim();
+      });
+      normalized["Coin"] = normalized["Coin"].toUpperCase();
+      if (normalized["$ PnL"]) {
+        normalized["$ PnL"] = String(parseSignedNumber(normalized["$ PnL"]) || normalized["$ PnL"]);
+      }
+      return normalized;
     }
   </script>
 </body>
