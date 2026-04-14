@@ -1,0 +1,1561 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trade Journal</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Trade Journal">
+  <meta name="theme-color" content="#08111a">
+  <link rel="apple-touch-icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180"><rect width="180" height="180" rx="40" fill="%2308111a"/><rect x="20" y="20" width="140" height="140" rx="32" fill="%2311202f" stroke="%23325d82" stroke-width="4"/><path d="M42 118 L72 92 L92 110 L136 56" fill="none" stroke="%2356d0a0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><circle cx="136" cy="56" r="10" fill="%237fc7ff"/><path d="M44 44 H78" stroke="%239eb4c7" stroke-width="8" stroke-linecap="round"/><path d="M44 64 H96" stroke="%239eb4c7" stroke-width="8" stroke-linecap="round"/></svg>'>
+  <style>
+    :root {
+      --bg: #07111a;
+      --panel: rgba(9, 20, 30, 0.9);
+      --line: rgba(154, 179, 202, 0.16);
+      --line-strong: rgba(154, 179, 202, 0.26);
+      --text: #eef5fb;
+      --muted: #9eb4c7;
+      --accent: #56d0a0;
+      --accent-2: #7fc7ff;
+      --danger: #ff7d8f;
+      --warn: #ffc978;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --radius: 24px;
+      --font: "Avenir Next", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(80, 208, 160, 0.16), transparent 24%),
+        radial-gradient(circle at top right, rgba(127, 199, 255, 0.14), transparent 28%),
+        linear-gradient(180deg, #06101a 0%, #0c1722 55%, #09131d 100%);
+    }
+
+    a {
+      color: var(--accent-2);
+    }
+
+    .shell {
+      width: min(1180px, calc(100vw - 28px));
+      margin: 20px auto 40px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero,
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .hero {
+      padding: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -8% -32% auto;
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(86, 208, 160, 0.16), transparent 70%);
+      pointer-events: none;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(2.3rem, 5vw, 3.6rem);
+      line-height: 0.94;
+      letter-spacing: -0.05em;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+    }
+
+    .lede {
+      margin-top: 10px;
+      color: var(--muted);
+      max-width: 64ch;
+      line-height: 1.45;
+    }
+
+    .hero-top,
+    .hero-grid,
+    .workspace,
+    .import-grid,
+    .form-grid,
+    .metric-grid,
+    .record-grid,
+    .actions,
+    .record-actions,
+    .chip-row {
+      display: grid;
+      gap: 12px;
+    }
+
+    .hero-top {
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: end;
+    }
+
+    .hero-grid {
+      margin-top: 20px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .chip-row {
+      grid-auto-flow: column;
+      justify-content: start;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 9px 13px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .metric-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .metric-card,
+    .hint-box,
+    .status-box,
+    .preview-label {
+      border-radius: 18px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .metric-card span,
+    .hint-box p,
+    .status-box,
+    .preview-label {
+      color: var(--muted);
+    }
+
+    .metric-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 1.4rem;
+      color: var(--text);
+      letter-spacing: -0.03em;
+    }
+
+    .settings-box {
+      display: grid;
+      gap: 10px;
+      padding: 16px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02));
+    }
+
+    .settings-box p {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .workspace {
+      grid-template-columns: 1fr;
+    }
+
+    .import-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+
+    .drop-zone {
+      display: grid;
+      place-items: center;
+      min-height: 180px;
+      padding: 18px;
+      border-radius: 22px;
+      border: 1.5px dashed rgba(127, 199, 255, 0.28);
+      background:
+        linear-gradient(180deg, rgba(127, 199, 255, 0.08), rgba(255, 255, 255, 0.03)),
+        rgba(10, 20, 31, 0.92);
+      text-align: center;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+      cursor: pointer;
+    }
+
+    .drop-zone.active {
+      transform: translateY(-2px);
+      border-color: rgba(86, 208, 160, 0.58);
+      background:
+        linear-gradient(180deg, rgba(86, 208, 160, 0.14), rgba(255, 255, 255, 0.05)),
+        rgba(10, 20, 31, 0.96);
+    }
+
+    .drop-zone strong {
+      display: block;
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+    }
+
+    .drop-zone span {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .preview-wrap {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .preview-label {
+      display: none;
+    }
+
+    img.preview {
+      display: none;
+      width: 100%;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #05090d;
+    }
+
+    .status-box strong,
+    .hint-box strong,
+    .preview-label strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .form-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .field,
+    .field.full {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label span {
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      font: inherit;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(2, 9, 15, 0.7);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 13px 14px;
+      outline: none;
+      transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(127, 199, 255, 0.48);
+      box-shadow: 0 0 0 3px rgba(127, 199, 255, 0.15);
+      background: rgba(3, 12, 20, 0.95);
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 16px;
+      cursor: pointer;
+      transition: transform 140ms ease, opacity 140ms ease, background 140ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: wait;
+      transform: none;
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--accent), #3eb6f8);
+      color: #031018;
+      font-weight: 700;
+    }
+
+    .secondary {
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px dashed rgba(255, 255, 255, 0.16);
+    }
+
+    .danger {
+      background: rgba(255, 125, 143, 0.12);
+      color: #ffd8df;
+      border: 1px solid rgba(255, 125, 143, 0.24);
+    }
+
+    .tiny {
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .records-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .filter-bar {
+      display: grid;
+      grid-template-columns: 1fr 180px;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .record {
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.022));
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .record-top {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .record-title {
+      display: grid;
+      gap: 6px;
+    }
+
+    .record-title strong {
+      font-size: 1.08rem;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.35;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--muted);
+    }
+
+    .badge.open {
+      color: var(--warn);
+      border-color: rgba(255, 201, 120, 0.22);
+      background: rgba(255, 201, 120, 0.1);
+    }
+
+    .badge.closed {
+      color: var(--accent);
+      border-color: rgba(86, 208, 160, 0.22);
+      background: rgba(86, 208, 160, 0.1);
+    }
+
+    .pnl {
+      font-weight: 800;
+      font-size: 1.04rem;
+    }
+
+    .pnl.positive {
+      color: var(--accent);
+    }
+
+    .pnl.negative {
+      color: var(--danger);
+    }
+
+    .record-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .record-grid span strong {
+      color: var(--text);
+      margin-right: 6px;
+    }
+
+    .empty {
+      padding: 18px;
+      border-radius: 18px;
+      color: var(--muted);
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      text-align: center;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    code {
+      color: #d6ecff;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-top,
+      .import-grid,
+      .metric-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100vw - 16px, 1100px);
+        margin-top: 8px;
+      }
+
+      .hero,
+      .panel {
+        border-radius: 22px;
+      }
+
+      .hero,
+      .panel {
+        padding: 16px;
+      }
+
+      .form-grid,
+      .filter-bar,
+      .record-grid,
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="chip-row">
+        <div class="chip">Single-file HTML</div>
+        <div class="chip">iPhone-ready</div>
+        <div class="chip">Open + Close Workflow</div>
+      </div>
+      <div class="hero-top">
+        <div>
+          <h1>Trade Journal</h1>
+          <p class="lede">
+            Erfasse einen Trade direkt beim Einstieg mit Screenshot und TradingView-Link, lade ihn später mit dem Closing-Screenshot wieder,
+            ergänze die restlichen Daten und exportiere am Monatsende nur die geschlossenen Trades als CSV.
+          </p>
+        </div>
+        <div class="settings-box">
+          <h2>Journal Setup</h2>
+          <p>Der Startwert wird lokal gespeichert und für die KPI-Kopfleiste verwendet.</p>
+          <label class="field">
+            <span>Start Account Size</span>
+            <input id="startAccountSize" type="number" step="0.01" placeholder="z. B. 1200">
+          </label>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <span>Start Account Size</span>
+          <strong id="metricStart">-</strong>
+        </div>
+        <div class="metric-card">
+          <span>Account Size</span>
+          <strong id="metricAccount">-</strong>
+        </div>
+        <div class="metric-card">
+          <span>% Account PnL</span>
+          <strong id="metricPercent">-</strong>
+        </div>
+        <div class="metric-card">
+          <span>Wins</span>
+          <strong id="metricWins">0</strong>
+        </div>
+        <div class="metric-card">
+          <span>Losses</span>
+          <strong id="metricLosses">0</strong>
+        </div>
+      </div>
+      <div class="hero-grid">
+        <div class="hint-box">
+          <strong>Empfohlener Ablauf</strong>
+          Erst den Open-Screenshot hochladen, TV-Link speichern und den Trade als offenen Eintrag anlegen. Später denselben Eintrag laden, den Closed-Screenshot einlesen und aktualisieren.
+        </div>
+        <div class="hint-box">
+          <strong>Monats-Export</strong>
+          Die CSV enthält nur geschlossene Trades aus dem gewählten Monat, damit offene Positionen nicht versehentlich ins Sheet wandern.
+        </div>
+      </div>
+    </section>
+
+    <section class="panel workspace">
+      <div class="section-head">
+        <div>
+          <h2>1. Screenshots importieren</h2>
+          <p>Open und Closed laufen als zwei getrennte OCR-Schritte, damit du Trades schon beim Einstieg anlegen kannst.</p>
+        </div>
+      </div>
+
+      <div class="import-grid">
+        <div>
+          <h3>Open Trade Screenshot</h3>
+          <label class="drop-zone" id="openDropZone">
+            <input id="openImageInput" type="file" accept="image/*" hidden>
+            <div>
+              <strong>Open-Screenshot auswählen</strong>
+              <span>Ideal für Coin, Direction, Open Time und schnelle TV-Link-Erfassung.</span>
+            </div>
+          </label>
+          <div class="preview-wrap">
+            <div class="preview-label" id="openPreviewLabel"><strong>Open Screenshot</strong><span id="openFileName"></span></div>
+            <img class="preview" id="openPreview" alt="Open trade preview">
+            <div class="actions">
+              <button class="primary" id="runOpenOcrBtn" disabled>Open OCR starten</button>
+              <button class="ghost" id="clearOpenImageBtn">Open Bild löschen</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3>Closed Trade Screenshot</h3>
+          <label class="drop-zone" id="closeDropZone">
+            <input id="closeImageInput" type="file" accept="image/*" hidden>
+            <div>
+              <strong>Closed-Screenshot auswählen</strong>
+              <span>Für PnL, Close Time, Entry- und Avg.-Close-Preis sowie finalen Trade-Status.</span>
+            </div>
+          </label>
+          <div class="preview-wrap">
+            <div class="preview-label" id="closePreviewLabel"><strong>Closed Screenshot</strong><span id="closeFileName"></span></div>
+            <img class="preview" id="closePreview" alt="Closed trade preview">
+            <div class="actions">
+              <button class="primary" id="runCloseOcrBtn" disabled>Closed OCR starten</button>
+              <button class="ghost" id="clearCloseImageBtn">Closed Bild löschen</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="status-box" id="ocrStatus" style="margin-top:14px;">
+        <strong>Bereit</strong>
+        Noch kein Screenshot geladen.
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <div>
+          <h2>2. Trade bearbeiten</h2>
+          <p>Ein offener Trade kann ohne PnL gespeichert werden. Später lädst du ihn aus der Liste und ergänzt den Closed-Screenshot.</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <label class="field">
+          <span>Post date</span>
+          <input id="postDate" type="date">
+        </label>
+        <label class="field">
+          <span>Session</span>
+          <select id="session">
+            <option value="">Bitte wählen</option>
+            <option>UK</option>
+            <option>US</option>
+            <option>Asia</option>
+            <option>Other</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Coin</span>
+          <input id="coin" type="text" placeholder="z. B. RENDER oder VIRTUAL">
+        </label>
+        <label class="field">
+          <span>Direction</span>
+          <select id="direction">
+            <option value="">Bitte wählen</option>
+            <option>Long</option>
+            <option>Short</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>1% Risk</span>
+          <input id="risk" type="number" step="0.01" placeholder="optional">
+        </label>
+        <label class="field">
+          <span>TF trade taken</span>
+          <select id="timeframe">
+            <option value="">Bitte wählen</option>
+            <option>4hr</option>
+            <option>1hr</option>
+            <option>15min</option>
+            <option>5mins</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Status</span>
+          <select id="status">
+            <option value="">Bitte wählen</option>
+            <option>Stop loss hit</option>
+            <option>BE</option>
+            <option>All TPs hit</option>
+            <option>TP1</option>
+            <option>TP2</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>$ PnL</span>
+          <input id="pnl" type="number" step="0.0001" placeholder="leer lassen solange der Trade offen ist">
+        </label>
+
+        <label class="field">
+          <span>Did you follow your rules</span>
+          <select id="followRules">
+            <option value="">Bitte wählen</option>
+            <option>Yep</option>
+            <option>Some</option>
+            <option>No</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Win or Loss?</span>
+          <select id="result">
+            <option value="">Bitte wählen</option>
+            <option>Win</option>
+            <option>Loss</option>
+            <option>BE</option>
+          </select>
+        </label>
+
+        <label class="field full">
+          <span>TV link</span>
+          <input id="tvLink" type="url" placeholder="https://www.tradingview.com/...">
+        </label>
+        <label class="field full">
+          <span>Notes</span>
+          <textarea id="notes" placeholder="z. B. Open/Close Time, Entry Price, Avg Close Price"></textarea>
+        </label>
+        <label class="field full">
+          <span>Emotions</span>
+          <textarea id="emotions" placeholder="optional"></textarea>
+        </label>
+      </div>
+
+      <div class="actions" style="margin-top:14px;">
+        <button class="primary" id="saveRecordBtn">Trade speichern</button>
+        <button class="secondary" id="newTradeBtn">Neuen Trade starten</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <div>
+          <h2>3. Trades</h2>
+          <p>Hier siehst du offene und geschlossene Trades sofort nach dem Speichern.</p>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <label class="field">
+          <span>Filter</span>
+          <select id="recordStateFilter">
+            <option value="all">Alle Trades</option>
+            <option value="open">Nur offene Trades</option>
+            <option value="closed">Nur geschlossene Trades</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Monat</span>
+          <input id="recordMonthFilter" type="month">
+        </label>
+      </div>
+      <div class="records-list" id="recordsList">
+        <div class="empty">Noch keine gespeicherten Trades.</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <div>
+          <h2>4. Monats-CSV exportieren</h2>
+          <p>Exportiert werden nur geschlossene Trades aus dem ausgewählten Monat.</p>
+        </div>
+        <div class="actions">
+          <button class="secondary tiny" id="exportCsvBtn">Monats-CSV exportieren</button>
+          <button class="danger tiny" id="clearRecordsBtn">Alle Trades löschen</button>
+        </div>
+      </div>
+      <div class="form-grid" style="margin-bottom:14px;">
+        <label class="field">
+          <span>Export-Monat</span>
+          <input id="exportMonth" type="month">
+        </label>
+      </div>
+      <p class="footer-note">
+        CSV-Spalten: <code>Post date, session, Coin, Direction, 1% Risk, TF trade taken, Status, $ PnL, Did you follow your rules, TV link, Notes, Emotions, Win or Loss?</code>
+      </p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script>
+    const STORAGE_KEY = "trade-ocr-journal-records-v2";
+    const SETTINGS_KEY = "trade-ocr-journal-settings-v1";
+    const CSV_HEADERS = [
+      "Post date",
+      "session",
+      "Coin",
+      "Direction",
+      "1% Risk",
+      "TF trade taken",
+      "Status",
+      "$ PnL",
+      "Did you follow your rules",
+      "TV link",
+      "Notes",
+      "Emotions",
+      "Win or Loss?"
+    ];
+
+    const fields = {
+      postDate: document.getElementById("postDate"),
+      session: document.getElementById("session"),
+      coin: document.getElementById("coin"),
+      direction: document.getElementById("direction"),
+      risk: document.getElementById("risk"),
+      timeframe: document.getElementById("timeframe"),
+      status: document.getElementById("status"),
+      pnl: document.getElementById("pnl"),
+      followRules: document.getElementById("followRules"),
+      tvLink: document.getElementById("tvLink"),
+      notes: document.getElementById("notes"),
+      emotions: document.getElementById("emotions"),
+      result: document.getElementById("result")
+    };
+
+    const ui = {
+      startAccountSize: document.getElementById("startAccountSize"),
+      metricStart: document.getElementById("metricStart"),
+      metricAccount: document.getElementById("metricAccount"),
+      metricPercent: document.getElementById("metricPercent"),
+      metricWins: document.getElementById("metricWins"),
+      metricLosses: document.getElementById("metricLosses"),
+      exportMonth: document.getElementById("exportMonth"),
+      ocrStatus: document.getElementById("ocrStatus"),
+      recordsList: document.getElementById("recordsList"),
+      recordStateFilter: document.getElementById("recordStateFilter"),
+      recordMonthFilter: document.getElementById("recordMonthFilter"),
+      saveRecordBtn: document.getElementById("saveRecordBtn"),
+      newTradeBtn: document.getElementById("newTradeBtn"),
+      exportCsvBtn: document.getElementById("exportCsvBtn"),
+      clearRecordsBtn: document.getElementById("clearRecordsBtn")
+    };
+
+    const openImporter = createImporter({
+      input: document.getElementById("openImageInput"),
+      dropZone: document.getElementById("openDropZone"),
+      preview: document.getElementById("openPreview"),
+      previewLabel: document.getElementById("openPreviewLabel"),
+      fileName: document.getElementById("openFileName"),
+      runBtn: document.getElementById("runOpenOcrBtn"),
+      clearBtn: document.getElementById("clearOpenImageBtn"),
+      mode: "open"
+    });
+
+    const closeImporter = createImporter({
+      input: document.getElementById("closeImageInput"),
+      dropZone: document.getElementById("closeDropZone"),
+      preview: document.getElementById("closePreview"),
+      previewLabel: document.getElementById("closePreviewLabel"),
+      fileName: document.getElementById("closeFileName"),
+      runBtn: document.getElementById("runCloseOcrBtn"),
+      clearBtn: document.getElementById("clearCloseImageBtn"),
+      mode: "close"
+    });
+
+    let records = loadJson(STORAGE_KEY, []);
+    let settings = loadJson(SETTINGS_KEY, { startAccountSize: "" });
+    let currentEditId = null;
+
+    ui.startAccountSize.value = settings.startAccountSize || "";
+    ui.exportMonth.value = new Date().toISOString().slice(0, 7);
+    ui.recordMonthFilter.value = new Date().toISOString().slice(0, 7);
+
+    renderRecords();
+    renderMetrics();
+    updateSaveButton();
+
+    ui.startAccountSize.addEventListener("input", () => {
+      settings.startAccountSize = ui.startAccountSize.value;
+      saveJson(SETTINGS_KEY, settings);
+      renderMetrics();
+    });
+
+    ui.saveRecordBtn.addEventListener("click", saveCurrentTrade);
+    ui.newTradeBtn.addEventListener("click", resetEditor);
+    ui.exportCsvBtn.addEventListener("click", exportMonthlyCsv);
+    ui.clearRecordsBtn.addEventListener("click", clearAllRecords);
+    ui.recordStateFilter.addEventListener("change", renderRecords);
+    ui.recordMonthFilter.addEventListener("input", renderRecords);
+
+    fields.pnl.addEventListener("input", autoInferResult);
+    fields.result.addEventListener("change", autoInferStatusFromResult);
+
+    function createImporter(config) {
+      const state = {
+        dataUrl: "",
+        name: ""
+      };
+
+      config.dropZone.addEventListener("click", () => config.input.click());
+      config.input.addEventListener("change", (event) => {
+        const file = event.target.files?.[0];
+        if (file) setImage(file);
+      });
+
+      ["dragenter", "dragover"].forEach((type) => {
+        config.dropZone.addEventListener(type, (event) => {
+          event.preventDefault();
+          config.dropZone.classList.add("active");
+        });
+      });
+
+      ["dragleave", "drop"].forEach((type) => {
+        config.dropZone.addEventListener(type, (event) => {
+          event.preventDefault();
+          config.dropZone.classList.remove("active");
+        });
+      });
+
+      config.dropZone.addEventListener("drop", (event) => {
+        const file = event.dataTransfer?.files?.[0];
+        if (file) setImage(file);
+      });
+
+      config.runBtn.addEventListener("click", async () => {
+        if (!state.dataUrl) return;
+        await runOcrForMode(config.mode, state.dataUrl);
+      });
+
+      config.clearBtn.addEventListener("click", clearImage);
+
+      function setImage(file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          state.dataUrl = reader.result;
+          state.name = file.name;
+          config.preview.src = state.dataUrl;
+          config.preview.style.display = "block";
+          config.previewLabel.style.display = "block";
+          config.fileName.textContent = file.name;
+          config.runBtn.disabled = false;
+          setStatus(
+            config.mode === "open" ? "Open Screenshot geladen" : "Closed Screenshot geladen",
+            config.mode === "open"
+              ? "Du kannst jetzt Open OCR starten und den Trade als offenen Eintrag anlegen."
+              : "Du kannst jetzt Closed OCR starten und einen bestehenden Trade vervollständigen."
+          );
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function clearImage() {
+        state.dataUrl = "";
+        state.name = "";
+        config.preview.removeAttribute("src");
+        config.preview.style.display = "none";
+        config.previewLabel.style.display = "none";
+        config.fileName.textContent = "";
+        config.input.value = "";
+        config.runBtn.disabled = true;
+      }
+
+      return {
+        clearImage,
+        getName: () => state.name
+      };
+    }
+
+    async function runOcrForMode(mode, imageUrl) {
+      if (!window.Tesseract) {
+        setStatus("OCR nicht verfügbar", "Die Tesseract-Bibliothek konnte nicht geladen werden. Für OCR braucht die HTML-Datei beim Öffnen Internetzugang.");
+        return;
+      }
+
+      const button = mode === "open" ? openImporter : closeImporter;
+      const runBtn = mode === "open" ? document.getElementById("runOpenOcrBtn") : document.getElementById("runCloseOcrBtn");
+      runBtn.disabled = true;
+      setStatus("OCR läuft", mode === "open" ? "Open-Screenshot wird analysiert." : "Closed-Screenshot wird analysiert.");
+
+      try {
+        const result = await Tesseract.recognize(imageUrl, "eng", {
+          logger: (message) => {
+            if (message.status) {
+              const progress = message.progress ? ` ${Math.round(message.progress * 100)}%` : "";
+              setStatus("OCR läuft", `${message.status}${progress}`);
+            }
+          }
+        });
+
+        const rawText = normalizeText(result.data.text || "");
+        const parsed = mode === "open" ? parseOpenTradeText(rawText) : parseClosedTradeText(rawText);
+        applyParsedTrade(parsed, mode);
+        setStatus(mode === "open" ? "Open OCR abgeschlossen" : "Closed OCR abgeschlossen", parsed._debugSummary || "Werte wurden in das Formular eingetragen. Bitte kurz prüfen.");
+      } catch (error) {
+        console.error(error);
+        setStatus("OCR fehlgeschlagen", "Das Bild konnte nicht zuverlässig gelesen werden. Du kannst die Felder trotzdem manuell ausfüllen.");
+      } finally {
+        runBtn.disabled = false;
+      }
+    }
+
+    function normalizeText(input) {
+      return input
+        .replace(/[|]/g, "I")
+        .replace(/USOT/gi, "USDT")
+        .replace(/USDT\)/gi, "USDT)")
+        .replace(/CIosed/gi, "Closed")
+        .replace(/ReaIized/gi, "Realized")
+        .replace(/Ciose/gi, "Close")
+        .replace(/0pen/gi, "Open")
+        .replace(/[“”]/g, "\"")
+        .replace(/[‘’]/g, "'")
+        .replace(/\r/g, "\n")
+        .replace(/[ \t]+\n/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+    }
+
+    function parseOpenTradeText(text) {
+      const lines = text.split("\n").map((line) => line.trim()).filter(Boolean);
+      const joined = lines.join("\n");
+      const symbolLine = extractSymbolLine(lines);
+      const coin = symbolLine.replace(/USDT$/i, "").trim();
+      const direction = inferDirection(joined);
+      const openTime = extractFirstDateTime(joined, ["Time", "Open Time"]);
+      const avgPrice = extractNumericAfterLabels(joined, ["Avg. Price", "Avg Price"]);
+      const filled = extractNumericAfterLabels(joined, ["Filled(USDT)", "Filled"]);
+      const amount = extractNumericAfterLabels(joined, ["Amount(USDT)", "Amount"]);
+      const notes = mergeNotes("", [
+        openTime ? `Open Time: ${openTime}` : "",
+        avgPrice ? `Avg Price: ${normalizeNumberString(avgPrice)}` : "",
+        filled ? `Filled(USDT): ${normalizeNumberString(filled)}` : "",
+        amount ? `Amount(USDT): ${normalizeNumberString(amount)}` : ""
+      ]);
+
+      return {
+        postDate: toIsoDate(openTime),
+        session: inferSession(openTime),
+        coin,
+        direction,
+        notes,
+        _debugSummary: buildSummary({
+          coin,
+          direction,
+          timeLabel: openTime ? `Open: ${openTime}` : "",
+          confidenceHints: [symbolLine && "Symbol", direction && "Direction", openTime && "Open Time"].filter(Boolean)
+        })
+      };
+    }
+
+    function parseClosedTradeText(text) {
+      const lines = text.split("\n").map((line) => line.trim()).filter(Boolean);
+      const joined = lines.join("\n");
+      const symbolLine = extractSymbolLine(lines);
+      const coin = symbolLine.replace(/USDT$/i, "").trim();
+      const direction = inferDirection(joined);
+      const realizedPnl = parseSignedNumber(extractNumericAfterLabels(joined, ["Realized PnL(USDT)", "Realized PnL"]));
+      const closedPnl = parseSignedNumber(extractNumericAfterLabels(joined, ["Closed PnL(USDT)", "Closed PnL"]));
+      const bestPnl = closedPnl !== "" ? closedPnl : realizedPnl;
+      const closeTime = extractFirstDateTime(joined, ["Close Time", "Closed Time"]);
+      const openTime = extractFirstDateTime(joined, ["Open Time"]);
+      const entryPrice = extractNumericAfterLabels(joined, ["Entry Price"]);
+      const avgClose = extractNumericAfterLabels(joined, ["Avg. Close Price", "Avg Close Price"]);
+      const inferredResult = inferResult(bestPnl);
+      const inferredStatus = inferStatusFromResult(inferredResult);
+
+      return {
+        postDate: toIsoDate(closeTime || openTime),
+        session: inferSession(closeTime || openTime),
+        coin,
+        direction,
+        status: inferredStatus,
+        pnl: bestPnl,
+        result: inferredResult,
+        notes: mergeNotes("", [
+          openTime ? `Open Time: ${openTime}` : "",
+          closeTime ? `Close Time: ${closeTime}` : "",
+          entryPrice ? `Entry Price: ${normalizeNumberString(entryPrice)}` : "",
+          avgClose ? `Avg Close Price: ${normalizeNumberString(avgClose)}` : ""
+        ]),
+        _debugSummary: buildSummary({
+          coin,
+          direction,
+          pnl: bestPnl,
+          timeLabel: closeTime ? `Close: ${closeTime}` : "",
+          confidenceHints: [symbolLine && "Symbol", direction && "Direction", bestPnl !== "" && "PnL"].filter(Boolean)
+        })
+      };
+    }
+
+    function applyParsedTrade(parsed, mode) {
+      if (mode === "close" && !currentEditId) {
+        const matchedOpenTrade = findMatchingOpenTrade(parsed);
+        if (matchedOpenTrade) {
+          loadRecord(matchedOpenTrade.id, true);
+        }
+      }
+
+      if (parsed.postDate) fields.postDate.value = parsed.postDate;
+      if (parsed.session) fields.session.value = parsed.session;
+      if (parsed.coin) fields.coin.value = parsed.coin;
+      if (parsed.direction) fields.direction.value = parsed.direction;
+      if (parsed.status) fields.status.value = parsed.status;
+      if (parsed.pnl !== undefined && parsed.pnl !== "") fields.pnl.value = parsed.pnl;
+      if (parsed.result) fields.result.value = parsed.result;
+      if (parsed.notes) fields.notes.value = mergeNotes(fields.notes.value, [parsed.notes]);
+      if (mode === "close") autoInferResult();
+    }
+
+    function saveCurrentTrade() {
+      const record = collectFormData();
+      if (!record["Post date"] || !record["Coin"] || !record["Direction"]) {
+        setStatus("Pflichtfelder fehlen", "Bitte mindestens Post date, Coin und Direction ausfüllen.");
+        return;
+      }
+
+      const tradeState = isClosedRecord(record) ? "closed" : "open";
+      const imageMeta = collectScreenshotMeta();
+      const payload = {
+        id: currentEditId || crypto.randomUUID(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        tradeState,
+        openScreenshotName: imageMeta.openScreenshotName,
+        closeScreenshotName: imageMeta.closeScreenshotName,
+        ...record
+      };
+
+      if (currentEditId) {
+        const existing = records.find((entry) => entry.id === currentEditId);
+        if (existing) {
+          payload.createdAt = existing.createdAt || payload.createdAt;
+          payload.openScreenshotName = imageMeta.openScreenshotName || existing.openScreenshotName || "";
+          payload.closeScreenshotName = imageMeta.closeScreenshotName || existing.closeScreenshotName || "";
+        }
+        records = records.map((entry) => entry.id === currentEditId ? payload : entry);
+      } else {
+        records.unshift(payload);
+      }
+
+      saveJson(STORAGE_KEY, records);
+      renderRecords();
+      renderMetrics();
+      setStatus(
+        tradeState === "closed" ? "Trade gespeichert" : "Offener Trade gespeichert",
+        tradeState === "closed"
+          ? "Der Eintrag erscheint jetzt in der Liste und wird im Monats-Export berücksichtigt."
+          : "Der offene Trade erscheint jetzt in der Liste und kann später mit dem Closed-Screenshot aktualisiert werden."
+      );
+      resetEditor();
+    }
+
+    function collectFormData() {
+      return {
+        "Post date": fields.postDate.value,
+        "session": fields.session.value,
+        "Coin": fields.coin.value.trim().toUpperCase(),
+        "Direction": fields.direction.value,
+        "1% Risk": fields.risk.value,
+        "TF trade taken": fields.timeframe.value,
+        "Status": fields.status.value,
+        "$ PnL": fields.pnl.value,
+        "Did you follow your rules": fields.followRules.value,
+        "TV link": fields.tvLink.value.trim(),
+        "Notes": fields.notes.value.trim(),
+        "Emotions": fields.emotions.value.trim(),
+        "Win or Loss?": fields.result.value
+      };
+    }
+
+    function collectScreenshotMeta() {
+      const existing = records.find((entry) => entry.id === currentEditId) || {};
+      return {
+        openScreenshotName: openImporter.getName() || existing.openScreenshotName || "",
+        closeScreenshotName: closeImporter.getName() || existing.closeScreenshotName || ""
+      };
+    }
+
+    function isClosedRecord(record) {
+      return Boolean(record["$ PnL"] && record["Win or Loss?"]);
+    }
+
+    function renderRecords() {
+      if (!records.length) {
+        ui.recordsList.innerHTML = '<div class="empty">Noch keine gespeicherten Trades.</div>';
+        return;
+      }
+
+      ui.recordsList.innerHTML = "";
+      const ordered = records
+        .slice()
+        .filter((record) => matchesRecordFilters(record))
+        .sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""));
+
+      if (!ordered.length) {
+        ui.recordsList.innerHTML = '<div class="empty">Keine Trades passend zum aktuellen Filter.</div>';
+        return;
+      }
+
+      for (const record of ordered) {
+        const card = document.createElement("article");
+        card.className = "record";
+        const pnlNumber = Number(record["$ PnL"]);
+        const pnlClass = Number.isFinite(pnlNumber) ? (pnlNumber >= 0 ? "positive" : "negative") : "";
+        const stateLabel = record.tradeState === "closed" ? "Geschlossen" : "Offen";
+        const stateClass = record.tradeState === "closed" ? "closed" : "open";
+
+        card.innerHTML = `
+          <div class="record-top">
+            <div class="record-title">
+              <strong>${escapeHtml(record["Coin"] || "Unbenannter Trade")}</strong>
+              <span class="meta">${escapeHtml(record["Direction"] || "-")} · ${escapeHtml(record["Post date"] || "kein Datum")} · ${escapeHtml(record["session"] || "Session offen")}</span>
+            </div>
+            <div class="pnl ${pnlClass}">${record["$ PnL"] ? escapeHtml(record["$ PnL"]) : "offen"}</div>
+          </div>
+          <div class="badge-row">
+            <span class="badge ${stateClass}">${stateLabel}</span>
+            ${record["Win or Loss?"] ? `<span class="badge">${escapeHtml(record["Win or Loss?"])}</span>` : ""}
+            ${record["Status"] ? `<span class="badge">${escapeHtml(record["Status"])}</span>` : ""}
+          </div>
+          <div class="record-grid">
+            <span><strong>TV:</strong>${record["TV link"] ? `<a href="${escapeAttribute(record["TV link"])}" target="_blank" rel="noreferrer">Link</a>` : "-"}</span>
+            <span><strong>Open Shot:</strong>${escapeHtml(record.openScreenshotName || "-")}</span>
+            <span><strong>Close Shot:</strong>${escapeHtml(record.closeScreenshotName || "-")}</span>
+          </div>
+          ${record["Notes"] ? `<div class="meta">${escapeHtml(record["Notes"])}</div>` : ""}
+          <div class="record-actions actions">
+            <button class="secondary tiny" data-action="load" data-id="${record.id}">Laden</button>
+            <button class="danger tiny" data-action="delete" data-id="${record.id}">Löschen</button>
+          </div>
+        `;
+        ui.recordsList.appendChild(card);
+      }
+
+      ui.recordsList.querySelectorAll("button[data-action='load']").forEach((button) => {
+        button.addEventListener("click", () => loadRecord(button.dataset.id));
+      });
+
+      ui.recordsList.querySelectorAll("button[data-action='delete']").forEach((button) => {
+        button.addEventListener("click", () => {
+          records = records.filter((entry) => entry.id !== button.dataset.id);
+          saveJson(STORAGE_KEY, records);
+          renderRecords();
+          renderMetrics();
+          if (currentEditId === button.dataset.id) resetEditor();
+          setStatus("Trade gelöscht", "Der Eintrag wurde aus dem lokalen Journal entfernt.");
+        });
+      });
+    }
+
+    function matchesRecordFilters(record) {
+      const stateFilter = ui.recordStateFilter.value;
+      const monthFilter = ui.recordMonthFilter.value;
+      if (stateFilter !== "all" && record.tradeState !== stateFilter) return false;
+      if (monthFilter && !String(record["Post date"] || "").startsWith(monthFilter)) return false;
+      return true;
+    }
+
+    function loadRecord(id, silent = false) {
+      const record = records.find((entry) => entry.id === id);
+      if (!record) return;
+      currentEditId = id;
+      fields.postDate.value = record["Post date"] || "";
+      fields.session.value = record["session"] || "";
+      fields.coin.value = record["Coin"] || "";
+      fields.direction.value = record["Direction"] || "";
+      fields.risk.value = record["1% Risk"] || "";
+      fields.timeframe.value = record["TF trade taken"] || "";
+      fields.status.value = record["Status"] || "";
+      fields.pnl.value = record["$ PnL"] || "";
+      fields.followRules.value = record["Did you follow your rules"] || "";
+      fields.tvLink.value = record["TV link"] || "";
+      fields.notes.value = record["Notes"] || "";
+      fields.emotions.value = record["Emotions"] || "";
+      fields.result.value = record["Win or Loss?"] || "";
+      updateSaveButton();
+      if (!silent) {
+        setStatus("Trade geladen", record.tradeState === "closed"
+          ? "Der Trade ist im Formular geladen und kann angepasst werden."
+          : "Der offene Trade ist geladen. Jetzt kannst du den Closed-Screenshot einlesen und aktualisieren.");
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderMetrics() {
+      const start = Number(settings.startAccountSize);
+      const closed = records.filter((record) => record.tradeState === "closed");
+      const totalPnl = closed.reduce((sum, record) => {
+        const pnl = Number(record["$ PnL"]);
+        return sum + (Number.isFinite(pnl) ? pnl : 0);
+      }, 0);
+      const wins = closed.filter((record) => record["Win or Loss?"] === "Win").length;
+      const losses = closed.filter((record) => record["Win or Loss?"] === "Loss").length;
+      const accountSize = Number.isFinite(start) ? start + totalPnl : null;
+      const percent = Number.isFinite(start) && start !== 0 ? (totalPnl / start) * 100 : null;
+
+      ui.metricStart.textContent = Number.isFinite(start) ? formatMoney(start) : "-";
+      ui.metricAccount.textContent = accountSize !== null ? formatMoney(accountSize) : "-";
+      ui.metricPercent.textContent = percent !== null ? `${percent.toFixed(2)}%` : "-";
+      ui.metricWins.textContent = String(wins);
+      ui.metricLosses.textContent = String(losses);
+    }
+
+    function autoInferResult() {
+      const pnl = fields.pnl.value;
+      if (pnl === "") return;
+      const inferred = inferResult(pnl);
+      if (inferred) fields.result.value = inferred;
+      autoInferStatusFromResult();
+    }
+
+    function autoInferStatusFromResult() {
+      if (!fields.result.value) return;
+      const inferred = inferStatusFromResult(fields.result.value);
+      if (!fields.status.value || ["Stop loss hit", "BE", "All TPs hit"].includes(fields.status.value)) {
+        fields.status.value = inferred;
+      }
+    }
+
+    function inferResult(pnl) {
+      const numeric = Number(pnl);
+      if (!Number.isFinite(numeric)) return "";
+      if (numeric > 0) return "Win";
+      if (numeric < 0) return "Loss";
+      return "BE";
+    }
+
+    function inferStatusFromResult(result) {
+      if (result === "Win") return "All TPs hit";
+      if (result === "Loss") return "Stop loss hit";
+      if (result === "BE") return "BE";
+      return "";
+    }
+
+    function exportMonthlyCsv() {
+      if (!records.length) {
+        setStatus("Kein Export", "Es gibt noch keine gespeicherten Trades.");
+        return;
+      }
+
+      if (!ui.exportMonth.value) {
+        setStatus("Monat fehlt", "Bitte wähle zuerst einen Export-Monat aus.");
+        return;
+      }
+
+      const monthRecords = records
+        .slice()
+        .filter((record) => record.tradeState === "closed")
+        .filter((record) => String(record["Post date"] || "").startsWith(ui.exportMonth.value))
+        .sort((a, b) => String(a["Post date"]).localeCompare(String(b["Post date"])));
+
+      if (!monthRecords.length) {
+        setStatus("Keine geschlossenen Trades", `Für ${ui.exportMonth.value} gibt es aktuell keine geschlossenen Trades.`);
+        return;
+      }
+
+      const lines = [CSV_HEADERS.join(",")];
+      for (const record of monthRecords) {
+        lines.push(CSV_HEADERS.map((header) => escapeCsv(record[header] ?? "")).join(","));
+      }
+
+      const csv = lines.join("\r\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `trade-journal-export-${ui.exportMonth.value}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+      setStatus("Monats-CSV exportiert", `${monthRecords.length} geschlossene Trade(s) aus ${ui.exportMonth.value} wurden lokal heruntergeladen.`);
+    }
+
+    function clearAllRecords() {
+      if (!records.length) return;
+      const confirmed = window.confirm("Wirklich alle gespeicherten Trades löschen?");
+      if (!confirmed) return;
+      records = [];
+      saveJson(STORAGE_KEY, records);
+      renderRecords();
+      renderMetrics();
+      resetEditor();
+      setStatus("Alle Trades gelöscht", "Das lokale Journal wurde geleert.");
+    }
+
+    function resetEditor() {
+      currentEditId = null;
+      Object.values(fields).forEach((field) => {
+        field.value = "";
+      });
+      openImporter.clearImage();
+      closeImporter.clearImage();
+      updateSaveButton();
+    }
+
+    function updateSaveButton() {
+      ui.saveRecordBtn.textContent = currentEditId ? "Trade aktualisieren" : "Trade speichern";
+    }
+
+    function buildSummary({ coin, direction, pnl, timeLabel, confidenceHints }) {
+      const parts = [];
+      if (coin) parts.push(`Coin: ${coin}`);
+      if (direction) parts.push(`Direction: ${direction}`);
+      if (pnl !== undefined && pnl !== "") parts.push(`PnL: ${pnl}`);
+      if (timeLabel) parts.push(timeLabel);
+      if (confidenceHints.length) parts.push(`Erkannt: ${confidenceHints.join(", ")}`);
+      return parts.join(" | ");
+    }
+
+    function extractValue(text, regex) {
+      const match = text.match(regex);
+      return match ? match[1].trim() : "";
+    }
+
+    function extractSymbolLine(lines) {
+      return lines.find((line) => /^[A-Z0-9._-]{3,20}USDT$/i.test(line))
+        || lines.find((line) => /USDT$/i.test(line))
+        || "";
+    }
+
+    function extractNumericAfterLabels(text, labels) {
+      for (const label of labels) {
+        const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s*");
+        const regex = new RegExp(`${escaped}\\s*([+\\-]?\\d[\\d,]*(?:[.]\\d+)?)`, "i");
+        const value = extractValue(text, regex);
+        if (value) return value;
+      }
+      return "";
+    }
+
+    function extractFirstDateTime(text, labels) {
+      for (const label of labels) {
+        const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s*");
+        const regex = new RegExp(`${escaped}\\s*(\\d{2}\\/\\d{2}\\s+\\d{2}:\\d{2})`, "i");
+        const value = extractValue(text, regex);
+        if (value) return value;
+      }
+      const fallback = text.match(/(\d{2}\/\d{2}\s+\d{2}:\d{2})/);
+      return fallback ? fallback[1] : "";
+    }
+
+    function inferDirection(text) {
+      if (/\bopen\s*short\b/i.test(text) || /\bshort\b/i.test(text)) return "Short";
+      if (/\bopen\s*long\b/i.test(text) || /\blong\b/i.test(text)) return "Long";
+      return "";
+    }
+
+    function findMatchingOpenTrade(parsed) {
+      const candidates = records
+        .filter((record) => record.tradeState === "open")
+        .filter((record) => !parsed.coin || record["Coin"] === parsed.coin)
+        .filter((record) => !parsed.direction || record["Direction"] === parsed.direction);
+
+      if (!candidates.length) return null;
+
+      const targetDate = parsed.postDate || "";
+      const sameDate = candidates.filter((record) => (record["Post date"] || "") === targetDate);
+      if (sameDate.length) {
+        return sameDate.sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))[0];
+      }
+
+      return candidates.sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))[0];
+    }
+
+    function normalizeNumberString(value) {
+      return String(value || "").replace(/,/g, "");
+    }
+
+    function parseSignedNumber(value) {
+      if (!value) return "";
+      const numeric = Number(String(value).replace(",", "."));
+      if (!Number.isFinite(numeric)) return "";
+      return numeric.toFixed(4).replace(/\.?0+$/, "");
+    }
+
+    function toIsoDate(shortDateTime) {
+      if (!shortDateTime) return "";
+      const match = shortDateTime.match(/(\d{2})\/(\d{2})\s+(\d{2}):(\d{2})/);
+      if (!match) return "";
+      const [, mm, dd] = match;
+      const year = new Date().getFullYear();
+      const date = new Date(year, Number(mm) - 1, Number(dd));
+      if (Number.isNaN(date.getTime())) return "";
+      return date.toISOString().slice(0, 10);
+    }
+
+    function inferSession(shortDateTime) {
+      if (!shortDateTime) return "";
+      const match = shortDateTime.match(/\d{2}\/\d{2}\s+(\d{2}):(\d{2})/);
+      if (!match) return "";
+      const hour = Number(match[1]);
+      if (hour >= 6 && hour < 12) return "UK";
+      if (hour >= 12 && hour < 21) return "US";
+      if (hour >= 21 || hour < 6) return "Asia";
+      return "Other";
+    }
+
+    function mergeNotes(existing, additions) {
+      const parts = [];
+      if (existing && existing.trim()) parts.push(existing.trim());
+      additions.filter(Boolean).forEach((item) => {
+        if (!parts.includes(item.trim())) parts.push(item.trim());
+      });
+      return parts.join(" | ");
+    }
+
+    function formatMoney(value) {
+      return new Intl.NumberFormat("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(value);
+    }
+
+    function setStatus(title, message) {
+      ui.ocrStatus.innerHTML = `<strong>${escapeHtml(title)}</strong>${escapeHtml(message)}`;
+    }
+
+    function loadJson(key, fallback) {
+      try {
+        return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+      } catch {
+        return fallback;
+      }
+    }
+
+    function saveJson(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function escapeCsv(value) {
+      const stringValue = String(value ?? "");
+      if (/[",\n]/.test(stringValue)) {
+        return `"${stringValue.replace(/"/g, "\"\"")}"`;
+      }
+      return stringValue;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function escapeAttribute(value) {
+      return escapeHtml(value);
+    }
+  </script>
+</body>
+</html>
