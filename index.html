@@ -176,8 +176,10 @@
 
     .metric-card strong {
       display: block;
-      margin-top: 10px;
-      font-size: 1.55rem;
+      margin-top: 8px;
+      font-size: clamp(1.05rem, 3.8vw, 1.32rem);
+      line-height: 1.05;
+      overflow-wrap: anywhere;
       color: var(--text);
       letter-spacing: -0.03em;
     }
@@ -356,8 +358,7 @@
       resize: vertical;
     }
 
-    input[type="month"],
-    input.month-text {
+    input[type="month"] {
       min-width: 0;
       width: 100%;
     }
@@ -810,7 +811,7 @@
         </label>
         <label class="field">
           <span>Monat</span>
-          <input id="recordMonthFilter" class="month-text" type="text" inputmode="numeric" placeholder="YYYY-MM">
+          <input id="recordMonthFilter" type="month">
         </label>
       </div>
       <div class="records-list" id="recordsList">
@@ -831,7 +832,7 @@
       <div class="form-grid" style="margin-bottom:14px;">
         <label class="field">
           <span>Export-Monat</span>
-          <input id="exportMonth" class="month-text" type="text" inputmode="numeric" placeholder="YYYY-MM">
+          <input id="exportMonth" type="month">
         </label>
       </div>
       <p class="footer-note">
@@ -945,10 +946,7 @@
     ui.exportCsvBtn.addEventListener("click", exportMonthlyCsv);
     ui.clearRecordsBtn.addEventListener("click", clearAllRecords);
     ui.recordStateFilter.addEventListener("change", renderRecords);
-    ui.recordMonthFilter.addEventListener("input", () => {
-      ui.recordMonthFilter.value = sanitizeMonthValue(ui.recordMonthFilter.value);
-      renderRecords();
-    });
+    ui.recordMonthFilter.addEventListener("input", renderRecords);
     ui.showJournalBtn.addEventListener("click", () => setView("journal"));
     ui.showTradesBtn.addEventListener("click", () => setView("trades"));
 
@@ -1342,7 +1340,7 @@
 
     function matchesRecordFilters(record) {
       const stateFilter = ui.recordStateFilter.value;
-      const monthFilter = sanitizeMonthValue(ui.recordMonthFilter.value);
+      const monthFilter = ui.recordMonthFilter.value;
       if (stateFilter !== "all" && record.tradeState !== stateFilter) return false;
       if (monthFilter && !String(record["Post date"] || "").startsWith(monthFilter)) return false;
       return true;
@@ -1444,7 +1442,6 @@
         return;
       }
 
-      ui.exportMonth.value = sanitizeMonthValue(ui.exportMonth.value);
       if (!ui.exportMonth.value) {
         setStatus("Monat fehlt", "Bitte wähle zuerst einen Export-Monat aus.");
         return;
@@ -1656,14 +1653,6 @@
 
     function setStatus(title, message) {
       ui.ocrStatus.innerHTML = `<strong>${escapeHtml(title)}</strong>${escapeHtml(message)}`;
-    }
-
-    function sanitizeMonthValue(value) {
-      const cleaned = String(value || "").replace(/[^\d-]/g, "").slice(0, 7);
-      const match = cleaned.match(/^(\d{4})-(\d{1,2})$/);
-      if (!match) return cleaned;
-      const month = match[2].padStart(2, "0").slice(0, 2);
-      return `${match[1]}-${month}`;
     }
 
     if ("serviceWorker" in navigator) {
