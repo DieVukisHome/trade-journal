@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -633,7 +633,7 @@
         <div class="settings-box">
           <label class="field">
             <span>Start Account Size</span>
-            <input id="startAccountSize" type="number" step="0.01" placeholder="z. B. 1200">
+            <input id="startAccountSize" type="number" step="0.01" placeholder="e.g. 1200">
           </label>
         </div>
         <div class="metric-grid">
@@ -670,7 +670,7 @@
     <section class="panel workspace">
       <div class="section-head">
         <div>
-          <h2>1. Screenshots importieren</h2>
+          <h2>1. Import screenshots</h2>
         </div>
       </div>
 
@@ -680,15 +680,15 @@
           <label class="drop-zone" id="openDropZone">
             <input id="openImageInput" type="file" accept="image/*">
             <div>
-              <strong>Open-Screenshot auswählen</strong>
+              <strong>Select open screenshot</strong>
             </div>
           </label>
           <div class="preview-wrap">
             <div class="preview-label" id="openPreviewLabel"><strong>Open Screenshot</strong><span id="openFileName"></span></div>
             <img class="preview" id="openPreview" alt="Open trade preview">
             <div class="actions">
-              <button class="primary ocr-trigger" id="runOpenOcrBtn" disabled>Open OCR starten</button>
-              <button class="ghost" id="clearOpenImageBtn">Open Bild löschen</button>
+              <button class="primary ocr-trigger" id="runOpenOcrBtn" disabled>Run open OCR</button>
+              <button class="ghost" id="clearOpenImageBtn">Remove open image</button>
             </div>
           </div>
         </div>
@@ -698,30 +698,30 @@
           <label class="drop-zone" id="closeDropZone">
             <input id="closeImageInput" type="file" accept="image/*">
             <div>
-              <strong>Closed-Screenshot auswählen</strong>
+              <strong>Select closed screenshot</strong>
             </div>
           </label>
           <div class="preview-wrap">
             <div class="preview-label" id="closePreviewLabel"><strong>Closed Screenshot</strong><span id="closeFileName"></span></div>
             <img class="preview" id="closePreview" alt="Closed trade preview">
             <div class="actions">
-              <button class="primary ocr-trigger" id="runCloseOcrBtn" disabled>Closed OCR starten</button>
-              <button class="ghost" id="clearCloseImageBtn">Closed Bild löschen</button>
+              <button class="primary ocr-trigger" id="runCloseOcrBtn" disabled>Run closed OCR</button>
+              <button class="ghost" id="clearCloseImageBtn">Remove closed image</button>
             </div>
           </div>
         </div>
       </div>
 
       <div class="status-box" id="ocrStatus" style="margin-top:14px;">
-        <strong>Bereit</strong>
-        Noch kein Screenshot geladen.
+        <strong>Ready</strong>
+        No screenshot loaded yet.
       </div>
     </section>
 
     <section class="panel">
       <div class="section-head">
         <div>
-          <h2>2. Trade bearbeiten</h2>
+          <h2>2. Edit trade</h2>
         </div>
       </div>
 
@@ -733,7 +733,7 @@
         <label class="field">
           <span>Session</span>
           <select id="session">
-            <option value="">Bitte wählen</option>
+            <option value="">Please select</option>
             <option>UK</option>
             <option>US</option>
             <option>Asia</option>
@@ -743,12 +743,12 @@
 
         <label class="field">
           <span>Coin</span>
-          <input id="coin" type="text" placeholder="z. B. RENDER oder VIRTUAL">
+          <input id="coin" type="text" placeholder="e.g. RENDER or VIRTUAL">
         </label>
         <label class="field">
           <span>Direction</span>
           <select id="direction">
-            <option value="">Bitte wählen</option>
+            <option value="">Please select</option>
             <option>Long</option>
             <option>Short</option>
           </select>
@@ -761,7 +761,7 @@
         <label class="field">
           <span>TF trade taken</span>
           <select id="timeframe">
-            <option value="">Bitte wählen</option>
+            <option value="">Please select</option>
             <option>4hr</option>
             <option>1hr</option>
             <option>15min</option>
@@ -772,7 +772,7 @@
         <label class="field">
           <span>Status</span>
           <select id="status">
-            <option value="">Bitte wählen</option>
+            <option value="">Please select</option>
             <option>Stop loss hit</option>
             <option>BE</option>
             <option>All TPs hit</option>
@@ -782,13 +782,13 @@
         </label>
         <label class="field">
           <span>$ PnL</span>
-          <input id="pnl" type="number" step="0.0001" placeholder="leer lassen solange der Trade offen ist">
+          <input id="pnl" type="number" step="0.0001" placeholder="leave empty while the trade is still open">
         </label>
 
         <label class="field">
           <span>Did you follow your rules</span>
           <select id="followRules">
-            <option value="">Bitte wählen</option>
+            <option value="">Please select</option>
             <option>Yep</option>
             <option>Some</option>
             <option>No</option>
@@ -797,7 +797,7 @@
         <label class="field">
           <span>Win or Loss?</span>
           <select id="result">
-            <option value="">Bitte wählen</option>
+            <option value="">Please select</option>
             <option>Win</option>
             <option>Loss</option>
             <option>BE</option>
@@ -810,7 +810,7 @@
         </label>
         <label class="field full">
           <span>Notes</span>
-          <textarea id="notes" placeholder="z. B. Open/Close Time, Entry Price, Avg Close Price"></textarea>
+          <textarea id="notes" placeholder="e.g. Open/Close Time, Entry Price, Avg Close Price"></textarea>
         </label>
         <label class="field full">
           <span>Emotions</span>
@@ -819,8 +819,8 @@
       </div>
 
       <div class="actions" style="margin-top:14px;">
-        <button class="primary" id="saveRecordBtn">Trade speichern</button>
-        <button class="secondary" id="newTradeBtn">Neuen Trade starten</button>
+        <button class="primary" id="saveRecordBtn">Save trade</button>
+        <button class="secondary" id="newTradeBtn">Start new trade</button>
       </div>
     </section>
     </section>
@@ -836,18 +836,18 @@
         <label class="field">
           <span>Filter</span>
           <select id="recordStateFilter">
-            <option value="all">Alle Trades</option>
-            <option value="open">Nur offene Trades</option>
-            <option value="closed">Nur geschlossene Trades</option>
+            <option value="all">All trades</option>
+            <option value="open">Open trades only</option>
+            <option value="closed">Closed trades only</option>
           </select>
         </label>
         <label class="field">
-          <span>Monat</span>
+          <span>Month</span>
           <input id="recordMonthFilter" type="month">
         </label>
       </div>
       <div class="records-list" id="recordsList">
-        <div class="empty">Noch keine gespeicherten Trades.</div>
+        <div class="empty">No saved trades yet.</div>
       </div>
     </section>
     </section>
@@ -859,27 +859,27 @@
           <h2>Export</h2>
         </div>
         <div class="actions">
-          <button class="secondary tiny" id="exportCsvBtn">Monats-CSV exportieren</button>
+          <button class="secondary tiny" id="exportCsvBtn">Export monthly CSV</button>
           <label class="secondary tiny" for="importCsvInput" style="display:inline-flex;align-items:center;justify-content:center;">
-            CSV importieren
+            Import CSV
           </label>
           <input id="importCsvInput" type="file" accept=".csv,text/csv" style="display:none;">
-          <button class="secondary tiny" id="exportBackupBtn">Backup exportieren</button>
+          <button class="secondary tiny" id="exportBackupBtn">Export backup</button>
           <label class="secondary tiny" for="importBackupInput" style="display:inline-flex;align-items:center;justify-content:center;">
-            Backup importieren
+            Import backup
           </label>
           <input id="importBackupInput" type="file" accept="application/json" style="display:none;">
-          <button class="danger tiny" id="clearRecordsBtn">Alle Trades löschen</button>
+          <button class="danger tiny" id="clearRecordsBtn">Delete all trades</button>
         </div>
       </div>
       <div class="form-grid" style="margin-bottom:14px;">
         <label class="field">
-          <span>Export-Monat</span>
+          <span>Export month</span>
           <input id="exportMonth" type="month">
         </label>
       </div>
       <p class="footer-note">
-        CSV-Spalten: <code>Post date, session, Coin, Direction, 1% Risk, TF trade taken, Status, $ PnL, Did you follow your rules, TV link, Notes, Emotions, Win or Loss?</code>
+        CSV columns: <code>Post date, session, Coin, Direction, 1% Risk, TF trade taken, Status, $ PnL, Did you follow your rules, TV link, Notes, Emotions, Win or Loss?</code>
       </p>
     </section>
     </section>
@@ -1060,8 +1060,8 @@
         config.fileName.textContent = file.name;
         config.runBtn.disabled = false;
         setStatus(
-          config.mode === "open" ? "Open Screenshot geladen" : "Closed Screenshot geladen",
-          config.mode === "open" ? "Bereit für Open OCR." : "Bereit für Closed OCR."
+          config.mode === "open" ? "Open screenshot loaded" : "Closed screenshot loaded",
+          config.mode === "open" ? "Ready for open OCR." : "Ready for closed OCR."
         );
         await runOcrForMode(config.mode, state.file || state.objectUrl);
       }
@@ -1089,21 +1089,21 @@
 
     async function runOcrForMode(mode, imageUrl) {
       if (!window.Tesseract) {
-        setStatus("OCR nicht verfügbar", "Die Tesseract-Bibliothek konnte nicht geladen werden. Für OCR braucht die HTML-Datei beim Öffnen Internetzugang.");
+        setStatus("OCR unavailable", "The Tesseract library could not be loaded. OCR requires internet access when the HTML file is opened.");
         return;
       }
 
       const button = mode === "open" ? openImporter : closeImporter;
       const runBtn = mode === "open" ? document.getElementById("runOpenOcrBtn") : document.getElementById("runCloseOcrBtn");
       runBtn.disabled = true;
-      setStatus("OCR läuft", mode === "open" ? "Open-Screenshot wird analysiert." : "Closed-Screenshot wird analysiert.");
+      setStatus("OCR running", mode === "open" ? "Analyzing open screenshot." : "Analyzing closed screenshot.");
 
       try {
         const result = await Tesseract.recognize(imageUrl, "eng", {
           logger: (message) => {
             if (message.status) {
               const progress = message.progress ? ` ${Math.round(message.progress * 100)}%` : "";
-              setStatus("OCR läuft", `${message.status}${progress}`);
+              setStatus("OCR running", `${message.status}${progress}`);
             }
           }
         });
@@ -1111,10 +1111,10 @@
         const rawText = normalizeText(result.data.text || "");
         const parsed = mode === "open" ? parseOpenTradeText(rawText) : parseClosedTradeText(rawText);
         applyParsedTrade(parsed, mode);
-        setStatus(mode === "open" ? "Open OCR abgeschlossen" : "Closed OCR abgeschlossen", parsed._debugSummary || "Werte wurden in das Formular eingetragen. Bitte kurz prüfen.");
+        setStatus(mode === "open" ? "Open OCR completed" : "Closed OCR completed", parsed._debugSummary || "Values were inserted into the form. Please review them briefly.");
       } catch (error) {
         console.error(error);
-        setStatus("OCR fehlgeschlagen", "Das Bild konnte nicht zuverlässig gelesen werden. Du kannst die Felder trotzdem manuell ausfüllen.");
+        setStatus("OCR failed", "The image could not be read reliably. You can still fill in the fields manually.");
       } finally {
         runBtn.disabled = false;
       }
@@ -1261,10 +1261,10 @@
       saveJson(STORAGE_KEY, records);
       renderMetrics();
       setStatus(
-        tradeState === "closed" ? "Trade gespeichert" : "Offener Trade gespeichert",
+        tradeState === "closed" ? "Trade saved" : "Open trade saved",
         tradeState === "closed"
-          ? "Der Eintrag erscheint jetzt in der Liste und wird im Monats-Export berücksichtigt."
-          : "Der offene Trade erscheint jetzt in der Liste und kann später mit dem Closed-Screenshot aktualisiert werden."
+          ? "The entry now appears in the list and will be included in the monthly export."
+          : "The open trade now appears in the list and can be updated later with the closed screenshot."
       );
       renderRecords();
       setView("trades");
@@ -1331,7 +1331,7 @@
 
     function renderRecords() {
       if (!records.length) {
-        ui.recordsList.innerHTML = '<div class="empty">Noch keine gespeicherten Trades.</div>';
+        ui.recordsList.innerHTML = '<div class="empty">No saved trades yet.</div>';
         return;
       }
 
@@ -1342,7 +1342,7 @@
         .sort(compareRecordsByDateDesc);
 
       if (!ordered.length) {
-        ui.recordsList.innerHTML = '<div class="empty">Keine Trades passend zum aktuellen Filter.</div>';
+        ui.recordsList.innerHTML = '<div class="empty">No trades match the current filter.</div>';
         return;
       }
 
@@ -1376,10 +1376,10 @@
         card.innerHTML = `
           <div class="record-top">
             <div class="record-title">
-              <strong>${escapeHtml(record["Coin"] || "Unbenannter Trade")}</strong>
-              <span class="meta">${escapeHtml(record["Direction"] || "-")} · ${escapeHtml(record["Post date"] || "kein Datum")} · ${escapeHtml(record["session"] || "Session offen")}</span>
+              <strong>${escapeHtml(record["Coin"] || "Untitled trade")}</strong>
+              <span class="meta">${escapeHtml(record["Direction"] || "-")} · ${escapeHtml(record["Post date"] || "no date")} · ${escapeHtml(record["session"] || "Session open")}</span>
             </div>
-            <div class="pnl ${pnlClass}">${record["$ PnL"] ? escapeHtml(record["$ PnL"]) : "offen"}</div>
+            <div class="pnl ${pnlClass}">${record["$ PnL"] ? escapeHtml(record["$ PnL"]) : "open"}</div>
           </div>
           <div class="badge-row">
             <span class="badge ${stateClass}">${stateLabel}</span>
@@ -1393,8 +1393,8 @@
           </div>
           ${record["Notes"] ? `<div class="meta">${escapeHtml(record["Notes"])}</div>` : ""}
           <div class="record-actions actions">
-            <button class="secondary tiny" data-action="load" data-id="${record.id}">Laden</button>
-            <button class="danger tiny" data-action="delete" data-id="${record.id}">Löschen</button>
+            <button class="secondary tiny" data-action="load" data-id="${record.id}">Load</button>
+            <button class="danger tiny" data-action="delete" data-id="${record.id}">Delete</button>
           </div>
         `;
         group.appendChild(card);
@@ -1411,7 +1411,7 @@
           renderRecords();
           renderMetrics();
           if (currentEditId === button.dataset.id) resetEditor();
-          setStatus("Trade gelöscht", "Der Eintrag wurde aus dem lokalen Journal entfernt.");
+          setStatus("Trade deleted", "The entry was removed from the local journal.");
         });
       });
 
@@ -1445,9 +1445,9 @@
       fields.result.value = record["Win or Loss?"] || "";
       updateSaveButton();
       if (!silent) {
-        setStatus("Trade geladen", record.tradeState === "closed"
-          ? "Der Trade ist im Formular geladen und kann angepasst werden."
-          : "Der offene Trade ist geladen. Jetzt kannst du den Closed-Screenshot einlesen und aktualisieren.");
+        setStatus("Trade loaded", record.tradeState === "closed"
+          ? "The trade is loaded in the form and can be adjusted."
+          : "The open trade is loaded. You can now import the closed screenshot and update it.");
       }
       setView("journal");
     }
@@ -1529,12 +1529,12 @@
 
     function exportMonthlyCsv() {
       if (!records.length) {
-        setStatus("Kein Export", "Es gibt noch keine gespeicherten Trades.");
+        setStatus("No export", "There are no saved trades yet.");
         return;
       }
 
       if (!ui.exportMonth.value) {
-        setStatus("Monat fehlt", "Bitte wähle zuerst einen Export-Monat aus.");
+        setStatus("Month missing", "Please select an export month first.");
         return;
       }
 
@@ -1545,7 +1545,7 @@
         .sort((a, b) => String(a["Post date"]).localeCompare(String(b["Post date"])));
 
       if (!monthRecords.length) {
-        setStatus("Keine geschlossenen Trades", `Für ${ui.exportMonth.value} gibt es aktuell keine geschlossenen Trades.`);
+        setStatus("No closed trades", `There are currently no closed trades for ${ui.exportMonth.value}.`);
         return;
       }
 
@@ -1562,7 +1562,7 @@
       link.download = `trade-journal-export-${ui.exportMonth.value}.csv`;
       link.click();
       URL.revokeObjectURL(url);
-      setStatus("Monats-CSV exportiert", `${monthRecords.length} geschlossene Trade(s) aus ${ui.exportMonth.value} wurden lokal heruntergeladen.`);
+      setStatus("Monthly CSV exported", `${monthRecords.length} closed trade(s) from ${ui.exportMonth.value} were downloaded locally.`);
     }
 
     function exportBackup() {
@@ -1579,7 +1579,7 @@
       link.download = `trade-journal-backup-${getLocalIsoDate()}.json`;
       link.click();
       URL.revokeObjectURL(url);
-      setStatus("Backup exportiert", `${records.length} Trade(s) wurden als JSON-Backup lokal gespeichert.`);
+      setStatus("Backup exported", `${records.length} trade(s) were saved locally as a JSON backup.`);
     }
 
     async function importCsv(event) {
@@ -1590,7 +1590,7 @@
         const text = await file.text();
         const rows = parseCsv(text);
         if (!rows.length) {
-          setStatus("CSV-Import fehlgeschlagen", "Die Datei enthält keine importierbaren Zeilen.");
+          setStatus("CSV import failed", "The file contains no importable rows.");
           return;
         }
 
@@ -1599,7 +1599,7 @@
           .filter((row) => Object.values(row).some(Boolean));
 
         if (!normalizedRows.length) {
-          setStatus("CSV-Import fehlgeschlagen", "Es wurden keine gültigen Trades in der CSV gefunden.");
+          setStatus("CSV import failed", "No valid trades were found in the CSV.");
           return;
         }
 
@@ -1626,10 +1626,10 @@
         saveJson(STORAGE_KEY, records);
         renderRecords();
         renderMetrics();
-        setStatus("CSV importiert", `${importedRecords.length} Trade(s) wurden deinem Journal hinzugefügt.`);
+        setStatus("CSV imported", `${importedRecords.length} trade(s) were added to your journal.`);
       } catch (error) {
         console.error(error);
-        setStatus("CSV-Import fehlgeschlagen", "Die CSV-Datei konnte nicht gelesen werden.");
+        setStatus("CSV import failed", "The CSV file could not be read.");
       } finally {
         ui.importCsvInput.value = "";
       }
@@ -1644,7 +1644,7 @@
         const parsed = JSON.parse(text);
         const importedRecords = Array.isArray(parsed?.records) ? parsed.records : null;
         if (!importedRecords) {
-          setStatus("Import fehlgeschlagen", "Die Datei enthält kein gültiges Trade-Journal-Backup.");
+          setStatus("Import failed", "The file does not contain a valid Trade Journal backup.");
           return;
         }
 
@@ -1655,10 +1655,10 @@
         ui.startAccountSize.value = settings.startAccountSize || "";
         renderRecords();
         renderMetrics();
-        setStatus("Backup importiert", `${records.length} Trade(s) wurden erfolgreich wiederhergestellt.`);
+        setStatus("Backup imported", `${records.length} trade(s) were restored successfully.`);
       } catch (error) {
         console.error(error);
-        setStatus("Import fehlgeschlagen", "Die Backup-Datei konnte nicht gelesen werden.");
+        setStatus("Import failed", "The backup file could not be read.");
       } finally {
         ui.importBackupInput.value = "";
       }
@@ -1666,14 +1666,14 @@
 
     function clearAllRecords() {
       if (!records.length) return;
-      const confirmed = window.confirm("Wirklich alle gespeicherten Trades löschen?");
+      const confirmed = window.confirm("Do you really want to delete all saved trades?");
       if (!confirmed) return;
       records = [];
       saveJson(STORAGE_KEY, records);
       renderRecords();
       renderMetrics();
       resetEditor();
-      setStatus("Alle Trades gelöscht", "Das lokale Journal wurde geleert.");
+      setStatus("All trades deleted", "The local journal was cleared.");
     }
 
     function resetEditor() {
@@ -1687,7 +1687,7 @@
     }
 
     function updateSaveButton() {
-      ui.saveRecordBtn.textContent = currentEditId ? "Trade aktualisieren" : "Trade speichern";
+      ui.saveRecordBtn.textContent = currentEditId ? "Update trade" : "Save trade";
     }
 
     function buildSummary({ coin, direction, pnl, timeLabel, confidenceHints }) {
