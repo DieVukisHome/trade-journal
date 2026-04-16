@@ -41,6 +41,14 @@ The journal is designed for a simple workflow:
 
 This app is intended to work well as a mobile web app and installable PWA.
 
+If the project is deployed with GitHub Pages, the app URL is typically:
+
+```text
+https://dievukishome.github.io/trade-journal/
+```
+
+Use your actual public deployment URL if the app is hosted elsewhere.
+
 ### iPhone and iPad
 
 1. Open the deployed app URL in `Safari`.
