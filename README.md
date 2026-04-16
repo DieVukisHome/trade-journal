@@ -37,12 +37,6 @@ The journal is designed for a simple workflow:
 - `service-worker.js`: offline asset caching
 - `tesseract.js` loaded from CDN for OCR
 
-## What "ABB" Means
-
-`ABB` is not defined anywhere in the current codebase, manifest, or app UI.
-
-Right now, the actual app name used by the project is simply `Trade Journal`. If `ABB` is an internal project name or shorthand, it should be documented explicitly later. Until then, the documentation should use `Trade Journal` to avoid confusion.
-
 ## How To Install On A Mobile Device
 
 This app is intended to work well as a mobile web app and installable PWA.
