@@ -72,24 +72,6 @@ Use your actual public deployment URL if the app is hosted elsewhere.
 - Some browsers expose `Install app`, while others only show `Add to Home Screen`.
 - If installation is not offered, reload the page once and try again in Safari or Chrome.
 
-## How To Deploy The App
-
-Because the project is a pure static web app, it can be hosted on:
-
-- GitHub Pages
-- Netlify
-- Vercel static hosting
-- any standard static web host
-
-Upload these files as-is:
-
-- `index.html`
-- `manifest.webmanifest`
-- `service-worker.js`
-- `icon.svg`
-
-Once hosted, users can open the public URL on their mobile device and install it from the browser.
-
 ## How To Use On A Mobile Device
 
 ### 1. Set the starting account size
