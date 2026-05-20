@@ -14,9 +14,8 @@
   <style>
     :root {
       --bg: #07111a;
-      --panel: rgba(9, 20, 30, 0.9);
+      --panel: rgba(9, 20, 30, 0.92);
       --line: rgba(154, 179, 202, 0.16);
-      --line-strong: rgba(154, 179, 202, 0.26);
       --text: #eef5fb;
       --muted: #9eb4c7;
       --accent: #56d0a0;
@@ -47,40 +46,6 @@
       color: var(--accent-2);
     }
 
-    .shell {
-      width: min(1180px, calc(100vw - 28px));
-      margin: 20px auto 40px;
-      display: grid;
-      gap: 18px;
-    }
-
-    .hero,
-    .panel {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(16px);
-      overflow: hidden;
-    }
-
-    .hero {
-      padding: 24px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: auto -8% -32% auto;
-      width: 260px;
-      height: 260px;
-      border-radius: 999px;
-      background: radial-gradient(circle, rgba(86, 208, 160, 0.16), transparent 70%);
-      pointer-events: none;
-    }
-
     h1,
     h2,
     h3,
@@ -89,7 +54,7 @@
     }
 
     h1 {
-      font-size: clamp(2.3rem, 5vw, 3.6rem);
+      font-size: clamp(2.4rem, 6vw, 3.9rem);
       line-height: 0.94;
       letter-spacing: -0.05em;
     }
@@ -98,227 +63,144 @@
       font-size: 1.2rem;
     }
 
-    .topbar,
-    .hero-top,
-    .dashboard-grid,
-    .workspace,
-    .import-grid,
-    .form-grid,
-    .metric-grid,
-    .record-grid,
-    .actions,
-    .record-actions,
-    .chip-row {
+    input,
+    select,
+    textarea,
+    button {
+      font: inherit;
+    }
+
+    .shell {
+      width: min(1180px, calc(100vw - 24px));
+      margin: 12px auto 24px;
       display: grid;
-      gap: 12px;
+      gap: 18px;
+      padding-bottom: 118px;
     }
 
-    .topbar {
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      gap: 14px;
+    .hero,
+    .panel,
+    .modal-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
     }
 
-    .hero-top {
-      grid-template-columns: 1fr;
-      align-items: end;
+    .hero {
+      padding: 22px;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -8%;
+      bottom: -32%;
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(86, 208, 160, 0.16), transparent 70%);
+      pointer-events: none;
     }
 
     .panel {
       padding: 18px;
     }
 
-    .dashboard-grid {
-      grid-template-columns: 280px 1fr;
-      align-items: start;
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .metric-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .nav {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      padding: 6px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      width: min(100%, 360px);
-    }
-
-    .nav button {
-      padding: 10px 14px;
-      border-radius: 999px;
-      min-width: 0;
-      width: 100%;
-    }
-
-    .nav button.active {
-      background: linear-gradient(135deg, var(--accent), #3eb6f8);
-      color: #031018;
-      font-weight: 700;
-    }
-
-    .metric-card,
-    .status-box,
-    .preview-label {
-      border-radius: 18px;
-      padding: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .metric-card span,
-    .status-box,
-    .preview-label {
-      color: var(--muted);
-    }
-
-    .metric-card strong {
-      display: block;
-      margin-top: 8px;
-      font-size: clamp(1.05rem, 3.8vw, 1.32rem);
-      line-height: 1.05;
-      overflow-wrap: anywhere;
-      color: var(--text);
-      letter-spacing: -0.03em;
-    }
-
-    .metric-card strong.positive {
-      color: var(--accent);
-    }
-
-    .metric-card strong.negative {
-      color: var(--danger);
-    }
-
-    .settings-box {
+    .hero-copy {
       display: grid;
       gap: 10px;
-      padding: 18px;
-      border-radius: 20px;
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02));
+      max-width: 760px;
+      position: relative;
+      z-index: 1;
     }
 
-    .view {
-      display: none;
+    .hero-copy p,
+    .helper-copy,
+    .field-hint,
+    .settings-list li {
+      color: var(--muted);
+      line-height: 1.45;
     }
 
-    .view.active {
-      display: block;
+    .app-kicker,
+    .pill-note,
+    .subscription-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--muted);
+      font-size: 0.88rem;
     }
 
-    .workspace {
-      grid-template-columns: 1fr;
+    .app-kicker::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(86, 208, 160, 0.12);
     }
 
-    .import-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .screen-grid,
+    .journal-flow,
+    .journal-column,
+    .workspace,
+    .import-grid,
+    .form-grid,
+    .metric-grid,
+    .journal-status,
+    .records-list,
+    .record-group,
+    .record-grid,
+    .settings-grid,
+    .settings-stack,
+    .preview-wrap,
+    .modal-stack,
+    .onboarding-steps,
+    .paywall-grid,
+    .field-group {
+      display: grid;
+      gap: 16px;
+    }
+
+    .journal-flow {
+      grid-template-columns: 1.2fr 1fr;
       align-items: start;
     }
 
-    .section-head {
+    .journal-status,
+    .metric-grid,
+    .paywall-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .settings-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .import-grid,
+    .form-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .section-head,
+    .field-group-title,
+    .subscription-status,
+    .record-top {
       display: flex;
       align-items: start;
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
-      min-width: 0;
-      margin-bottom: 14px;
-    }
-
-    .section-head p {
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-top: 4px;
-    }
-
-    .drop-zone {
-      position: relative;
-      overflow: hidden;
-      display: grid;
-      place-items: center;
-      min-height: 180px;
-      padding: 18px;
-      border-radius: 22px;
-      border: 1.5px dashed rgba(127, 199, 255, 0.28);
-      background:
-        linear-gradient(180deg, rgba(127, 199, 255, 0.08), rgba(255, 255, 255, 0.03)),
-        rgba(10, 20, 31, 0.92);
-      text-align: center;
-      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
-      cursor: pointer;
-    }
-
-    .drop-zone.hidden {
-      display: none;
-    }
-
-    .drop-zone.active {
-      transform: translateY(-2px);
-      border-color: rgba(86, 208, 160, 0.58);
-      background:
-        linear-gradient(180deg, rgba(86, 208, 160, 0.14), rgba(255, 255, 255, 0.05)),
-        rgba(10, 20, 31, 0.96);
-    }
-
-    .drop-zone strong {
-      display: block;
-      font-size: 1.05rem;
-      margin-bottom: 6px;
-    }
-
-    .drop-zone span {
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
-    .drop-zone input[type="file"] {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      cursor: pointer;
-      z-index: 2;
-    }
-
-    .preview-wrap {
-      display: grid;
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    .ocr-trigger {
-      display: none !important;
-    }
-
-    .preview-label {
-      display: none;
-    }
-
-    img.preview {
-      display: none;
-      width: 100%;
-      border-radius: 18px;
-      border: 1px solid var(--line);
-      background: #05090d;
-    }
-
-    .status-box strong,
-    .preview-label strong {
-      display: block;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .form-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .field,
@@ -332,16 +214,15 @@
       grid-column: 1 / -1;
     }
 
-    label span {
-      font-size: 0.92rem;
+    label span,
+    .field-group-title span,
+    .status-tile span,
+    .metric-card span,
+    .status-box,
+    .preview-label,
+    .pnl-chip span {
       color: var(--muted);
-    }
-
-    input,
-    select,
-    textarea,
-    button {
-      font: inherit;
+      font-size: 0.92rem;
     }
 
     input,
@@ -351,7 +232,7 @@
       min-width: 0;
       max-width: 100%;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(2, 9, 15, 0.7);
+      background: rgba(2, 9, 15, 0.72);
       color: var(--text);
       border-radius: 14px;
       padding: 13px 14px;
@@ -362,12 +243,6 @@
     textarea {
       min-height: 92px;
       resize: vertical;
-    }
-
-    input[type="month"] {
-      min-width: 0;
-      width: 100%;
-      max-width: 100%;
     }
 
     input:focus,
@@ -438,46 +313,221 @@
       max-width: 100%;
     }
 
-    .records-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 14px;
+    .view {
+      display: none;
     }
 
-    .record-group {
-      display: grid;
-      gap: 12px;
+    .view.active {
+      display: block;
     }
 
-    .record-group-title {
-      color: var(--muted);
-      font-size: 0.88rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: max(12px, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      width: min(720px, calc(100vw - 20px));
+      z-index: 50;
+    }
+
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(8, 17, 27, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(22px);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav button,
+    .mode-switch button,
+    .segmented button {
+      min-width: 0;
+      width: 100%;
+    }
+
+    .nav button.active,
+    .mode-switch button.active,
+    .segmented button.active {
+      background: linear-gradient(135deg, var(--accent), #3eb6f8);
+      color: #031018;
+      font-weight: 700;
+    }
+
+    .mode-switch,
+    .segmented {
+      display: grid;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .mode-switch {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .segmented {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .status-tile,
+    .metric-card,
+    .status-box,
+    .preview-label,
+    .pnl-chip,
+    .setting-card,
+    .drop-zone,
+    .record,
+    .onboarding-step,
+    .paywall-tier {
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .status-tile,
+    .metric-card,
+    .status-box,
+    .preview-label,
+    .pnl-chip,
+    .setting-card,
+    .onboarding-step,
+    .paywall-tier {
+      padding: 16px;
+    }
+
+    .status-tile strong,
+    .metric-card strong,
+    .pnl-chip strong {
+      display: block;
       margin-top: 8px;
+      font-size: 1.08rem;
+      overflow-wrap: anywhere;
     }
 
-    .filter-bar {
+    .metric-card strong {
+      font-size: clamp(1.05rem, 3.8vw, 1.32rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .metric-card strong.positive,
+    .pnl.positive {
+      color: var(--accent);
+    }
+
+    .metric-card strong.negative,
+    .pnl.negative {
+      color: var(--danger);
+    }
+
+    .subscription-badge {
+      background: rgba(86, 208, 160, 0.12);
+      color: var(--accent);
+      border-color: rgba(86, 208, 160, 0.22);
+    }
+
+    .drop-zone {
+      position: relative;
+      overflow: hidden;
       display: grid;
-      grid-template-columns: 1fr 180px;
+      place-items: center;
+      min-height: 180px;
+      padding: 18px;
+      border: 1.5px dashed rgba(127, 199, 255, 0.28);
+      background:
+        linear-gradient(180deg, rgba(127, 199, 255, 0.08), rgba(255, 255, 255, 0.03)),
+        rgba(10, 20, 31, 0.92);
+      text-align: center;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+      cursor: pointer;
+    }
+
+    .drop-zone.hidden {
+      display: none;
+    }
+
+    .drop-zone.active {
+      transform: translateY(-2px);
+      border-color: rgba(86, 208, 160, 0.58);
+    }
+
+    .drop-zone strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+    }
+
+    .drop-zone span {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .drop-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .ocr-trigger,
+    .preview-label {
+      display: none;
+    }
+
+    img.preview {
+      display: none;
+      width: 100%;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #05090d;
+    }
+
+    .journal-shell[data-mode="open"] .close-only {
+      display: none !important;
+    }
+
+    .journal-shell[data-mode="close"] .open-optional {
+      opacity: 0.7;
+    }
+
+    .pnl-panel {
+      display: grid;
       gap: 12px;
-      margin-bottom: 14px;
+      padding: 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .pnl-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
     }
 
     .record {
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.022));
-      padding: 14px;
       display: grid;
       gap: 12px;
+      padding: 14px;
+      transition: transform 140ms ease, border-color 140ms ease;
     }
 
-    .record-top {
-      display: flex;
-      align-items: start;
-      justify-content: space-between;
-      gap: 12px;
+    .record-card-link {
+      cursor: pointer;
+    }
+
+    .record-card-link:hover {
+      transform: translateY(-1px);
+      border-color: rgba(127, 199, 255, 0.22);
     }
 
     .record-title {
@@ -489,25 +539,27 @@
       font-size: 1.08rem;
     }
 
-    .record.closed-record {
-      border-color: rgba(158, 180, 199, 0.16);
-      background: linear-gradient(180deg, rgba(158, 180, 199, 0.06), rgba(255, 255, 255, 0.02));
-    }
-
-    .record.closed-record .record-title strong,
-    .record.closed-record .record-grid span strong {
-      color: #d2dde7;
-    }
-
-    .record.closed-record .meta,
-    .record.closed-record .record-grid {
-      color: rgba(158, 180, 199, 0.84);
-    }
-
-    .meta {
+    .meta,
+    .record-submeta,
+    .record-grid,
+    .footer-note,
+    code {
       color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+
+    .meta,
+    .record-submeta,
+    .record-grid {
       font-size: 0.92rem;
       line-height: 1.35;
+    }
+
+    .record-submeta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.88rem;
     }
 
     .badge-row {
@@ -539,28 +591,42 @@
       background: rgba(158, 180, 199, 0.08);
     }
 
+    .record.closed-record {
+      border-color: rgba(158, 180, 199, 0.16);
+      background: linear-gradient(180deg, rgba(158, 180, 199, 0.06), rgba(255, 255, 255, 0.02));
+    }
+
+    .record.closed-record .record-title strong,
+    .record.closed-record .record-grid span strong {
+      color: #d2dde7;
+    }
+
+    .record.closed-record .meta,
+    .record.closed-record .record-grid,
+    .record.closed-record .record-submeta {
+      color: rgba(158, 180, 199, 0.84);
+    }
+
     .pnl {
       font-weight: 800;
       font-size: 1.04rem;
     }
 
-    .pnl.positive {
-      color: var(--accent);
-    }
-
-    .pnl.negative {
-      color: var(--danger);
-    }
-
     .record-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      color: var(--muted);
-      font-size: 0.92rem;
     }
 
     .record-grid span strong {
       color: var(--text);
       margin-right: 6px;
+    }
+
+    .record-group-title {
+      color: var(--muted);
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-top: 8px;
     }
 
     .empty {
@@ -571,23 +637,45 @@
       text-align: center;
     }
 
-    .footer-note {
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.45;
-      overflow-wrap: anywhere;
+    .filter-bar {
+      display: grid;
+      grid-template-columns: 1fr 180px;
+      gap: 12px;
+      margin-bottom: 14px;
     }
 
-    code {
-      color: #d6ecff;
-      overflow-wrap: anywhere;
-      word-break: break-word;
+    .settings-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: 18px;
+      background: rgba(3, 9, 15, 0.68);
+      backdrop-filter: blur(14px);
+      z-index: 70;
+    }
+
+    .modal.active {
+      display: grid;
+    }
+
+    .modal-card {
+      width: min(720px, 100%);
+      max-height: min(90vh, 900px);
+      overflow: auto;
+      padding: 22px;
+      background: linear-gradient(180deg, rgba(9, 20, 30, 0.98), rgba(9, 18, 28, 0.98));
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.52);
     }
 
     @media (max-width: 1024px) {
-      .hero-top,
-      .import-grid,
-      .dashboard-grid {
+      .journal-flow,
+      .settings-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -595,23 +683,29 @@
     @media (max-width: 720px) {
       .shell {
         width: min(100vw - 16px, 1100px);
-        margin-top: 8px;
+        padding-bottom: 126px;
       }
 
       .hero,
-      .panel {
+      .panel,
+      .modal-card {
         border-radius: 22px;
       }
 
       .hero,
-      .panel {
+      .panel,
+      .modal-card {
         padding: 16px;
       }
 
+      .import-grid,
       .form-grid,
-      .filter-bar,
+      .journal-status,
+      .metric-grid,
       .record-grid,
-      .topbar {
+      .filter-bar,
+      .pnl-grid,
+      .paywall-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -620,275 +714,504 @@
 <body>
   <main class="shell">
     <section class="hero">
-      <div class="topbar">
+      <div class="hero-copy">
+        <span class="app-kicker">Local-only trading journal</span>
         <h1>Trade Journal</h1>
-        <div class="nav">
-          <button class="secondary active" id="showJournalBtn" type="button">Journal</button>
-          <button class="secondary" id="showTradesBtn" type="button">Trades</button>
-          <button class="secondary" id="showExportBtn" type="button">Export</button>
-        </div>
-      </div>
-      <div class="hero-top">
-      <div class="dashboard-grid">
-        <div class="settings-box">
-          <label class="field">
-            <span>Start Account Size</span>
-            <input id="startAccountSize" type="number" step="0.01" placeholder="e.g. 1200">
-          </label>
-        </div>
-        <div class="metric-grid">
-          <div class="metric-card">
-            <span>Start Account</span>
-            <strong id="metricStart">-</strong>
-          </div>
-          <div class="metric-card">
-            <span>Account Size</span>
-            <strong id="metricAccount">-</strong>
-          </div>
-          <div class="metric-card">
-            <span>% PnL</span>
-            <strong id="metricPercent">-</strong>
-          </div>
-          <div class="metric-card">
-            <span>Total</span>
-            <strong id="metricTotal">-</strong>
-          </div>
-          <div class="metric-card">
-            <span>Wins</span>
-            <strong id="metricWins">0</strong>
-          </div>
-          <div class="metric-card">
-            <span>Losses</span>
-            <strong id="metricLosses">0</strong>
-          </div>
-        </div>
-      </div>
+        <p>Capture your trade the moment it happens, review OCR suggestions, and keep everything on-device without handing over exchange API access.</p>
       </div>
     </section>
 
     <section class="view active" id="journalView">
-    <section class="panel workspace">
-      <div class="section-head">
-        <div>
-          <h2>1. Import screenshots</h2>
-        </div>
-      </div>
-
-      <div class="import-grid">
-        <div>
-          <h3>Open Trade Screenshot</h3>
-          <label class="drop-zone" id="openDropZone">
-            <input id="openImageInput" type="file" accept="image/*">
+      <div class="screen-grid journal-shell" id="journalShell" data-mode="open">
+        <section class="panel">
+          <div class="section-head">
             <div>
-              <strong>Select open screenshot</strong>
-            </div>
-          </label>
-          <div class="preview-wrap">
-            <div class="preview-label" id="openPreviewLabel"><strong>Open Screenshot</strong><span id="openFileName"></span></div>
-            <img class="preview" id="openPreview" alt="Open trade preview">
-            <div class="actions">
-              <button class="primary ocr-trigger" id="runOpenOcrBtn" disabled>Run open OCR</button>
-              <button class="ghost" id="clearOpenImageBtn">Remove open image</button>
+              <h2>Journal</h2>
+              <p class="helper-copy">The fastest path from screenshot to structured trade review.</p>
             </div>
           </div>
-        </div>
+          <div class="journal-status">
+            <div class="status-tile">
+              <span>Flow</span>
+              <strong id="journalModeLabel">Open trade</strong>
+            </div>
+            <div class="status-tile">
+              <span>Current trade</span>
+              <strong id="currentTradeLabel">New draft</strong>
+            </div>
+            <div class="status-tile">
+              <span>Journal status</span>
+              <strong id="journalSummaryLabel">0 saved trades</strong>
+            </div>
+          </div>
+        </section>
 
-        <div>
-          <h3>Closed Trade Screenshot</h3>
-          <label class="drop-zone" id="closeDropZone">
-            <input id="closeImageInput" type="file" accept="image/*">
-            <div>
-              <strong>Select closed screenshot</strong>
-            </div>
-          </label>
-          <div class="preview-wrap">
-            <div class="preview-label" id="closePreviewLabel"><strong>Closed Screenshot</strong><span id="closeFileName"></span></div>
-            <img class="preview" id="closePreview" alt="Closed trade preview">
-            <div class="actions">
-              <button class="primary ocr-trigger" id="runCloseOcrBtn" disabled>Run closed OCR</button>
-              <button class="ghost" id="clearCloseImageBtn">Remove closed image</button>
-            </div>
+        <div class="journal-flow">
+          <div class="journal-column">
+            <section class="panel workspace">
+              <div class="section-head">
+                <div>
+                  <h2>Choose the flow</h2>
+                  <p class="helper-copy">Open and closed trade screenshots contain different information. Start with the right mode and then review the OCR suggestion.</p>
+                </div>
+              </div>
+              <div class="mode-switch">
+                <button class="secondary active" id="setOpenModeBtn" type="button">Open Trade</button>
+                <button class="secondary" id="setCloseModeBtn" type="button">Close Trade</button>
+              </div>
+
+              <div class="import-grid">
+                <div class="open-only">
+                  <h3>Open Trade Screenshot</h3>
+                  <label class="drop-zone" id="openDropZone">
+                    <input id="openImageInput" type="file" accept="image/*">
+                    <div>
+                      <strong>Select open screenshot</strong>
+                      <span>Import an open position or order fill screenshot to prefill the trade draft.</span>
+                    </div>
+                  </label>
+                  <div class="preview-wrap">
+                    <div class="preview-label" id="openPreviewLabel"><strong>Open Screenshot</strong><span id="openFileName"></span></div>
+                    <img class="preview" id="openPreview" alt="Open trade preview">
+                    <div class="actions">
+                      <button class="primary ocr-trigger" id="runOpenOcrBtn" disabled>Run open OCR</button>
+                      <button class="ghost" id="clearOpenImageBtn">Remove open image</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="close-only">
+                  <h3>Closed Trade Screenshot</h3>
+                  <label class="drop-zone" id="closeDropZone">
+                    <input id="closeImageInput" type="file" accept="image/*">
+                    <div>
+                      <strong>Select closed screenshot</strong>
+                      <span>Import the final trade history screenshot to capture results and PnL.</span>
+                    </div>
+                  </label>
+                  <div class="preview-wrap">
+                    <div class="preview-label" id="closePreviewLabel"><strong>Closed Screenshot</strong><span id="closeFileName"></span></div>
+                    <img class="preview" id="closePreview" alt="Closed trade preview">
+                    <div class="actions">
+                      <button class="primary ocr-trigger" id="runCloseOcrBtn" disabled>Run closed OCR</button>
+                      <button class="ghost" id="clearCloseImageBtn">Remove closed image</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="status-box" id="ocrStatus">
+                <strong>Ready</strong>
+                No screenshot loaded yet.
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>Trade details</h2>
+                  <p class="helper-copy">OCR is a suggestion, not the final truth. Everything here stays editable.</p>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <div class="field-group-title">
+                  <h3>Trade basics</h3>
+                  <span>Always editable</span>
+                </div>
+                <div class="form-grid">
+                  <label class="field">
+                    <span>Post date</span>
+                    <input id="postDate" type="date">
+                  </label>
+                  <label class="field">
+                    <span>Session</span>
+                    <select id="session">
+                      <option value="">Please select</option>
+                      <option>UK</option>
+                      <option>US</option>
+                      <option>Asia</option>
+                      <option>Other</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span>Coin</span>
+                    <input id="coin" type="text" placeholder="e.g. RENDER or VIRTUAL">
+                  </label>
+                  <label class="field">
+                    <span>Direction</span>
+                    <select id="direction">
+                      <option value="">Please select</option>
+                      <option>Long</option>
+                      <option>Short</option>
+                    </select>
+                  </label>
+                  <label class="field open-optional">
+                    <span>1% Risk</span>
+                    <input id="risk" type="number" step="0.01" placeholder="optional">
+                  </label>
+                  <label class="field open-optional">
+                    <span>TF trade taken</span>
+                    <select id="timeframe">
+                      <option value="">Please select</option>
+                      <option>4hr</option>
+                      <option>1hr</option>
+                      <option>15min</option>
+                      <option>5mins</option>
+                    </select>
+                  </label>
+                  <label class="field full">
+                    <span>TV link</span>
+                    <input id="tvLink" type="url" placeholder="https://www.tradingview.com/...">
+                  </label>
+                </div>
+              </div>
+
+              <div class="field-group close-only">
+                <div class="field-group-title">
+                  <h3>Close outcome</h3>
+                  <span>Prominent for closed trades</span>
+                </div>
+                <div class="pnl-panel">
+                  <div class="pnl-grid">
+                    <label class="field pnl-chip">
+                      <span>Realized PnL</span>
+                      <input id="realizedPnl" type="number" step="0.0001" placeholder="preferred for insights">
+                    </label>
+                    <label class="field pnl-chip">
+                      <span>Closed PnL</span>
+                      <input id="closedPnl" type="number" step="0.0001" placeholder="fallback value">
+                    </label>
+                    <div class="pnl-chip">
+                      <span>Display PnL</span>
+                      <strong id="displayPnlValue">-</strong>
+                    </div>
+                  </div>
+                  <div class="form-grid">
+                    <label class="field">
+                      <span>Status</span>
+                      <select id="status">
+                        <option value="">Please select</option>
+                        <option>Stop loss hit</option>
+                        <option>BE</option>
+                        <option>All TPs hit</option>
+                        <option>TP1</option>
+                        <option>TP2</option>
+                      </select>
+                    </label>
+                    <label class="field">
+                      <span>Result</span>
+                      <select id="result">
+                        <option value="">Please select</option>
+                        <option>Win</option>
+                        <option>Loss</option>
+                        <option>BE</option>
+                      </select>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <div class="field-group-title">
+                  <h3>Review notes</h3>
+                  <span>Journal the context</span>
+                </div>
+                <div class="form-grid">
+                  <label class="field">
+                    <span>Did you follow your rules</span>
+                    <select id="followRules">
+                      <option value="">Please select</option>
+                      <option>Yep</option>
+                      <option>Some</option>
+                      <option>No</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span>Emotions</span>
+                    <textarea id="emotions" placeholder="optional"></textarea>
+                  </label>
+                  <label class="field full">
+                    <span>Notes</span>
+                    <textarea id="notes" placeholder="e.g. Open/Close Time, Entry Price, Avg Close Price"></textarea>
+                  </label>
+                </div>
+              </div>
+
+              <div class="actions">
+                <button class="primary" id="saveRecordBtn">Save trade</button>
+                <button class="secondary" id="newTradeBtn">Start new trade</button>
+              </div>
+            </section>
+          </div>
+
+          <div class="journal-column">
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2>Current trade detail</h2>
+                  <p class="helper-copy">This is the truth screen. Save only when the screenshots and manual edits match your trade.</p>
+                </div>
+              </div>
+              <div class="preview-wrap">
+                <div class="preview-label" id="openSnapshotLabel"><strong>Open Screenshot</strong><span id="openSnapshotName"></span></div>
+                <div class="preview-label" id="closeSnapshotLabel"><strong>Closed Screenshot</strong><span id="closeSnapshotName"></span></div>
+                <img class="preview" id="detailOpenPreview" alt="Open detail preview">
+                <img class="preview" id="detailClosePreview" alt="Closed detail preview">
+              </div>
+              <div class="field-hint">If OCR got anything wrong, correct it in the form before saving. Changes are reflected instantly in trades and insights.</div>
+            </section>
           </div>
         </div>
       </div>
-
-      <div class="status-box" id="ocrStatus" style="margin-top:14px;">
-        <strong>Ready</strong>
-        No screenshot loaded yet.
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="section-head">
-        <div>
-          <h2>2. Edit trade</h2>
-        </div>
-      </div>
-
-      <div class="form-grid">
-        <label class="field">
-          <span>Post date</span>
-          <input id="postDate" type="date">
-        </label>
-        <label class="field">
-          <span>Session</span>
-          <select id="session">
-            <option value="">Please select</option>
-            <option>UK</option>
-            <option>US</option>
-            <option>Asia</option>
-            <option>Other</option>
-          </select>
-        </label>
-
-        <label class="field">
-          <span>Coin</span>
-          <input id="coin" type="text" placeholder="e.g. RENDER or VIRTUAL">
-        </label>
-        <label class="field">
-          <span>Direction</span>
-          <select id="direction">
-            <option value="">Please select</option>
-            <option>Long</option>
-            <option>Short</option>
-          </select>
-        </label>
-
-        <label class="field">
-          <span>1% Risk</span>
-          <input id="risk" type="number" step="0.01" placeholder="optional">
-        </label>
-        <label class="field">
-          <span>TF trade taken</span>
-          <select id="timeframe">
-            <option value="">Please select</option>
-            <option>4hr</option>
-            <option>1hr</option>
-            <option>15min</option>
-            <option>5mins</option>
-          </select>
-        </label>
-
-        <label class="field">
-          <span>Status</span>
-          <select id="status">
-            <option value="">Please select</option>
-            <option>Stop loss hit</option>
-            <option>BE</option>
-            <option>All TPs hit</option>
-            <option>TP1</option>
-            <option>TP2</option>
-          </select>
-        </label>
-        <label class="field">
-          <span>$ PnL</span>
-          <input id="pnl" type="number" step="0.0001" placeholder="leave empty while the trade is still open">
-        </label>
-
-        <label class="field">
-          <span>Did you follow your rules</span>
-          <select id="followRules">
-            <option value="">Please select</option>
-            <option>Yep</option>
-            <option>Some</option>
-            <option>No</option>
-          </select>
-        </label>
-        <label class="field">
-          <span>Win or Loss?</span>
-          <select id="result">
-            <option value="">Please select</option>
-            <option>Win</option>
-            <option>Loss</option>
-            <option>BE</option>
-          </select>
-        </label>
-
-        <label class="field full">
-          <span>TV link</span>
-          <input id="tvLink" type="url" placeholder="https://www.tradingview.com/...">
-        </label>
-        <label class="field full">
-          <span>Notes</span>
-          <textarea id="notes" placeholder="e.g. Open/Close Time, Entry Price, Avg Close Price"></textarea>
-        </label>
-        <label class="field full">
-          <span>Emotions</span>
-          <textarea id="emotions" placeholder="optional"></textarea>
-        </label>
-      </div>
-
-      <div class="actions" style="margin-top:14px;">
-        <button class="primary" id="saveRecordBtn">Save trade</button>
-        <button class="secondary" id="newTradeBtn">Start new trade</button>
-      </div>
-    </section>
     </section>
 
     <section class="view" id="tradesView">
-    <section class="panel">
-      <div class="section-head">
-        <div>
-          <h2>Trades</h2>
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <h2>Trades</h2>
+            <p class="helper-copy">Find open and closed trades quickly, then jump back into the editor when you need to adjust something.</p>
+          </div>
         </div>
-      </div>
-      <div class="filter-bar">
-        <label class="field">
-          <span>Filter</span>
-          <select id="recordStateFilter">
-            <option value="all">All trades</option>
-            <option value="open">Open trades only</option>
-            <option value="closed">Closed trades only</option>
-          </select>
-        </label>
-        <label class="field">
-          <span>Month</span>
-          <input id="recordMonthFilter" type="month">
-        </label>
-      </div>
-      <div class="records-list" id="recordsList">
-        <div class="empty">No saved trades yet.</div>
-      </div>
-    </section>
+        <div class="filter-bar">
+          <div class="field">
+            <span>State</span>
+            <div class="segmented">
+              <button class="secondary" id="filterOpenBtn" type="button">Open</button>
+              <button class="secondary" id="filterClosedBtn" type="button">Closed</button>
+            </div>
+            <button class="ghost tiny" id="filterAllBtn" type="button">Show all</button>
+            <select id="recordStateFilter" style="display:none;">
+              <option value="all">All trades</option>
+              <option value="open">Open trades only</option>
+              <option value="closed">Closed trades only</option>
+            </select>
+          </div>
+          <label class="field">
+            <span>Month</span>
+            <input id="recordMonthFilter" type="month">
+          </label>
+        </div>
+        <div class="records-list" id="recordsList">
+          <div class="empty">No saved trades yet.</div>
+        </div>
+      </section>
     </section>
 
-    <section class="view" id="exportView">
-    <section class="panel">
-      <div class="section-head">
-        <div>
-          <h2>Export</h2>
+    <section class="view" id="insightsView">
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <h2>Insights</h2>
+            <p class="helper-copy">Only closed trades contribute here. Realized PnL is the default review metric for account progress.</p>
+          </div>
         </div>
-        <div class="actions">
-          <button class="secondary tiny" id="exportCsvBtn">Export monthly CSV</button>
-          <label class="secondary tiny" for="importCsvInput" style="display:inline-flex;align-items:center;justify-content:center;">
-            Import CSV
-          </label>
-          <input id="importCsvInput" type="file" accept=".csv,text/csv" style="display:none;">
-          <button class="secondary tiny" id="exportBackupBtn">Export backup</button>
-          <label class="secondary tiny" for="importBackupInput" style="display:inline-flex;align-items:center;justify-content:center;">
-            Import backup
-          </label>
-          <input id="importBackupInput" type="file" accept="application/json" style="display:none;">
-          <button class="danger tiny" id="clearRecordsBtn">Delete all trades</button>
+        <div class="settings-grid">
+          <div class="setting-card">
+            <h3>Account basis</h3>
+            <label class="field">
+              <span>Start Account Size</span>
+              <input id="startAccountSize" type="number" step="0.01" placeholder="e.g. 1200">
+            </label>
+            <span class="field-hint">Used for account size and percentage PnL. Only closed trades are included.</span>
+          </div>
+          <div class="metric-grid">
+            <div class="metric-card">
+              <span>Start Account</span>
+              <strong id="metricStart">-</strong>
+            </div>
+            <div class="metric-card">
+              <span>Account Size</span>
+              <strong id="metricAccount">-</strong>
+            </div>
+            <div class="metric-card">
+              <span>% PnL</span>
+              <strong id="metricPercent">-</strong>
+            </div>
+            <div class="metric-card">
+              <span>Total</span>
+              <strong id="metricTotal">-</strong>
+            </div>
+            <div class="metric-card">
+              <span>Wins</span>
+              <strong id="metricWins">0</strong>
+            </div>
+            <div class="metric-card">
+              <span>Losses</span>
+              <strong id="metricLosses">0</strong>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="form-grid" style="margin-bottom:14px;">
-        <label class="field">
-          <span>Export month</span>
-          <input id="exportMonth" type="month">
-        </label>
-      </div>
-      <p class="footer-note">
-        CSV columns: <code>Post date, session, Coin, Direction, 1% Risk, TF trade taken, Status, $ PnL, Did you follow your rules, TV link, Notes, Emotions, Win or Loss?</code>
-      </p>
+      </section>
     </section>
+
+    <section class="view" id="settingsView">
+      <div class="settings-stack">
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Settings</h2>
+              <p class="helper-copy">Everything secondary lives here so the daily journaling flow can stay fast and focused.</p>
+            </div>
+          </div>
+          <div class="settings-grid">
+            <div class="setting-card">
+              <h3>Subscription</h3>
+              <div class="subscription-status">
+                <div>
+                  <span class="subscription-badge">Demo membership</span>
+                  <p class="helper-copy">This web build mirrors the future store flow. Native billing hooks will replace this placeholder state.</p>
+                </div>
+                <div class="actions">
+                  <button class="primary tiny" id="openPaywallBtn" type="button">View paywall</button>
+                  <button class="secondary tiny" id="restorePurchasesBtn" type="button">Restore purchases</button>
+                </div>
+              </div>
+            </div>
+            <div class="setting-card">
+              <h3>Privacy</h3>
+              <span class="pill-note">Local-only promise</span>
+              <ul class="settings-list">
+                <li>Trade data stays on this device.</li>
+                <li>Screenshots are not uploaded to any server.</li>
+                <li>OCR suggestions remain editable before save.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Backups & export</h2>
+              <p class="helper-copy">Use local imports and exports to safeguard your journal without leaving the app’s local-only model.</p>
+            </div>
+            <div class="actions">
+              <button class="secondary tiny" id="exportCsvBtn">Export monthly CSV</button>
+              <label class="secondary tiny" for="importCsvInput" style="display:inline-flex;align-items:center;justify-content:center;">Import CSV</label>
+              <input id="importCsvInput" type="file" accept=".csv,text/csv" style="display:none;">
+              <button class="secondary tiny" id="exportBackupBtn">Export backup</button>
+              <label class="secondary tiny" for="importBackupInput" style="display:inline-flex;align-items:center;justify-content:center;">Import backup</label>
+              <input id="importBackupInput" type="file" accept="application/json" style="display:none;">
+              <button class="danger tiny" id="clearRecordsBtn">Delete all trades</button>
+            </div>
+          </div>
+          <div class="form-grid">
+            <label class="field">
+              <span>Export month</span>
+              <input id="exportMonth" type="month">
+            </label>
+          </div>
+          <p class="footer-note">CSV columns: <code>Post date, session, Coin, Direction, 1% Risk, TF trade taken, Status, Realized PnL, Closed PnL, Display PnL, Did you follow your rules, TV link, Notes, Emotions, Win or Loss?</code></p>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <h2>About</h2>
+              <p class="helper-copy">A screenshot-first trade journal built to make review fast enough that you actually keep the habit.</p>
+            </div>
+          </div>
+          <div class="settings-grid">
+            <div class="setting-card">
+              <h3>Terms</h3>
+              <p>This prototype keeps everything local. The native store release will add subscription terms and restore purchase handling.</p>
+            </div>
+            <div class="setting-card">
+              <h3>Why it feels different</h3>
+              <p>Instead of feeling like back-office software, the app starts directly in a journaling action and keeps backup tools out of the daily flow.</p>
+            </div>
+          </div>
+        </section>
+      </div>
     </section>
   </main>
 
+  <div class="bottom-nav">
+    <div class="nav">
+      <button class="secondary active" id="showJournalBtn" type="button">Journal</button>
+      <button class="secondary" id="showTradesBtn" type="button">Trades</button>
+      <button class="secondary" id="showInsightsBtn" type="button">Insights</button>
+      <button class="secondary" id="showSettingsBtn" type="button">Settings</button>
+    </div>
+  </div>
+
+  <div class="modal" id="onboardingModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-stack">
+        <div class="section-head">
+          <div>
+            <h2>Welcome to Trade Journal</h2>
+            <p class="helper-copy">A mobile-first, local-only journaling workflow built around trade screenshots.</p>
+          </div>
+        </div>
+        <div class="onboarding-steps">
+          <div class="onboarding-step">
+            <strong>1. Screenshot in, journal almost done.</strong>
+            <p>Import an open or closed trade screenshot and let OCR prefill the draft.</p>
+          </div>
+          <div class="onboarding-step">
+            <strong>2. Your data stays local.</strong>
+            <p>Trade data and screenshots remain on this device in this build. There is no upload server behind the workflow.</p>
+          </div>
+          <div class="onboarding-step">
+            <strong>3. Open and Closed show different details.</strong>
+            <p>Open screenshots focus on setup. Closed screenshots add result and final PnL information.</p>
+          </div>
+          <div class="onboarding-step">
+            <strong>4. Built for a real mobile routine.</strong>
+            <p>Save the trade now, review it later, and keep the journal habit alive.</p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary" id="closeOnboardingBtn" type="button">Start journaling</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="paywallModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-stack">
+        <div class="section-head">
+          <div>
+            <h2>Trade Journal Pro</h2>
+            <p class="helper-copy">Store-ready subscription copy, positioned around speed, local-only privacy, and no exchange API requirement.</p>
+          </div>
+        </div>
+        <div class="paywall-grid">
+          <div class="paywall-tier">
+            <strong>Monthly</strong>
+            <span>Fast journaling, local-only backup tools, and closed-trade insights.</span>
+          </div>
+          <div class="paywall-tier">
+            <strong>Yearly</strong>
+            <span>The long-term review habit for traders who want the full workflow on mobile.</span>
+          </div>
+        </div>
+        <div class="setting-card">
+          <h3>What you unlock</h3>
+          <ul class="settings-list">
+            <li>Screenshot-first journaling flow</li>
+            <li>Closed-trade insights built around realized PnL</li>
+            <li>Local backups without exchange API access</li>
+          </ul>
+        </div>
+        <div class="actions">
+          <button class="primary" id="subscribeNowBtn" type="button">Continue with trial</button>
+          <button class="secondary" id="closePaywallBtn" type="button">Not now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script>
-    const STORAGE_KEY = "trade-ocr-journal-records-v2";
+    const STORAGE_KEY = "trade-ocr-journal-records-v3";
+    const LEGACY_STORAGE_KEY = "trade-ocr-journal-records-v2";
     const SETTINGS_KEY = "trade-ocr-journal-settings-v1";
+    const ONBOARDING_KEY = "trade-ocr-journal-onboarding-v1";
     const CSV_HEADERS = [
       "Post date",
       "session",
@@ -897,7 +1220,9 @@
       "1% Risk",
       "TF trade taken",
       "Status",
-      "$ PnL",
+      "Realized PnL",
+      "Closed PnL",
+      "Display PnL",
       "Did you follow your rules",
       "TV link",
       "Notes",
@@ -913,7 +1238,8 @@
       risk: document.getElementById("risk"),
       timeframe: document.getElementById("timeframe"),
       status: document.getElementById("status"),
-      pnl: document.getElementById("pnl"),
+      realizedPnl: document.getElementById("realizedPnl"),
+      closedPnl: document.getElementById("closedPnl"),
       followRules: document.getElementById("followRules"),
       tvLink: document.getElementById("tvLink"),
       notes: document.getElementById("notes"),
@@ -922,6 +1248,11 @@
     };
 
     const ui = {
+      journalShell: document.getElementById("journalShell"),
+      journalModeLabel: document.getElementById("journalModeLabel"),
+      currentTradeLabel: document.getElementById("currentTradeLabel"),
+      journalSummaryLabel: document.getElementById("journalSummaryLabel"),
+      displayPnlValue: document.getElementById("displayPnlValue"),
       startAccountSize: document.getElementById("startAccountSize"),
       metricStart: document.getElementById("metricStart"),
       metricAccount: document.getElementById("metricAccount"),
@@ -943,10 +1274,30 @@
       clearRecordsBtn: document.getElementById("clearRecordsBtn"),
       showJournalBtn: document.getElementById("showJournalBtn"),
       showTradesBtn: document.getElementById("showTradesBtn"),
-      showExportBtn: document.getElementById("showExportBtn"),
+      showInsightsBtn: document.getElementById("showInsightsBtn"),
+      showSettingsBtn: document.getElementById("showSettingsBtn"),
       journalView: document.getElementById("journalView"),
       tradesView: document.getElementById("tradesView"),
-      exportView: document.getElementById("exportView")
+      insightsView: document.getElementById("insightsView"),
+      settingsView: document.getElementById("settingsView"),
+      setOpenModeBtn: document.getElementById("setOpenModeBtn"),
+      setCloseModeBtn: document.getElementById("setCloseModeBtn"),
+      filterOpenBtn: document.getElementById("filterOpenBtn"),
+      filterClosedBtn: document.getElementById("filterClosedBtn"),
+      filterAllBtn: document.getElementById("filterAllBtn"),
+      detailOpenPreview: document.getElementById("detailOpenPreview"),
+      detailClosePreview: document.getElementById("detailClosePreview"),
+      openSnapshotLabel: document.getElementById("openSnapshotLabel"),
+      closeSnapshotLabel: document.getElementById("closeSnapshotLabel"),
+      openSnapshotName: document.getElementById("openSnapshotName"),
+      closeSnapshotName: document.getElementById("closeSnapshotName"),
+      onboardingModal: document.getElementById("onboardingModal"),
+      closeOnboardingBtn: document.getElementById("closeOnboardingBtn"),
+      paywallModal: document.getElementById("paywallModal"),
+      openPaywallBtn: document.getElementById("openPaywallBtn"),
+      closePaywallBtn: document.getElementById("closePaywallBtn"),
+      subscribeNowBtn: document.getElementById("subscribeNowBtn"),
+      restorePurchasesBtn: document.getElementById("restorePurchasesBtn")
     };
 
     const openImporter = createImporter({
@@ -971,17 +1322,17 @@
       mode: "close"
     });
 
-    let records = loadJson(STORAGE_KEY, []);
+    let records = migrateLegacyRecords();
     let settings = loadJson(SETTINGS_KEY, { startAccountSize: "" });
     let currentEditId = null;
+    let currentView = "journal";
+    let currentJournalMode = "open";
 
     ui.startAccountSize.value = settings.startAccountSize || "";
     ui.exportMonth.value = getLocalYearMonth();
     ui.recordMonthFilter.value = "";
 
-    renderRecords();
-    renderMetrics();
-    updateSaveButton();
+    hydrateUi();
 
     ui.startAccountSize.addEventListener("input", () => {
       settings.startAccountSize = ui.startAccountSize.value;
@@ -996,14 +1347,46 @@
     ui.exportBackupBtn.addEventListener("click", exportBackup);
     ui.importBackupInput.addEventListener("change", importBackup);
     ui.clearRecordsBtn.addEventListener("click", clearAllRecords);
-    ui.recordStateFilter.addEventListener("change", renderRecords);
     ui.recordMonthFilter.addEventListener("input", renderRecords);
     ui.showJournalBtn.addEventListener("click", () => setView("journal"));
     ui.showTradesBtn.addEventListener("click", () => setView("trades"));
-    ui.showExportBtn.addEventListener("click", () => setView("export"));
+    ui.showInsightsBtn.addEventListener("click", () => setView("insights"));
+    ui.showSettingsBtn.addEventListener("click", () => setView("settings"));
+    ui.setOpenModeBtn.addEventListener("click", () => setJournalMode("open"));
+    ui.setCloseModeBtn.addEventListener("click", () => setJournalMode("close"));
+    ui.filterOpenBtn.addEventListener("click", () => setRecordStateFilter("open"));
+    ui.filterClosedBtn.addEventListener("click", () => setRecordStateFilter("closed"));
+    ui.filterAllBtn.addEventListener("click", () => setRecordStateFilter("all"));
+    ui.closeOnboardingBtn.addEventListener("click", closeOnboarding);
+    ui.openPaywallBtn.addEventListener("click", () => toggleModal(ui.paywallModal, true));
+    ui.closePaywallBtn.addEventListener("click", () => toggleModal(ui.paywallModal, false));
+    ui.subscribeNowBtn.addEventListener("click", () => {
+      toggleModal(ui.paywallModal, false);
+      setStatus("Paywall ready", "The subscription purchase flow is a placeholder in this web build.");
+    });
+    ui.restorePurchasesBtn.addEventListener("click", () => {
+      setStatus("Restore placeholder", "Restore purchases will be connected in the native store build.");
+      setView("settings");
+    });
 
-    fields.pnl.addEventListener("input", autoInferResult);
+    fields.realizedPnl.addEventListener("input", handlePnlFieldInput);
+    fields.closedPnl.addEventListener("input", handlePnlFieldInput);
     fields.result.addEventListener("change", autoInferStatusFromResult);
+
+    function hydrateUi() {
+      setRecordStateFilter("all");
+      renderRecords();
+      renderMetrics();
+      updateSaveButton();
+      setJournalMode("open");
+      setView("journal");
+      syncDisplayPnl();
+      updateDetailPreviewLabels();
+      updateHeaderSummary();
+      if (!loadJson(ONBOARDING_KEY, false)) {
+        toggleModal(ui.onboardingModal, true);
+      }
+    }
 
     function createImporter(config) {
       const state = {
@@ -1059,6 +1442,12 @@
         config.previewLabel.style.display = "block";
         config.fileName.textContent = file.name;
         config.runBtn.disabled = false;
+        if (config.mode === "open") {
+          setJournalMode("open");
+        } else {
+          setJournalMode("close");
+        }
+        updateDetailPreviewLabels();
         setStatus(
           config.mode === "open" ? "Open screenshot loaded" : "Closed screenshot loaded",
           config.mode === "open" ? "Ready for open OCR." : "Ready for closed OCR."
@@ -1079,11 +1468,13 @@
         config.input.value = "";
         config.runBtn.disabled = true;
         state.lastKey = "";
+        updateDetailPreviewLabels();
       }
 
       return {
         clearImage,
-        getName: () => state.name
+        getName: () => state.name,
+        getObjectUrl: () => state.objectUrl
       };
     }
 
@@ -1093,7 +1484,6 @@
         return;
       }
 
-      const button = mode === "open" ? openImporter : closeImporter;
       const runBtn = mode === "open" ? document.getElementById("runOpenOcrBtn") : document.getElementById("runCloseOcrBtn");
       runBtn.disabled = true;
       setStatus("OCR running", mode === "open" ? "Analyzing open screenshot." : "Analyzing closed screenshot.");
@@ -1118,23 +1508,6 @@
       } finally {
         runBtn.disabled = false;
       }
-    }
-
-    function normalizeText(input) {
-      return input
-        .replace(/[|]/g, "I")
-        .replace(/USOT/gi, "USDT")
-        .replace(/USDT\)/gi, "USDT)")
-        .replace(/CIosed/gi, "Closed")
-        .replace(/ReaIized/gi, "Realized")
-        .replace(/Ciose/gi, "Close")
-        .replace(/0pen/gi, "Open")
-        .replace(/[“”]/g, "\"")
-        .replace(/[‘’]/g, "'")
-        .replace(/\r/g, "\n")
-        .replace(/[ \t]+\n/g, "\n")
-        .replace(/\n{3,}/g, "\n\n")
-        .trim();
     }
 
     function parseOpenTradeText(text) {
@@ -1177,12 +1550,12 @@
       const direction = inferDirection(joined);
       const realizedPnl = parseSignedNumber(extractNumericAfterLabels(joined, ["Realized PnL(USDT)", "Realized PnL"]));
       const closedPnl = parseSignedNumber(extractNumericAfterLabels(joined, ["Closed PnL(USDT)", "Closed PnL"]));
-      const bestPnl = realizedPnl !== "" ? realizedPnl : closedPnl;
+      const displayPnl = realizedPnl !== "" ? realizedPnl : closedPnl;
       const closeTime = extractFirstDateTime(joined, ["Close Time", "Closed Time"]);
       const openTime = extractFirstDateTime(joined, ["Open Time"]);
       const entryPrice = extractNumericAfterLabels(joined, ["Entry Price"]);
       const avgClose = extractNumericAfterLabels(joined, ["Avg. Close Price", "Avg Close Price"]);
-      const inferredResult = inferResult(bestPnl);
+      const inferredResult = inferResult(displayPnl);
       const inferredStatus = inferStatusFromResult(inferredResult);
 
       return {
@@ -1191,7 +1564,8 @@
         coin,
         direction,
         status: inferredStatus,
-        pnl: bestPnl,
+        realizedPnl,
+        closedPnl,
         result: inferredResult,
         notes: mergeNotes("", [
           openTime ? `Open Time: ${openTime}` : "",
@@ -1202,9 +1576,9 @@
         _debugSummary: buildSummary({
           coin,
           direction,
-          pnl: bestPnl,
+          pnl: displayPnl,
           timeLabel: closeTime ? `Close: ${closeTime}` : "",
-          confidenceHints: [symbolLine && "Symbol", direction && "Direction", bestPnl !== "" && "PnL"].filter(Boolean)
+          confidenceHints: [symbolLine && "Symbol", direction && "Direction", displayPnl !== "" && "PnL"].filter(Boolean)
         })
       };
     }
@@ -1222,10 +1596,15 @@
       if (parsed.coin) fields.coin.value = parsed.coin;
       if (parsed.direction) fields.direction.value = parsed.direction;
       if (parsed.status) fields.status.value = parsed.status;
-      if (parsed.pnl !== undefined && parsed.pnl !== "") fields.pnl.value = parsed.pnl;
+      if (parsed.realizedPnl !== undefined && parsed.realizedPnl !== "") fields.realizedPnl.value = parsed.realizedPnl;
+      if (parsed.closedPnl !== undefined && parsed.closedPnl !== "") fields.closedPnl.value = parsed.closedPnl;
       if (parsed.result) fields.result.value = parsed.result;
       if (parsed.notes) fields.notes.value = mergeNotes(fields.notes.value, [parsed.notes]);
-      if (mode === "close") autoInferResult();
+      syncDisplayPnl();
+      if (mode === "close") {
+        setJournalMode("close");
+        autoInferResultFromFields();
+      }
     }
 
     function saveCurrentTrade() {
@@ -1260,18 +1639,20 @@
 
       saveJson(STORAGE_KEY, records);
       renderMetrics();
+      renderRecords();
+      updateHeaderSummary();
       setStatus(
         tradeState === "closed" ? "Trade saved" : "Open trade saved",
         tradeState === "closed"
-          ? "The entry now appears in the list and will be included in the monthly export."
-          : "The open trade now appears in the list and can be updated later with the closed screenshot."
+          ? "The trade is now part of your closed journal and insights."
+          : "The open trade is ready to be matched with a closed screenshot later."
       );
-      renderRecords();
       setView("trades");
       resetEditor();
     }
 
     function collectFormData() {
+      const displayPnl = getDisplayPnlFromFields();
       return {
         "Post date": fields.postDate.value,
         "session": fields.session.value,
@@ -1280,7 +1661,9 @@
         "1% Risk": fields.risk.value,
         "TF trade taken": fields.timeframe.value,
         "Status": fields.status.value,
-        "$ PnL": fields.pnl.value,
+        "Realized PnL": fields.realizedPnl.value,
+        "Closed PnL": fields.closedPnl.value,
+        "Display PnL": displayPnl,
         "Did you follow your rules": fields.followRules.value,
         "TV link": fields.tvLink.value.trim(),
         "Notes": fields.notes.value.trim(),
@@ -1291,21 +1674,23 @@
 
     function normalizeRecordForSave(record) {
       const normalized = { ...record };
-      const pnlRaw = String(normalized["$ PnL"] || "").trim();
-      const result = String(normalized["Win or Loss?"] || "").trim();
-      const numericPnl = Number(pnlRaw);
+      normalizePnlField(normalized, "Realized PnL");
+      normalizePnlField(normalized, "Closed PnL");
+      normalized["Display PnL"] = normalized["Realized PnL"] || normalized["Closed PnL"] || "";
 
-      if (pnlRaw && Number.isFinite(numericPnl)) {
-        if (result === "Loss" && numericPnl > 0) {
-          normalized["$ PnL"] = String(-Math.abs(numericPnl));
-        } else if (result === "Win" && numericPnl < 0) {
-          normalized["$ PnL"] = String(Math.abs(numericPnl));
-        } else if (result === "BE") {
-          normalized["$ PnL"] = "0";
-        } else {
-          normalized["$ PnL"] = String(numericPnl);
-        }
+      const result = String(normalized["Win or Loss?"] || "").trim();
+      if (result === "Loss") {
+        forceNegative(normalized, "Realized PnL");
+        forceNegative(normalized, "Closed PnL");
+      } else if (result === "Win") {
+        forcePositive(normalized, "Realized PnL");
+        forcePositive(normalized, "Closed PnL");
+      } else if (result === "BE") {
+        if (normalized["Realized PnL"]) normalized["Realized PnL"] = "0";
+        if (normalized["Closed PnL"]) normalized["Closed PnL"] = "0";
       }
+
+      normalized["Display PnL"] = normalized["Realized PnL"] || normalized["Closed PnL"] || "";
 
       if (result) {
         const inferredStatus = inferStatusFromResult(result);
@@ -1317,6 +1702,26 @@
       return normalized;
     }
 
+    function normalizePnlField(record, key) {
+      const raw = String(record[key] || "").trim();
+      if (!raw) {
+        record[key] = "";
+        return;
+      }
+      const numeric = Number(raw);
+      record[key] = Number.isFinite(numeric) ? String(numeric) : raw;
+    }
+
+    function forceNegative(record, key) {
+      const value = Number(record[key]);
+      if (Number.isFinite(value) && value > 0) record[key] = String(-Math.abs(value));
+    }
+
+    function forcePositive(record, key) {
+      const value = Number(record[key]);
+      if (Number.isFinite(value) && value < 0) record[key] = String(Math.abs(value));
+    }
+
     function collectScreenshotMeta() {
       const existing = records.find((entry) => entry.id === currentEditId) || {};
       return {
@@ -1326,7 +1731,7 @@
     }
 
     function isClosedRecord(record) {
-      return Boolean(record["$ PnL"] && record["Win or Loss?"]);
+      return Boolean((record["Realized PnL"] || record["Closed PnL"] || record["Display PnL"]) && record["Win or Loss?"]);
     }
 
     function renderRecords() {
@@ -1338,6 +1743,7 @@
       ui.recordsList.innerHTML = "";
       const ordered = records
         .slice()
+        .map(normalizeRecord)
         .filter((record) => matchesRecordFilters(record))
         .sort(compareRecordsByDateDesc);
 
@@ -1349,12 +1755,8 @@
       const openRecords = ordered.filter((record) => record.tradeState === "open");
       const closedRecords = ordered.filter((record) => record.tradeState === "closed");
 
-      if (openRecords.length) {
-        ui.recordsList.appendChild(buildRecordGroup("Open", openRecords));
-      }
-      if (closedRecords.length) {
-        ui.recordsList.appendChild(buildRecordGroup("Closed", closedRecords));
-      }
+      if (openRecords.length) ui.recordsList.appendChild(buildRecordGroup("Open", openRecords));
+      if (closedRecords.length) ui.recordsList.appendChild(buildRecordGroup("Closed", closedRecords));
     }
 
     function buildRecordGroup(title, recordsForGroup) {
@@ -1367,11 +1769,13 @@
 
       for (const record of recordsForGroup) {
         const card = document.createElement("article");
-        card.className = `record ${record.tradeState === "closed" ? "closed-record" : "open-record"}`;
-        const pnlNumber = Number(record["$ PnL"]);
+        card.className = `record record-card-link ${record.tradeState === "closed" ? "closed-record" : "open-record"}`;
+        const displayPnl = getRecordDisplayPnl(record);
+        const pnlNumber = Number(displayPnl);
         const pnlClass = Number.isFinite(pnlNumber) ? (pnlNumber >= 0 ? "positive" : "negative") : "";
         const stateLabel = record.tradeState === "closed" ? "Closed" : "Open";
         const stateClass = record.tradeState === "closed" ? "closed" : "open";
+        const pnlSource = record["Realized PnL"] ? "Realized" : record["Closed PnL"] ? "Fallback" : "Pending";
 
         card.innerHTML = `
           <div class="record-top">
@@ -1379,20 +1783,25 @@
               <strong>${escapeHtml(record["Coin"] || "Untitled trade")}</strong>
               <span class="meta">${escapeHtml(record["Direction"] || "-")} · ${escapeHtml(record["Post date"] || "no date")} · ${escapeHtml(record["session"] || "Session open")}</span>
             </div>
-            <div class="pnl ${pnlClass}">${record["$ PnL"] ? escapeHtml(record["$ PnL"]) : "open"}</div>
+            <div class="pnl ${pnlClass}">${displayPnl ? escapeHtml(displayPnl) : "open"}</div>
           </div>
           <div class="badge-row">
             <span class="badge ${stateClass}">${stateLabel}</span>
             ${record["Win or Loss?"] ? `<span class="badge">${escapeHtml(record["Win or Loss?"])}</span>` : ""}
             ${record["Status"] ? `<span class="badge">${escapeHtml(record["Status"])}</span>` : ""}
           </div>
+          <div class="record-submeta">
+            <span>Primary PnL: ${escapeHtml(pnlSource)}</span>
+            <span>Open shot: ${record.openScreenshotName ? "Yes" : "No"}</span>
+            <span>Close shot: ${record.closeScreenshotName ? "Yes" : "No"}</span>
+          </div>
           <div class="record-grid">
             <span><strong>TV:</strong>${record["TV link"] ? `<a href="${escapeAttribute(record["TV link"])}" target="_blank" rel="noreferrer">Link</a>` : "-"}</span>
-            <span><strong>Open Shot:</strong>${escapeHtml(record.openScreenshotName || "-")}</span>
-            <span><strong>Close Shot:</strong>${escapeHtml(record.closeScreenshotName || "-")}</span>
+            <span><strong>Open:</strong>${escapeHtml(record.openScreenshotName || "-")}</span>
+            <span><strong>Close:</strong>${escapeHtml(record.closeScreenshotName || "-")}</span>
           </div>
           ${record["Notes"] ? `<div class="meta">${escapeHtml(record["Notes"])}</div>` : ""}
-          <div class="record-actions actions">
+          <div class="actions">
             <button class="secondary tiny" data-action="load" data-id="${record.id}">Load</button>
             <button class="danger tiny" data-action="delete" data-id="${record.id}">Delete</button>
           </div>
@@ -1401,17 +1810,29 @@
       }
 
       group.querySelectorAll("button[data-action='load']").forEach((button) => {
-        button.addEventListener("click", () => loadRecord(button.dataset.id));
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          loadRecord(button.dataset.id);
+        });
       });
 
       group.querySelectorAll("button[data-action='delete']").forEach((button) => {
-        button.addEventListener("click", () => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
           records = records.filter((entry) => entry.id !== button.dataset.id);
           saveJson(STORAGE_KEY, records);
           renderRecords();
           renderMetrics();
+          updateHeaderSummary();
           if (currentEditId === button.dataset.id) resetEditor();
           setStatus("Trade deleted", "The entry was removed from the local journal.");
+        });
+      });
+
+      group.querySelectorAll(".record-card-link").forEach((card) => {
+        card.addEventListener("click", () => {
+          const loadButton = card.querySelector("button[data-action='load']");
+          if (loadButton) loadRecord(loadButton.dataset.id);
         });
       });
 
@@ -1427,7 +1848,7 @@
     }
 
     function loadRecord(id, silent = false) {
-      const record = records.find((entry) => entry.id === id);
+      const record = normalizeRecord(records.find((entry) => entry.id === id));
       if (!record) return;
       currentEditId = id;
       fields.postDate.value = record["Post date"] || "";
@@ -1437,26 +1858,30 @@
       fields.risk.value = record["1% Risk"] || "";
       fields.timeframe.value = record["TF trade taken"] || "";
       fields.status.value = record["Status"] || "";
-      fields.pnl.value = record["$ PnL"] || "";
+      fields.realizedPnl.value = record["Realized PnL"] || "";
+      fields.closedPnl.value = record["Closed PnL"] || "";
       fields.followRules.value = record["Did you follow your rules"] || "";
       fields.tvLink.value = record["TV link"] || "";
       fields.notes.value = record["Notes"] || "";
       fields.emotions.value = record["Emotions"] || "";
       fields.result.value = record["Win or Loss?"] || "";
+      syncDisplayPnl();
       updateSaveButton();
+      updateHeaderSummary();
+      setJournalMode(record.tradeState === "closed" ? "close" : "open");
       if (!silent) {
         setStatus("Trade loaded", record.tradeState === "closed"
-          ? "The trade is loaded in the form and can be adjusted."
-          : "The open trade is loaded. You can now import the closed screenshot and update it.");
+          ? "The closed trade is loaded and ready for review."
+          : "The open trade is loaded. You can now add the closed screenshot and finish it.");
       }
       setView("journal");
     }
 
     function renderMetrics() {
       const start = Number(settings.startAccountSize);
-      const closed = records.filter((record) => record.tradeState === "closed");
+      const closed = records.map(normalizeRecord).filter((record) => record.tradeState === "closed");
       const totalPnl = closed.reduce((sum, record) => {
-        const pnl = Number(record["$ PnL"]);
+        const pnl = Number(getRecordDisplayPnl(record));
         return sum + (Number.isFinite(pnl) ? pnl : 0);
       }, 0);
       const totalClosed = closed.length;
@@ -1478,28 +1903,38 @@
     }
 
     function setView(view) {
-      const isJournal = view === "journal";
-      const isTrades = view === "trades";
-      const isExport = view === "export";
-      ui.journalView.classList.toggle("active", isJournal);
-      ui.tradesView.classList.toggle("active", isTrades);
-      ui.exportView.classList.toggle("active", isExport);
-      ui.showJournalBtn.classList.toggle("active", isJournal);
-      ui.showTradesBtn.classList.toggle("active", isTrades);
-      ui.showExportBtn.classList.toggle("active", isExport);
+      currentView = view;
+      ui.journalView.classList.toggle("active", view === "journal");
+      ui.tradesView.classList.toggle("active", view === "trades");
+      ui.insightsView.classList.toggle("active", view === "insights");
+      ui.settingsView.classList.toggle("active", view === "settings");
+      ui.showJournalBtn.classList.toggle("active", view === "journal");
+      ui.showTradesBtn.classList.toggle("active", view === "trades");
+      ui.showInsightsBtn.classList.toggle("active", view === "insights");
+      ui.showSettingsBtn.classList.toggle("active", view === "settings");
     }
 
-    function compareRecordsByDateDesc(a, b) {
-      const dateA = String(a["Post date"] || "");
-      const dateB = String(b["Post date"] || "");
-      if (dateA !== dateB) return dateB.localeCompare(dateA);
-      return String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""));
+    function setJournalMode(mode) {
+      currentJournalMode = mode;
+      ui.journalShell.dataset.mode = mode;
+      ui.setOpenModeBtn.classList.toggle("active", mode === "open");
+      ui.setCloseModeBtn.classList.toggle("active", mode === "close");
+      ui.journalModeLabel.textContent = mode === "open" ? "Open trade" : "Close trade";
+      updateSaveButton();
     }
 
-    function autoInferResult() {
-      const pnl = fields.pnl.value;
-      if (pnl === "") return;
-      const inferred = inferResult(pnl);
+    function setRecordStateFilter(value) {
+      ui.recordStateFilter.value = value;
+      ui.filterOpenBtn.classList.toggle("active", value === "open");
+      ui.filterClosedBtn.classList.toggle("active", value === "closed");
+      ui.filterAllBtn.classList.toggle("active", value === "all");
+      renderRecords();
+    }
+
+    function autoInferResultFromFields() {
+      const display = getDisplayPnlFromFields();
+      if (display === "") return;
+      const inferred = inferResult(display);
       if (inferred) fields.result.value = inferred;
       autoInferStatusFromResult();
     }
@@ -1532,7 +1967,6 @@
         setStatus("No export", "There are no saved trades yet.");
         return;
       }
-
       if (!ui.exportMonth.value) {
         setStatus("Month missing", "Please select an export month first.");
         return;
@@ -1540,6 +1974,7 @@
 
       const monthRecords = records
         .slice()
+        .map(normalizeRecord)
         .filter((record) => record.tradeState === "closed")
         .filter((record) => String(record["Post date"] || "").startsWith(ui.exportMonth.value))
         .sort((a, b) => String(a["Post date"]).localeCompare(String(b["Post date"])));
@@ -1554,38 +1989,24 @@
         lines.push(CSV_HEADERS.map((header) => escapeCsv(record[header] ?? "")).join(","));
       }
 
-      const csv = lines.join("\r\n");
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `trade-journal-export-${ui.exportMonth.value}.csv`;
-      link.click();
-      URL.revokeObjectURL(url);
+      downloadBlob(new Blob([lines.join("\r\n")], { type: "text/csv;charset=utf-8;" }), `trade-journal-export-${ui.exportMonth.value}.csv`);
       setStatus("Monthly CSV exported", `${monthRecords.length} closed trade(s) from ${ui.exportMonth.value} were downloaded locally.`);
     }
 
     function exportBackup() {
       const payload = {
-        version: 1,
+        version: 2,
         exportedAt: new Date().toISOString(),
         settings,
         records
       };
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `trade-journal-backup-${getLocalIsoDate()}.json`;
-      link.click();
-      URL.revokeObjectURL(url);
+      downloadBlob(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8;" }), `trade-journal-backup-${getLocalIsoDate()}.json`);
       setStatus("Backup exported", `${records.length} trade(s) were saved locally as a JSON backup.`);
     }
 
     async function importCsv(event) {
       const file = event.target.files?.[0];
       if (!file) return;
-
       try {
         const text = await file.text();
         const rows = parseCsv(text);
@@ -1594,38 +2015,32 @@
           return;
         }
 
-        const normalizedRows = rows
+        const importedRecords = rows
           .map(normalizeImportedCsvRow)
-          .filter((row) => Object.values(row).some(Boolean));
+          .filter((row) => Object.values(row).some(Boolean))
+          .map((row, index) => {
+            const timestamp = new Date(Date.now() + index).toISOString();
+            return normalizeRecord({
+              id: crypto.randomUUID(),
+              createdAt: timestamp,
+              updatedAt: timestamp,
+              tradeState: isClosedRecord(row) ? "closed" : "open",
+              openScreenshotName: "",
+              closeScreenshotName: "",
+              ...row
+            });
+          });
 
-        if (!normalizedRows.length) {
+        if (!importedRecords.length) {
           setStatus("CSV import failed", "No valid trades were found in the CSV.");
           return;
         }
-
-        const importedRecords = normalizedRows.map((row, index) => {
-          const pnl = row["$ PnL"];
-          const result = row["Win or Loss?"] || inferResult(pnl);
-          const status = row["Status"] || inferStatusFromResult(result);
-          const timestamp = new Date(Date.now() + index).toISOString();
-          return {
-            id: crypto.randomUUID(),
-            createdAt: timestamp,
-            updatedAt: timestamp,
-            tradeState: isClosedRecord({ ...row, "$ PnL": pnl, "Win or Loss?": result }) ? "closed" : "open",
-            openScreenshotName: "",
-            closeScreenshotName: "",
-            ...row,
-            "Status": status,
-            "$ PnL": pnl,
-            "Win or Loss?": result
-          };
-        });
 
         records = importedRecords.concat(records);
         saveJson(STORAGE_KEY, records);
         renderRecords();
         renderMetrics();
+        updateHeaderSummary();
         setStatus("CSV imported", `${importedRecords.length} trade(s) were added to your journal.`);
       } catch (error) {
         console.error(error);
@@ -1638,11 +2053,10 @@
     async function importBackup(event) {
       const file = event.target.files?.[0];
       if (!file) return;
-
       try {
         const text = await file.text();
         const parsed = JSON.parse(text);
-        const importedRecords = Array.isArray(parsed?.records) ? parsed.records : null;
+        const importedRecords = Array.isArray(parsed?.records) ? parsed.records.map(normalizeRecord) : null;
         if (!importedRecords) {
           setStatus("Import failed", "The file does not contain a valid Trade Journal backup.");
           return;
@@ -1655,6 +2069,7 @@
         ui.startAccountSize.value = settings.startAccountSize || "";
         renderRecords();
         renderMetrics();
+        updateHeaderSummary();
         setStatus("Backup imported", `${records.length} trade(s) were restored successfully.`);
       } catch (error) {
         console.error(error);
@@ -1673,6 +2088,7 @@
       renderRecords();
       renderMetrics();
       resetEditor();
+      updateHeaderSummary();
       setStatus("All trades deleted", "The local journal was cleared.");
     }
 
@@ -1683,11 +2099,108 @@
       });
       openImporter.clearImage();
       closeImporter.clearImage();
+      setJournalMode("open");
+      syncDisplayPnl();
       updateSaveButton();
+      updateHeaderSummary();
+      updateDetailPreviewLabels();
     }
 
     function updateSaveButton() {
-      ui.saveRecordBtn.textContent = currentEditId ? "Update trade" : "Save trade";
+      const isEditing = Boolean(currentEditId);
+      ui.saveRecordBtn.textContent = isEditing ? "Update trade" : currentJournalMode === "close" ? "Save closed trade" : "Save open trade";
+    }
+
+    function updateHeaderSummary() {
+      const normalized = records.map(normalizeRecord);
+      const openCount = normalized.filter((record) => record.tradeState === "open").length;
+      const closedCount = normalized.filter((record) => record.tradeState === "closed").length;
+      const current = currentEditId ? normalizeRecord(records.find((entry) => entry.id === currentEditId)) : null;
+      ui.currentTradeLabel.textContent = current ? `${current["Coin"] || "Trade"} · ${current.tradeState}` : "New draft";
+      ui.journalSummaryLabel.textContent = `${openCount} open · ${closedCount} closed`;
+    }
+
+    function syncDisplayPnl() {
+      ui.displayPnlValue.textContent = getDisplayPnlFromFields() || "-";
+    }
+
+    function handlePnlFieldInput() {
+      syncDisplayPnl();
+      if (!fields.result.value) autoInferResultFromFields();
+    }
+
+    function getDisplayPnlFromFields() {
+      return String(fields.realizedPnl.value || fields.closedPnl.value || "").trim();
+    }
+
+    function getRecordDisplayPnl(record) {
+      return String(record["Display PnL"] || record["Realized PnL"] || record["Closed PnL"] || "").trim();
+    }
+
+    function updateDetailPreviewLabels() {
+      const openUrl = openImporter.getObjectUrl();
+      const closeUrl = closeImporter.getObjectUrl();
+      ui.openSnapshotLabel.style.display = "block";
+      ui.closeSnapshotLabel.style.display = "block";
+      ui.openSnapshotName.textContent = openImporter.getName() || "None loaded yet";
+      ui.closeSnapshotName.textContent = closeImporter.getName() || "None loaded yet";
+
+      if (openUrl) {
+        ui.detailOpenPreview.src = openUrl;
+        ui.detailOpenPreview.style.display = "block";
+      } else {
+        ui.detailOpenPreview.removeAttribute("src");
+        ui.detailOpenPreview.style.display = "none";
+      }
+
+      if (closeUrl) {
+        ui.detailClosePreview.src = closeUrl;
+        ui.detailClosePreview.style.display = "block";
+      } else {
+        ui.detailClosePreview.removeAttribute("src");
+        ui.detailClosePreview.style.display = "none";
+      }
+    }
+
+    function closeOnboarding() {
+      saveJson(ONBOARDING_KEY, true);
+      toggleModal(ui.onboardingModal, false);
+    }
+
+    function toggleModal(element, active) {
+      element.classList.toggle("active", active);
+      element.setAttribute("aria-hidden", active ? "false" : "true");
+    }
+
+    function migrateLegacyRecords() {
+      const current = loadJson(STORAGE_KEY, null);
+      if (Array.isArray(current)) return current.map(normalizeRecord);
+      const legacy = loadJson(LEGACY_STORAGE_KEY, []);
+      const migrated = Array.isArray(legacy) ? legacy.map(normalizeRecord) : [];
+      saveJson(STORAGE_KEY, migrated);
+      return migrated;
+    }
+
+    function normalizeRecord(record) {
+      if (!record) return null;
+      const realized = String(record["Realized PnL"] ?? record.realizedPnl ?? "").trim();
+      const closed = String(record["Closed PnL"] ?? record.closedPnl ?? "").trim();
+      const legacyPnl = String(record["$ PnL"] ?? "").trim();
+      const displaySeed = record["Display PnL"] ?? record.displayPnl ?? "";
+      const display = String(displaySeed || realized || closed || legacyPnl).trim();
+      return {
+        ...record,
+        "Realized PnL": realized || (legacyPnl && record.tradeState === "closed" ? legacyPnl : ""),
+        "Closed PnL": closed,
+        "Display PnL": display || realized || closed || legacyPnl || ""
+      };
+    }
+
+    function compareRecordsByDateDesc(a, b) {
+      const dateA = String(a["Post date"] || "");
+      const dateB = String(b["Post date"] || "");
+      if (dateA !== dateB) return dateB.localeCompare(dateA);
+      return String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""));
     }
 
     function buildSummary({ coin, direction, pnl, timeLabel, confidenceHints }) {
@@ -1696,7 +2209,7 @@
       if (direction) parts.push(`Direction: ${direction}`);
       if (pnl !== undefined && pnl !== "") parts.push(`PnL: ${pnl}`);
       if (timeLabel) parts.push(timeLabel);
-      if (confidenceHints.length) parts.push(`Erkannt: ${confidenceHints.join(", ")}`);
+      if (confidenceHints.length) parts.push(`Detected: ${confidenceHints.join(", ")}`);
       return parts.join(" | ");
     }
 
@@ -1739,7 +2252,6 @@
         const fuzzy = line.match(/^([A-Z0-9]{2,20})US[DO0]T?$/);
         if (fuzzy) return fuzzy[1];
       }
-
       return "";
     }
 
@@ -1772,18 +2284,15 @@
 
     function findMatchingOpenTrade(parsed) {
       const candidates = records
+        .map(normalizeRecord)
         .filter((record) => record.tradeState === "open")
         .filter((record) => !parsed.coin || record["Coin"] === parsed.coin)
         .filter((record) => !parsed.direction || record["Direction"] === parsed.direction);
 
       if (!candidates.length) return null;
-
       const targetDate = parsed.postDate || "";
       const sameDate = candidates.filter((record) => (record["Post date"] || "") === targetDate);
-      if (sameDate.length) {
-        return sameDate.sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))[0];
-      }
-
+      if (sameDate.length) return sameDate.sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))[0];
       return candidates.sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))[0];
     }
 
@@ -1809,9 +2318,7 @@
       if (!match) return "";
       const [, mm, dd] = match;
       const year = new Date().getFullYear();
-      const month = String(Number(mm)).padStart(2, "0");
-      const day = String(Number(dd)).padStart(2, "0");
-      return `${year}-${month}-${day}`;
+      return `${year}-${String(Number(mm)).padStart(2, "0")}-${String(Number(dd)).padStart(2, "0")}`;
     }
 
     function inferSession(shortDateTime) {
@@ -1843,10 +2350,7 @@
 
     function getLocalIsoDate() {
       const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, "0");
-      const day = String(now.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
+      return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
     }
 
     function getLocalYearMonth() {
@@ -1855,6 +2359,15 @@
 
     function setStatus(title, message) {
       ui.ocrStatus.innerHTML = `<strong>${escapeHtml(title)}</strong>${escapeHtml(message)}`;
+    }
+
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
     }
 
     if ("serviceWorker" in navigator) {
@@ -1877,11 +2390,26 @@
       localStorage.setItem(key, JSON.stringify(value));
     }
 
+    function normalizeText(input) {
+      return input
+        .replace(/[|]/g, "I")
+        .replace(/USOT/gi, "USDT")
+        .replace(/USDT\)/gi, "USDT)")
+        .replace(/CIosed/gi, "Closed")
+        .replace(/ReaIized/gi, "Realized")
+        .replace(/Ciose/gi, "Close")
+        .replace(/0pen/gi, "Open")
+        .replace(/[“”]/g, "\"")
+        .replace(/[‘’]/g, "'")
+        .replace(/\r/g, "\n")
+        .replace(/[ \t]+\n/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+    }
+
     function escapeCsv(value) {
       const stringValue = String(value ?? "");
-      if (/[",\n]/.test(stringValue)) {
-        return `"${stringValue.replace(/"/g, "\"\"")}"`;
-      }
+      if (/[",\n]/.test(stringValue)) return `"${stringValue.replace(/"/g, "\"\"")}"`;
       return stringValue;
     }
 
@@ -1907,7 +2435,6 @@
       for (let i = 0; i < text.length; i += 1) {
         const char = text[i];
         const next = text[i + 1];
-
         if (char === "\"") {
           if (inQuotes && next === "\"") {
             current += "\"";
@@ -1948,10 +2475,25 @@
       CSV_HEADERS.forEach((header) => {
         normalized[header] = String(row[header] ?? "").trim();
       });
-      normalized["Coin"] = normalized["Coin"].toUpperCase();
-      if (normalized["$ PnL"]) {
-        normalized["$ PnL"] = String(parseSignedNumber(normalized["$ PnL"]) || normalized["$ PnL"]);
-      }
+      normalized["Coin"] = String(normalized["Coin"] || row["Coin"] || "").toUpperCase();
+      normalized["Status"] = normalized["Status"] || row["Status"] || "";
+      normalized["Post date"] = normalized["Post date"] || row["Post date"] || "";
+      normalized["session"] = normalized["session"] || row["session"] || "";
+      normalized["Direction"] = normalized["Direction"] || row["Direction"] || "";
+      normalized["1% Risk"] = normalized["1% Risk"] || row["1% Risk"] || "";
+      normalized["TF trade taken"] = normalized["TF trade taken"] || row["TF trade taken"] || "";
+      normalized["Did you follow your rules"] = normalized["Did you follow your rules"] || row["Did you follow your rules"] || "";
+      normalized["TV link"] = normalized["TV link"] || row["TV link"] || "";
+      normalized["Notes"] = normalized["Notes"] || row["Notes"] || "";
+      normalized["Emotions"] = normalized["Emotions"] || row["Emotions"] || "";
+      normalized["Win or Loss?"] = normalized["Win or Loss?"] || row["Win or Loss?"] || "";
+
+      const legacyPnl = row["$ PnL"] || "";
+      if (!normalized["Realized PnL"] && legacyPnl) normalized["Realized PnL"] = legacyPnl;
+      normalizePnlField(normalized, "Realized PnL");
+      normalizePnlField(normalized, "Closed PnL");
+      normalized["Display PnL"] = normalized["Display PnL"] || normalized["Realized PnL"] || normalized["Closed PnL"] || "";
+      if (!normalized["Win or Loss?"]) normalized["Win or Loss?"] = inferResult(normalized["Display PnL"]);
       return normalized;
     }
   </script>
