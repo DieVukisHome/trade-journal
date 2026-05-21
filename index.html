@@ -619,6 +619,74 @@
       margin-top: 8px;
     }
 
+    .review-chart-card {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+    }
+
+    .review-chart {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+      align-items: end;
+      gap: 12px;
+      min-height: 220px;
+    }
+
+    .review-bar-wrap {
+      display: grid;
+      gap: 8px;
+      align-items: end;
+      min-width: 0;
+    }
+
+    .review-bar-stack {
+      position: relative;
+      display: grid;
+      align-items: end;
+      min-height: 160px;
+      padding: 10px 8px 0;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .review-bar {
+      width: 100%;
+      border-radius: 12px 12px 6px 6px;
+      min-height: 10px;
+    }
+
+    .review-bar.positive {
+      background: linear-gradient(180deg, rgba(86, 208, 160, 0.98), rgba(52, 170, 127, 0.92));
+      box-shadow: 0 12px 24px rgba(86, 208, 160, 0.18);
+    }
+
+    .review-bar.negative {
+      background: linear-gradient(180deg, rgba(255, 125, 143, 0.98), rgba(221, 89, 109, 0.92));
+      box-shadow: 0 12px 24px rgba(255, 125, 143, 0.16);
+    }
+
+    .review-bar-label,
+    .review-bar-value {
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
+
+    .review-bar-label {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .review-bar-value {
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
     .empty {
       padding: 18px;
       border-radius: 18px;
@@ -1032,6 +1100,17 @@
             </div>
           </div>
         </div>
+        <div class="review-chart-card">
+          <div class="section-head">
+            <div>
+              <h3>Monthly PnL</h3>
+              <p class="helper-copy">A quick visual on how your closed-trade months are stacking up.</p>
+            </div>
+          </div>
+          <div class="review-chart" id="reviewChart">
+            <div class="empty">No closed trades yet.</div>
+          </div>
+        </div>
       </section>
     </section>
 
@@ -1249,6 +1328,7 @@
       metricPercent: document.getElementById("metricPercent"),
       metricWins: document.getElementById("metricWins"),
       metricLosses: document.getElementById("metricLosses"),
+      reviewChart: document.getElementById("reviewChart"),
       exportMonth: document.getElementById("exportMonth"),
       ocrStatus: document.getElementById("ocrStatus"),
       recordsList: document.getElementById("recordsList"),
@@ -1889,6 +1969,53 @@
       ui.metricPercent.className = percent > 0 ? "positive" : percent < 0 ? "negative" : "";
       ui.metricWins.className = wins > 0 ? "positive" : "";
       ui.metricLosses.className = losses > 0 ? "negative" : "";
+      renderReviewChart(closed);
+    }
+
+    function renderReviewChart(closedRecords) {
+      if (!closedRecords.length) {
+        ui.reviewChart.innerHTML = '<div class="empty">No closed trades yet.</div>';
+        return;
+      }
+
+      const byMonth = new Map();
+      for (const record of closedRecords) {
+        const monthKey = String(record["Post date"] || "").slice(0, 7);
+        if (!monthKey) continue;
+        const current = byMonth.get(monthKey) || 0;
+        const pnl = Number(getRecordDisplayPnl(record));
+        byMonth.set(monthKey, current + (Number.isFinite(pnl) ? pnl : 0));
+      }
+
+      const items = Array.from(byMonth.entries())
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .slice(-6);
+
+      if (!items.length) {
+        ui.reviewChart.innerHTML = '<div class="empty">No monthly review data available yet.</div>';
+        return;
+      }
+
+      const maxAbs = Math.max(...items.map(([, value]) => Math.abs(value)), 1);
+      ui.reviewChart.innerHTML = "";
+
+      for (const [month, value] of items) {
+        const wrap = document.createElement("div");
+        wrap.className = "review-bar-wrap";
+        const barClass = value >= 0 ? "positive" : "negative";
+        const height = Math.max((Math.abs(value) / maxAbs) * 140, 10);
+        const shortMonth = formatMonthLabel(month);
+
+        wrap.innerHTML = `
+          <div class="review-bar-value ${barClass}">${formatSignedPnl(value)}</div>
+          <div class="review-bar-stack">
+            <div class="review-bar ${barClass}" style="height:${height}px;"></div>
+          </div>
+          <div class="review-bar-label">${escapeHtml(shortMonth)}</div>
+        `;
+
+        ui.reviewChart.appendChild(wrap);
+      }
     }
 
     function setView(view) {
@@ -2335,6 +2462,20 @@
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       }).format(value);
+    }
+
+    function formatSignedPnl(value) {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric)) return "-";
+      const prefix = numeric > 0 ? "+" : "";
+      return `${prefix}${numeric.toFixed(2)}`;
+    }
+
+    function formatMonthLabel(monthKey) {
+      if (!/^\d{4}-\d{2}$/.test(monthKey)) return monthKey;
+      const [year, month] = monthKey.split("-");
+      const date = new Date(Number(year), Number(month) - 1, 1);
+      return date.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
     }
 
     function getLocalIsoDate() {
