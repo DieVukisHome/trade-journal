@@ -865,7 +865,7 @@
                   <div class="pnl-grid">
                     <label class="field pnl-chip">
                       <span>Realized PnL</span>
-                      <input id="realizedPnl" type="number" step="0.0001" placeholder="preferred for insights">
+                      <input id="realizedPnl" type="number" step="0.0001" placeholder="preferred for review">
                     </label>
                     <label class="field pnl-chip">
                       <span>Closed PnL</span>
@@ -948,7 +948,7 @@
                 <img class="preview" id="detailOpenPreview" alt="Open detail preview">
                 <img class="preview" id="detailClosePreview" alt="Closed detail preview">
               </div>
-              <div class="field-hint">If OCR got anything wrong, correct it in the form before saving. Changes are reflected instantly in trades and insights.</div>
+              <div class="field-hint">If OCR got anything wrong, correct it in the form before saving. Changes are reflected instantly in trades and review.</div>
             </section>
           </div>
         </div>
@@ -992,7 +992,7 @@
       <section class="panel">
         <div class="section-head">
           <div>
-            <h2>Insights</h2>
+            <h2>Review</h2>
             <p class="helper-copy">Only closed trades contribute here. Realized PnL is the default review metric for account progress.</p>
           </div>
         </div>
@@ -1121,7 +1121,7 @@
     <div class="nav">
       <button class="secondary active" id="showJournalBtn" type="button">Journal</button>
       <button class="secondary" id="showTradesBtn" type="button">Trades</button>
-      <button class="secondary" id="showInsightsBtn" type="button">Insights</button>
+      <button class="secondary" id="showInsightsBtn" type="button">Review</button>
       <button class="secondary" id="showSettingsBtn" type="button">Settings</button>
     </div>
   </div>
@@ -1172,7 +1172,7 @@
         <div class="paywall-grid">
           <div class="paywall-tier">
             <strong>Monthly</strong>
-            <span>Fast journaling, local-only backup tools, and closed-trade insights.</span>
+            <span>Fast journaling, local-only backup tools, and closed-trade review.</span>
           </div>
           <div class="paywall-tier">
             <strong>Yearly</strong>
@@ -1183,7 +1183,7 @@
           <h3>What you unlock</h3>
           <ul class="settings-list">
             <li>Screenshot-first journaling flow</li>
-            <li>Closed-trade insights built around realized PnL</li>
+            <li>Closed-trade review built around realized PnL</li>
             <li>Local backups without exchange API access</li>
           </ul>
         </div>
@@ -1633,7 +1633,7 @@
       setStatus(
         tradeState === "closed" ? "Trade saved" : "Open trade saved",
         tradeState === "closed"
-          ? "The trade is now part of your closed journal and insights."
+          ? "The trade is now part of your closed journal and review."
           : "The open trade is ready to be matched with a closed screenshot later."
       );
       setView("trades");
