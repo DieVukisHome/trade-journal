@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trade Journal</title>
+  <title>ClipLog — Screenshot Trade Journal</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Trade Journal">
+  <meta name="apple-mobile-web-app-title" content="ClipLog">
   <meta name="theme-color" content="#08111a">
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="manifest" href="./manifest.webmanifest">
@@ -422,6 +422,18 @@
       border-color: rgba(86, 208, 160, 0.22);
     }
 
+    .subscription-badge.warning {
+      background: rgba(255, 191, 94, 0.12);
+      color: #ffd78f;
+      border-color: rgba(255, 191, 94, 0.22);
+    }
+
+    .subscription-badge.neutral {
+      background: rgba(127, 199, 255, 0.12);
+      color: #9ed9ff;
+      border-color: rgba(127, 199, 255, 0.22);
+    }
+
     .drop-zone {
       position: relative;
       overflow: hidden;
@@ -456,6 +468,282 @@
     .drop-zone span {
       color: var(--muted);
       line-height: 1.45;
+    }
+
+    .paywall-headline {
+      display: grid;
+      gap: 8px;
+    }
+
+    .paywall-plan {
+      position: relative;
+      display: grid;
+      gap: 8px;
+      text-align: left;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.035);
+      padding: 18px;
+      transition: border-color 140ms ease, transform 140ms ease, background 140ms ease;
+    }
+
+    .paywall-plan:hover {
+      transform: translateY(-1px);
+      border-color: rgba(127, 199, 255, 0.28);
+    }
+
+    .paywall-plan.active {
+      border-color: rgba(86, 208, 160, 0.4);
+      background:
+        linear-gradient(180deg, rgba(86, 208, 160, 0.12), rgba(255, 255, 255, 0.03)),
+        rgba(8, 17, 27, 0.92);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+    }
+
+    .paywall-plan-top,
+    .paywall-plan-meta,
+    .paywall-comparison-header,
+    .paywall-comparison-row,
+    .trial-summary {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .paywall-plan-top strong,
+    .paywall-plan-price strong {
+      font-size: 1.02rem;
+    }
+
+    .paywall-plan-price {
+      display: grid;
+      gap: 3px;
+    }
+
+    .paywall-price {
+      font-size: 1.38rem;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .paywall-plan-copy,
+    .trial-line,
+    .paywall-subcta,
+    .paywall-comparison-row span,
+    .paywall-comparison-header span {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .plan-badge,
+    .trial-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+    }
+
+    .plan-badge.highlight,
+    .trial-chip {
+      background: rgba(86, 208, 160, 0.12);
+      color: var(--accent);
+      border-color: rgba(86, 208, 160, 0.22);
+    }
+
+    .plan-badge.warning {
+      background: rgba(255, 191, 94, 0.12);
+      color: #ffd78f;
+      border-color: rgba(255, 191, 94, 0.22);
+    }
+
+    .trial-summary {
+      padding: 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(86, 208, 160, 0.18);
+      background: rgba(86, 208, 160, 0.05);
+      flex-wrap: wrap;
+    }
+
+    .paywall-comparison {
+      display: grid;
+      gap: 0;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .paywall-comparison-header,
+    .paywall-comparison-row {
+      padding: 14px 16px;
+    }
+
+    .paywall-comparison-header {
+      background: rgba(255, 255, 255, 0.04);
+      font-weight: 700;
+    }
+
+    .paywall-comparison-row + .paywall-comparison-row {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .paywall-comparison-row strong,
+    .paywall-comparison-header strong {
+      width: 50%;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .paywall-subcta {
+      text-align: center;
+      font-size: 0.94rem;
+    }
+
+    .onboarding-flow {
+      gap: 20px;
+    }
+
+    .onboarding-progress,
+    .onboarding-copy,
+    .onboarding-stage {
+      display: grid;
+      gap: 12px;
+    }
+
+    .onboarding-progress-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .onboarding-progress-bar {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .onboarding-progress-bar span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(135deg, var(--accent), #3eb6f8);
+      transition: width 180ms ease;
+    }
+
+    .onboarding-stage {
+      min-height: 260px;
+    }
+
+    .onboarding-card,
+    .onboarding-option,
+    .onboarding-demo,
+    .onboarding-loader,
+    .onboarding-result-card {
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.035);
+      padding: 18px;
+    }
+
+    .onboarding-card {
+      display: grid;
+      gap: 14px;
+    }
+
+    .onboarding-input {
+      display: grid;
+      gap: 8px;
+    }
+
+    .onboarding-options,
+    .onboarding-exchange-grid,
+    .onboarding-result-grid,
+    .onboarding-loader-lines {
+      display: grid;
+      gap: 12px;
+    }
+
+    .onboarding-option {
+      width: 100%;
+      text-align: left;
+      display: grid;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .onboarding-option.active {
+      border-color: rgba(86, 208, 160, 0.4);
+      background:
+        linear-gradient(180deg, rgba(86, 208, 160, 0.12), rgba(255, 255, 255, 0.03)),
+        rgba(8, 17, 27, 0.92);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
+    }
+
+    .onboarding-exchange-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .onboarding-option-label {
+      font-weight: 700;
+    }
+
+    .onboarding-option-meta,
+    .onboarding-card small,
+    .onboarding-loader-line,
+    .onboarding-note,
+    .review-request-note {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .onboarding-demo {
+      display: grid;
+      gap: 14px;
+    }
+
+    .onboarding-demo img {
+      width: 100%;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: block;
+    }
+
+    .onboarding-result-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .onboarding-result-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 1.04rem;
+      overflow-wrap: anywhere;
+    }
+
+    .onboarding-loader-line.active {
+      color: var(--text);
+    }
+
+    .onboarding-loader-line.done {
+      color: var(--accent);
+    }
+
+    .onboarding-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .drop-zone input[type="file"] {
@@ -629,62 +917,123 @@
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
     }
 
+    .review-chart-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .review-range {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      padding: 6px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      min-width: min(100%, 240px);
+    }
+
+    .review-range button.active {
+      background: linear-gradient(135deg, rgba(86, 208, 160, 0.22), rgba(62, 182, 248, 0.22));
+      color: var(--text);
+      border: 1px solid rgba(127, 199, 255, 0.18);
+    }
+
+    .review-month-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .review-month-nav.hidden {
+      display: none;
+    }
+
+    .review-month-label {
+      min-width: 92px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
     .review-chart {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
-      align-items: end;
       gap: 12px;
-      min-height: 220px;
+      min-height: 250px;
     }
 
-    .review-bar-wrap {
-      display: grid;
-      gap: 8px;
-      align-items: end;
-      min-width: 0;
-    }
-
-    .review-bar-stack {
+    .review-svg-wrap {
       position: relative;
-      display: grid;
-      align-items: end;
-      min-height: 160px;
-      padding: 10px 8px 0;
-      border-radius: 16px;
+      height: 220px;
+      padding: 10px;
+      border-radius: 18px;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    .review-bar {
+    .review-svg {
       width: 100%;
-      border-radius: 12px 12px 6px 6px;
-      min-height: 10px;
+      height: 100%;
+      display: block;
     }
 
-    .review-bar.positive {
-      background: linear-gradient(180deg, rgba(86, 208, 160, 0.98), rgba(52, 170, 127, 0.92));
-      box-shadow: 0 12px 24px rgba(86, 208, 160, 0.18);
+    .review-chart-axis {
+      stroke: rgba(255, 255, 255, 0.12);
+      stroke-width: 1;
     }
 
-    .review-bar.negative {
-      background: linear-gradient(180deg, rgba(255, 125, 143, 0.98), rgba(221, 89, 109, 0.92));
-      box-shadow: 0 12px 24px rgba(255, 125, 143, 0.16);
+    .review-chart-grid {
+      stroke: rgba(255, 255, 255, 0.08);
+      stroke-width: 1;
+      stroke-dasharray: 3 6;
     }
 
-    .review-bar-label,
-    .review-bar-value {
+    .review-line {
+      fill: none;
+      stroke: var(--accent-2);
+      stroke-width: 2.35;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .review-area {
+      fill: rgba(127, 199, 255, 0.12);
+    }
+
+    .review-point {
+      fill: var(--text);
+      stroke: rgba(127, 199, 255, 0.8);
+      stroke-width: 1.25;
+    }
+
+    .review-chart-labels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+      gap: 8px;
+    }
+
+    .review-chart-labels span {
       text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
       overflow-wrap: anywhere;
     }
 
-    .review-bar-label {
+    .review-chart-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
       color: var(--muted);
-      font-size: 0.84rem;
+      font-size: 0.9rem;
     }
 
-    .review-bar-value {
-      font-size: 0.88rem;
-      font-weight: 700;
+    .review-chart-summary strong {
+      color: var(--text);
+      margin-left: 4px;
     }
 
     .empty {
@@ -763,7 +1112,9 @@
       .record-grid,
       .filter-bar,
       .pnl-grid,
-      .paywall-grid {
+      .paywall-grid,
+      .onboarding-exchange-grid,
+      .onboarding-result-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -773,7 +1124,7 @@
   <main class="shell">
     <section class="hero">
       <div class="hero-copy">
-        <h1>Trade Journal</h1>
+        <h1 id="heroAppName"></h1>
         <p>Capture your trade the moment it happens, review OCR suggestions, and keep everything on-device without handing over exchange API access.</p>
       </div>
     </section>
@@ -1069,7 +1420,7 @@
             <h3>Account basis</h3>
             <label class="field">
               <span>Start Account Size</span>
-              <input id="startAccountSize" type="number" step="0.01" placeholder="e.g. 1200">
+              <input id="startAccountSize" type="number" step="0.01" placeholder="$">
             </label>
             <span class="field-hint">Used for account size and percentage PnL. Only closed trades are included.</span>
           </div>
@@ -1103,13 +1454,27 @@
         <div class="review-chart-card">
           <div class="section-head">
             <div>
-              <h3>Monthly PnL</h3>
-              <p class="helper-copy">A quick visual on how your closed-trade months are stacking up.</p>
+              <h3>Review chart</h3>
+              <p class="helper-copy">The line starts at zero and builds up dynamically from closed trades with realized PnL.</p>
             </div>
+          </div>
+          <div class="review-chart-toolbar">
+            <div class="review-range">
+              <button class="secondary active" id="reviewRangeWeekBtn" type="button">1W</button>
+              <button class="secondary" id="reviewRangeMonthBtn" type="button">1M</button>
+              <button class="secondary" id="reviewRangeAllBtn" type="button">All</button>
+            </div>
+            <div class="review-month-nav" id="reviewMonthNav">
+              <button class="secondary tiny" id="reviewPrevMonthBtn" type="button">Prev</button>
+              <span class="review-month-label" id="reviewMonthLabel">-</span>
+              <button class="secondary tiny" id="reviewNextMonthBtn" type="button">Next</button>
+            </div>
+            <button class="ghost tiny" id="loadReviewDemoBtn" type="button" style="display:none;">Load local demo data</button>
           </div>
           <div class="review-chart" id="reviewChart">
             <div class="empty">No closed trades yet.</div>
           </div>
+          <div class="review-chart-summary" id="reviewChartSummary"></div>
         </div>
       </section>
     </section>
@@ -1128,11 +1493,11 @@
               <h3>Subscription</h3>
               <div class="subscription-status">
                 <div>
-                  <span class="subscription-badge">Demo membership</span>
-                  <p class="helper-copy">This web build mirrors the future store flow. Native billing hooks will replace this placeholder state.</p>
+                  <span class="subscription-badge neutral" id="subscriptionBadge">Paywall preview</span>
+                  <p class="helper-copy" id="subscriptionSummary">Trial, pricing, and purchase hooks are wired for the store build, but the hard lock stays off until the onboarding funnel is in place.</p>
                 </div>
                 <div class="actions">
-                  <button class="primary tiny" id="openPaywallBtn" type="button">View paywall</button>
+                  <button class="primary tiny" id="openPaywallBtn" type="button">See plans</button>
                   <button class="secondary tiny" id="restorePurchasesBtn" type="button">Restore purchases</button>
                 </div>
               </div>
@@ -1207,33 +1572,24 @@
 
   <div class="modal" id="onboardingModal" aria-hidden="true">
     <div class="modal-card">
-      <div class="modal-stack">
-        <div class="section-head">
-          <div>
-            <h2>Welcome to Trade Journal</h2>
-            <p class="helper-copy">A mobile-first, local-only journaling workflow built around trade screenshots.</p>
+      <div class="modal-stack onboarding-flow">
+        <div class="onboarding-progress">
+          <div class="onboarding-progress-top">
+            <span class="pill-note" id="onboardingProgressLabel">Step 1 of 14</span>
+            <span class="helper-copy" id="onboardingProgressDetail">Introduction</span>
+          </div>
+          <div class="onboarding-progress-bar">
+            <span id="onboardingProgressFill"></span>
           </div>
         </div>
-        <div class="onboarding-steps">
-          <div class="onboarding-step">
-            <strong>1. Screenshot in, journal almost done.</strong>
-            <p>Import an open or closed trade screenshot and let OCR prefill the draft.</p>
-          </div>
-          <div class="onboarding-step">
-            <strong>2. Your data stays local.</strong>
-            <p>Trade data and screenshots remain on this device in this build. There is no upload server behind the workflow.</p>
-          </div>
-          <div class="onboarding-step">
-            <strong>3. Open and Closed show different details.</strong>
-            <p>Open screenshots focus on setup. Closed screenshots add result and final PnL information.</p>
-          </div>
-          <div class="onboarding-step">
-            <strong>4. Built for a real mobile routine.</strong>
-            <p>Save the trade now, review it later, and keep the journal habit alive.</p>
-          </div>
+        <div class="onboarding-copy">
+          <h2 id="onboardingTitle"></h2>
+          <p class="helper-copy" id="onboardingBody"></p>
         </div>
+        <div class="onboarding-stage" id="onboardingStage"></div>
         <div class="actions">
-          <button class="primary" id="closeOnboardingBtn" type="button">Start journaling</button>
+          <button class="secondary" id="onboardingSecondaryBtn" type="button" hidden>Back</button>
+          <button class="primary" id="onboardingPrimaryBtn" type="button">Show me</button>
         </div>
       </div>
     </div>
@@ -1244,31 +1600,106 @@
       <div class="modal-stack">
         <div class="section-head">
           <div>
-            <h2>Trade Journal Pro</h2>
-            <p class="helper-copy">Store-ready subscription copy, positioned around speed, local-only privacy, and no exchange API requirement.</p>
+            <h2>Become the trader you could be.</h2>
+            <p class="helper-copy">You've got the setups. You know the technical analysis. What's missing is the mirror — an honest look at your own behavior. <span data-brand="pro"></span> gives you unlimited trades, full OCR, all exchanges, and the insights that make your pattern visible.</p>
           </div>
         </div>
-        <div class="paywall-grid">
-          <div class="paywall-tier">
-            <strong>Monthly</strong>
-            <span>Fast journaling, local-only backup tools, and closed-trade review.</span>
+        <div class="paywall-headline">
+          <div class="trial-summary">
+            <div>
+              <strong>Start your 7-day free trial.</strong>
+              <div class="trial-line" id="trialLine">7 days free, then $9.99/month. Cancel anytime.</div>
+            </div>
+            <span class="trial-chip">No API key</span>
           </div>
-          <div class="paywall-tier">
-            <strong>Yearly</strong>
-            <span>The long-term review habit for traders who want the full workflow on mobile.</span>
+          <div class="paywall-grid" id="paywallPlans">
+            <button class="paywall-plan" data-plan-id="weekly" type="button">
+              <div class="paywall-plan-top">
+                <div class="paywall-plan-price">
+                  <strong class="paywall-plan-label">Weekly</strong>
+                  <span class="paywall-price paywall-plan-price-value">$2.99</span>
+                </div>
+                <span class="plan-badge paywall-plan-badge">7-day trial</span>
+              </div>
+              <div class="paywall-plan-copy">$2.99/week</div>
+              <div class="paywall-plan-meta">
+                <span class="helper-copy paywall-plan-meta-left">$12.94/month equivalent</span>
+                <span class="helper-copy paywall-plan-meta-right">Most flexible</span>
+              </div>
+            </button>
+            <button class="paywall-plan active" data-plan-id="yearly" type="button">
+              <div class="paywall-plan-top">
+                <div class="paywall-plan-price">
+                  <strong class="paywall-plan-label">Yearly</strong>
+                  <span class="paywall-price paywall-plan-price-value">$39.99</span>
+                </div>
+                <span class="plan-badge highlight paywall-plan-badge">Best value</span>
+              </div>
+              <div class="paywall-plan-copy">$39.99/year</div>
+              <div class="paywall-plan-meta">
+                <span class="helper-copy paywall-plan-meta-left">Save 67%</span>
+                <span class="helper-copy paywall-plan-meta-right">$3.33/month equivalent</span>
+              </div>
+            </button>
+            <button class="paywall-plan" data-plan-id="monthly" type="button">
+              <div class="paywall-plan-top">
+                <div class="paywall-plan-price">
+                  <strong class="paywall-plan-label">Monthly</strong>
+                  <span class="paywall-price paywall-plan-price-value">$9.99</span>
+                </div>
+                <span class="plan-badge paywall-plan-badge">Most flexible</span>
+              </div>
+              <div class="paywall-plan-copy">$9.99/month</div>
+              <div class="paywall-plan-meta">
+                <span class="helper-copy paywall-plan-meta-left">7-day trial</span>
+                <span class="helper-copy paywall-plan-meta-right">Month to month</span>
+              </div>
+            </button>
+            <button class="paywall-plan" data-plan-id="lifetime" type="button">
+              <div class="paywall-plan-top">
+                <div class="paywall-plan-price">
+                  <strong class="paywall-plan-label">Lifetime</strong>
+                  <span class="paywall-price paywall-plan-price-value">$79</span>
+                </div>
+                <span class="plan-badge warning paywall-plan-badge">Founding Member</span>
+              </div>
+              <div class="paywall-plan-copy">$79 one-time</div>
+              <div class="paywall-plan-meta">
+                <span class="helper-copy paywall-plan-meta-left">Launch only, limited</span>
+                <span class="helper-copy paywall-plan-meta-right">One-time purchase</span>
+              </div>
+            </button>
           </div>
         </div>
         <div class="setting-card">
-          <h3>What you unlock</h3>
-          <ul class="settings-list">
-            <li>Screenshot-first journaling flow</li>
-            <li>Closed-trade review built around realized PnL</li>
-            <li>Local backups without exchange API access</li>
-          </ul>
+          <h3>By hand vs. <span data-brand="pro"></span></h3>
+          <div class="paywall-comparison">
+            <div class="paywall-comparison-header">
+              <strong>By hand / spreadsheet</strong>
+              <strong data-brand="pro"></strong>
+            </div>
+            <div class="paywall-comparison-row">
+              <span>Type every field manually</span>
+              <span>Screenshot → trade in 15 seconds</span>
+            </div>
+            <div class="paywall-comparison-row">
+              <span>Scattered, rarely updated</span>
+              <span>Every trade, logged automatically</span>
+            </div>
+            <div class="paywall-comparison-row">
+              <span>No pattern visible</span>
+              <span>See your FOMO, revenge trades &amp; plan breaks</span>
+            </div>
+            <div class="paywall-comparison-row">
+              <span>Your keys on a server (other apps)</span>
+              <span>100% on-device · no API key</span>
+            </div>
+          </div>
         </div>
+        <p class="paywall-subcta">Cancel anytime · No API key · Nothing leaves your device.</p>
         <div class="actions">
-          <button class="primary" id="subscribeNowBtn" type="button">Continue with trial</button>
-          <button class="secondary" id="closePaywallBtn" type="button">Not now</button>
+          <button class="primary" id="subscribeNowBtn" type="button">Start 7-day free trial</button>
+          <button class="secondary" id="closePaywallBtn" type="button">Close preview</button>
         </div>
       </div>
     </div>
@@ -1276,10 +1707,192 @@
 
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script>
+    const APP_CONFIG = {
+      locale: "en",
+      appName: "ClipLog",
+      proName: "ClipLog Pro",
+      appSlug: "cliplog",
+      appTitle: "ClipLog — Screenshot Trade Journal",
+      appDescription: "Screenshot in, trade logged. On-device futures journal for Binance, OKX, Bitget & BingX — no API key, no cloud."
+    };
+
+    const BILLING_CONFIG = {
+      currency: "USD",
+      trialDays: 7,
+      plans: {
+        weekly: {
+          id: "weekly",
+          label: "Weekly",
+          priceLabel: "$2.99",
+          priceValue: 2.99,
+          intervalLabel: "week",
+          equivalentLabel: "$12.94/month equivalent",
+          badge: "Flexible"
+        },
+        monthly: {
+          id: "monthly",
+          label: "Monthly",
+          priceLabel: "$9.99",
+          priceValue: 9.99,
+          intervalLabel: "month",
+          equivalentLabel: "$9.99/month",
+          badge: "Recommended"
+        },
+        yearly: {
+          id: "yearly",
+          label: "Yearly",
+          priceLabel: "$39.99",
+          priceValue: 39.99,
+          intervalLabel: "year",
+          equivalentLabel: "$3.33/month equivalent",
+          badge: "Best value"
+        },
+        lifetime: {
+          id: "lifetime",
+          label: "Lifetime",
+          priceLabel: "$79",
+          priceValue: 79,
+          intervalLabel: "one-time",
+          equivalentLabel: "One-time purchase",
+          badge: "Founding Member"
+        }
+      }
+    };
+
+    const FEATURE_GATES = {
+      enforceHardPaywall: true,
+      allowPreviewAccess: false
+    };
+
+    const ONBOARDING_STATE_KEY = "cliplog-onboarding-state-v1";
+    const WELCOME_OFFER_DISCOUNT = 0.4;
+    const ONBOARDING_DEMO_SAMPLE = {
+      src: "./trade_journal_samples/okx/closed/Bildschirmfoto%202026-05-21%20um%2012.34.49.png",
+      mode: "close",
+      fallback: {
+        Coin: "BTC",
+        Direction: "Long",
+        "Realized PnL": "24.53533",
+        "Entry Price": "108,411.7",
+        "Avg. Close Price": "108,535.0"
+      }
+    };
+
+    const COPY_EN = {
+      hero: {
+        cta: "Start free trial"
+      },
+      onboarding: {
+        screens: {
+          s1: {
+            headline: "You trade almost every day. Are you actually getting better?",
+            body: "Most traders can't answer that — because they never write it down. Two minutes here changes that.",
+            cta: "Show me",
+            pillar: "Introduction"
+          },
+          s2: {
+            inputLabel: "What does one bad trade usually cost you?",
+            resultHeadline: "One revenge trade can erase a good week.",
+            fallback: "A single revenge trade can cost more than a month of disciplined gains.",
+            cta: "Makes sense",
+            pillar: "Introduction"
+          },
+          s3: {
+            headline: "Where do you trade?",
+            body: "We'll tune ClipLog to read your screenshots.",
+            cta: "Continue",
+            pillar: "Introduction"
+          },
+          s4: {
+            headline: "What costs you the most?",
+            cta: "Continue",
+            pillar: "Introduction",
+            options: [
+              { id: "fomo", label: "FOMO — entering too early" },
+              { id: "revenge", label: "Revenge trading after a loss" },
+              { id: "plan", label: "Not sticking to my plan" },
+              { id: "overview", label: "No clear overview of my trades" }
+            ]
+          },
+          s5: {
+            body: "You don't need another strategy. You need to see the pattern — so you can finally break it.",
+            cta: "Continue",
+            pillar: "Introduction"
+          },
+          s6: {
+            headline: "How serious are you about getting better?",
+            body: "Honest answer — it shapes the plan we build for you.",
+            pillar: "Introduction",
+            options: ["Extremely", "Very", "Somewhat"]
+          },
+          s7: {
+            headline: "Watch. Drop in a trade screenshot.",
+            body: "ClipLog reads the coin, direction, entry, exit and PnL — right here, on your device. No typing.",
+            cta: "Try it",
+            pillar: "Climax"
+          },
+          s8: {
+            headline: "That took 15 seconds. By hand it's 3 minutes.",
+            body: "Fast enough that you'll actually do it after every trade — which is the entire point.",
+            cta: "Continue",
+            pillar: "Climax"
+          },
+          s9: {
+            headline: "Day 1. Your first logged trade.",
+            body: "Most traders quit journaling by day 3. You won't — because this is fast.",
+            cta: "Continue",
+            pillar: "Climax"
+          },
+          s10: {
+            headline: "Your 30-day plan is ready.",
+            body: "Log every trade for 30 days. By the end you'll see your pattern — when you lose, and why.",
+            cta: "Continue",
+            pillar: "Conclusion"
+          },
+          s11: {
+            headline: "ClipLog Pro costs less than one bad trade.",
+            cta: "Continue",
+            pillar: "Conclusion"
+          },
+          s12: {
+            headline: "Building your trading plan…",
+            socialProof: "Join the traders who finally kept the habit.",
+            pillar: "Conclusion",
+            loaderLines: [
+              "Setting your 30-day goal…",
+              "Tuning OCR for {{exchange}}…",
+              "Preparing your review dashboard…"
+            ]
+          },
+          s14: {
+            headline: "Wait — here's 40% off your first year.",
+            body: "The first 30 days are when journaling actually sticks. This offer expires in 24 hours.",
+            cta: "Claim 40% off",
+            secondary: "No thanks",
+            pillar: "Conclusion"
+          }
+        },
+        exchanges: ["Binance", "OKX", "Bitget", "BingX"]
+      },
+      paywall: {
+        onboarding: {
+          headline: "Start your 7-day free trial.",
+          subhead: "Then keep the habit that actually makes you better.",
+          closeLabel: "Not now"
+        },
+        persistent: {
+          headline: "Become the trader you could be.",
+          subhead: "You've got the setups. You know the technical analysis. What's missing is the mirror — an honest look at your own behavior. ClipLog Pro gives you unlimited trades, full OCR, all exchanges, and the insights that make your pattern visible.",
+          closeLabel: "Close preview"
+        }
+      }
+    };
+
     const STORAGE_KEY = "trade-ocr-journal-records-v3";
     const LEGACY_STORAGE_KEY = "trade-ocr-journal-records-v2";
     const SETTINGS_KEY = "trade-ocr-journal-settings-v1";
     const ONBOARDING_KEY = "trade-ocr-journal-onboarding-v1";
+    const ENTITLEMENT_KEY = "cliplog-entitlement-v1";
     const CSV_HEADERS = [
       "Post date",
       "session",
@@ -1329,6 +1942,15 @@
       metricWins: document.getElementById("metricWins"),
       metricLosses: document.getElementById("metricLosses"),
       reviewChart: document.getElementById("reviewChart"),
+      reviewChartSummary: document.getElementById("reviewChartSummary"),
+      reviewRangeWeekBtn: document.getElementById("reviewRangeWeekBtn"),
+      reviewRangeMonthBtn: document.getElementById("reviewRangeMonthBtn"),
+      reviewRangeAllBtn: document.getElementById("reviewRangeAllBtn"),
+      reviewMonthNav: document.getElementById("reviewMonthNav"),
+      reviewMonthLabel: document.getElementById("reviewMonthLabel"),
+      reviewPrevMonthBtn: document.getElementById("reviewPrevMonthBtn"),
+      reviewNextMonthBtn: document.getElementById("reviewNextMonthBtn"),
+      loadReviewDemoBtn: document.getElementById("loadReviewDemoBtn"),
       exportMonth: document.getElementById("exportMonth"),
       ocrStatus: document.getElementById("ocrStatus"),
       recordsList: document.getElementById("recordsList"),
@@ -1361,12 +1983,27 @@
       openSnapshotName: document.getElementById("openSnapshotName"),
       closeSnapshotName: document.getElementById("closeSnapshotName"),
       onboardingModal: document.getElementById("onboardingModal"),
-      closeOnboardingBtn: document.getElementById("closeOnboardingBtn"),
+      onboardingProgressLabel: document.getElementById("onboardingProgressLabel"),
+      onboardingProgressDetail: document.getElementById("onboardingProgressDetail"),
+      onboardingProgressFill: document.getElementById("onboardingProgressFill"),
+      onboardingTitle: document.getElementById("onboardingTitle"),
+      onboardingBody: document.getElementById("onboardingBody"),
+      onboardingStage: document.getElementById("onboardingStage"),
+      onboardingPrimaryBtn: document.getElementById("onboardingPrimaryBtn"),
+      onboardingSecondaryBtn: document.getElementById("onboardingSecondaryBtn"),
       paywallModal: document.getElementById("paywallModal"),
       openPaywallBtn: document.getElementById("openPaywallBtn"),
       closePaywallBtn: document.getElementById("closePaywallBtn"),
       subscribeNowBtn: document.getElementById("subscribeNowBtn"),
       restorePurchasesBtn: document.getElementById("restorePurchasesBtn")
+    };
+
+    const brandingNodes = {
+      heroAppName: document.getElementById("heroAppName"),
+      subscriptionBadge: document.getElementById("subscriptionBadge"),
+      subscriptionSummary: document.getElementById("subscriptionSummary"),
+      trialLine: document.getElementById("trialLine"),
+      paywallPlans: Array.from(document.querySelectorAll("[data-plan-id]"))
     };
 
     const openImporter = createImporter({
@@ -1393,9 +2030,20 @@
 
     let records = migrateLegacyRecords();
     let settings = loadJson(SETTINGS_KEY, { startAccountSize: "" });
+    let entitlement = loadJson(ENTITLEMENT_KEY, createDefaultEntitlement());
+    let onboardingState = loadJson(ONBOARDING_STATE_KEY, createDefaultOnboardingState());
     let currentEditId = null;
     let currentView = "journal";
     let currentJournalMode = "open";
+    let currentReviewRange = "1M";
+    let currentReviewMonth = getLocalYearMonth();
+    let selectedPlanId = "yearly";
+    let paywallContext = { source: "manual" };
+    let onboardingStep = 0;
+    let onboardingLoaderTimer = null;
+    let onboardingDemoData = null;
+
+    applyBranding();
 
     ui.startAccountSize.value = settings.startAccountSize || "";
     ui.exportMonth.value = getLocalYearMonth();
@@ -1409,13 +2057,13 @@
       renderMetrics();
     });
 
-    ui.saveRecordBtn.addEventListener("click", saveCurrentTrade);
+    ui.saveRecordBtn.addEventListener("click", () => requireProAccess("save-trade", saveCurrentTrade));
     ui.newTradeBtn.addEventListener("click", resetEditor);
-    ui.exportCsvBtn.addEventListener("click", exportMonthlyCsv);
-    ui.importCsvInput.addEventListener("change", importCsv);
-    ui.exportBackupBtn.addEventListener("click", exportBackup);
-    ui.importBackupInput.addEventListener("change", importBackup);
-    ui.clearRecordsBtn.addEventListener("click", clearAllRecords);
+    ui.exportCsvBtn.addEventListener("click", () => requireProAccess("export-csv", exportMonthlyCsv));
+    ui.importCsvInput.addEventListener("change", (event) => requireProAccess("import-csv", () => importCsv(event)));
+    ui.exportBackupBtn.addEventListener("click", () => requireProAccess("export-backup", exportBackup));
+    ui.importBackupInput.addEventListener("change", (event) => requireProAccess("import-backup", () => importBackup(event)));
+    ui.clearRecordsBtn.addEventListener("click", () => requireProAccess("delete-all-trades", clearAllRecords));
     ui.recordMonthFilter.addEventListener("input", renderRecords);
     ui.showJournalBtn.addEventListener("click", () => setView("journal"));
     ui.showTradesBtn.addEventListener("click", () => setView("trades"));
@@ -1426,23 +2074,41 @@
     ui.filterOpenBtn.addEventListener("click", () => setRecordStateFilter("open"));
     ui.filterClosedBtn.addEventListener("click", () => setRecordStateFilter("closed"));
     ui.filterAllBtn.addEventListener("click", () => setRecordStateFilter("all"));
-    ui.closeOnboardingBtn.addEventListener("click", closeOnboarding);
-    ui.openPaywallBtn.addEventListener("click", () => toggleModal(ui.paywallModal, true));
-    ui.closePaywallBtn.addEventListener("click", () => toggleModal(ui.paywallModal, false));
-    ui.subscribeNowBtn.addEventListener("click", () => {
-      toggleModal(ui.paywallModal, false);
-      setStatus("Paywall ready", "The subscription purchase flow is a placeholder in this web build.");
-    });
+    ui.onboardingPrimaryBtn.addEventListener("click", handleOnboardingPrimaryAction);
+    ui.onboardingSecondaryBtn.addEventListener("click", handleOnboardingSecondaryAction);
+    ui.openPaywallBtn.addEventListener("click", () => openPaywall("settings"));
+    ui.closePaywallBtn.addEventListener("click", handlePaywallClose);
+    ui.subscribeNowBtn.addEventListener("click", startSelectedPlanTrial);
     ui.restorePurchasesBtn.addEventListener("click", () => {
-      setStatus("Restore placeholder", "Restore purchases will be connected in the native store build.");
+      restorePurchasesPreview();
       setView("settings");
     });
+    ui.reviewRangeWeekBtn.addEventListener("click", () => setReviewRange("1W"));
+    ui.reviewRangeMonthBtn.addEventListener("click", () => setReviewRange("1M"));
+    ui.reviewRangeAllBtn.addEventListener("click", () => setReviewRange("All"));
+    ui.reviewPrevMonthBtn.addEventListener("click", () => shiftReviewMonth(-1));
+    ui.reviewNextMonthBtn.addEventListener("click", () => shiftReviewMonth(1));
+    ui.loadReviewDemoBtn.addEventListener("click", loadLocalReviewDemoData);
 
     fields.realizedPnl.addEventListener("input", handlePnlFieldInput);
     fields.closedPnl.addEventListener("input", handlePnlFieldInput);
     fields.result.addEventListener("change", autoInferStatusFromResult);
 
+    if (window.location.hostname === "localhost") {
+      ui.loadReviewDemoBtn.style.display = "inline-flex";
+    }
+
+    brandingNodes.paywallPlans.forEach((planButton) => {
+      planButton.addEventListener("click", () => setSelectedPlan(planButton.dataset.planId || "yearly"));
+    });
+
     function hydrateUi() {
+      entitlement = normalizeEntitlement(entitlement);
+      onboardingState = normalizeOnboardingState(onboardingState);
+      setSelectedPlan(entitlement.selectedPlanId || selectedPlanId, true);
+      if (window.location.hostname === "localhost" && !hasClosedTrades(records) && !hasLocalDemoRecords(records)) {
+        seedLocalReviewDemoData(true);
+      }
       setRecordStateFilter("all");
       renderRecords();
       renderMetrics();
@@ -1452,8 +2118,683 @@
       syncDisplayPnl();
       updateDetailPreviewLabels();
       updateHeaderSummary();
-      if (!loadJson(ONBOARDING_KEY, false)) {
+      renderSubscriptionState();
+      const onboardingComplete = loadJson(ONBOARDING_KEY, false);
+      if (FEATURE_GATES.enforceHardPaywall && !hasActiveTrialOrSub()) {
+        onboardingStep = Math.min(onboardingState.currentStep || 0, 11);
+        renderOnboardingScreen();
         toggleModal(ui.onboardingModal, true);
+      } else if (!onboardingComplete) {
+        onboardingStep = Math.min(onboardingState.currentStep || 0, 11);
+        renderOnboardingScreen();
+        toggleModal(ui.onboardingModal, true);
+      }
+    }
+
+    function applyBranding() {
+      document.title = APP_CONFIG.appTitle;
+      const appleTitleMeta = document.querySelector('meta[name="apple-mobile-web-app-title"]');
+      if (appleTitleMeta) appleTitleMeta.setAttribute("content", APP_CONFIG.appName);
+      if (brandingNodes.heroAppName) brandingNodes.heroAppName.textContent = APP_CONFIG.appName;
+      document.querySelectorAll("[data-brand='app']").forEach((node) => {
+        node.textContent = APP_CONFIG.appName;
+      });
+      document.querySelectorAll("[data-brand='pro']").forEach((node) => {
+        node.textContent = APP_CONFIG.proName;
+      });
+    }
+
+    function createDefaultEntitlement() {
+      return {
+        planId: "",
+        selectedPlanId: "yearly",
+        trialStartedAt: "",
+        trialEndsAt: "",
+        hasActiveSubscription: false,
+        lifetimeUnlocked: false
+      };
+    }
+
+    function normalizeEntitlement(state) {
+      return {
+        ...createDefaultEntitlement(),
+        ...(state && typeof state === "object" ? state : {})
+      };
+    }
+
+    function createDefaultOnboardingState() {
+      return {
+        currentStep: 0,
+        avgLoss: "",
+        selectedExchanges: [],
+        biggestLeak: "",
+        commitment: "",
+        demoCompleted: false,
+        reviewRequested: false,
+        offerShown: false,
+        offerClaimed: false
+      };
+    }
+
+    function normalizeOnboardingState(state) {
+      return {
+        ...createDefaultOnboardingState(),
+        ...(state && typeof state === "object" ? state : {})
+      };
+    }
+
+    function getSelectedPlan() {
+      return BILLING_CONFIG.plans[selectedPlanId] || BILLING_CONFIG.plans.yearly;
+    }
+
+    function setSelectedPlan(planId, silent) {
+      const nextPlanId = BILLING_CONFIG.plans[planId] ? planId : "yearly";
+      selectedPlanId = nextPlanId;
+      entitlement.selectedPlanId = nextPlanId;
+      saveJson(ENTITLEMENT_KEY, entitlement);
+      renderPaywallSelection();
+      renderSubscriptionState();
+      if (!silent) {
+        const plan = getSelectedPlan();
+        setStatus("Plan selected", `${plan.label} is selected for the ${BILLING_CONFIG.trialDays}-day trial preview.`);
+      }
+    }
+
+    function renderPaywallSelection() {
+      const plan = getSelectedPlan();
+      brandingNodes.paywallPlans.forEach((planButton) => {
+        planButton.classList.toggle("active", planButton.dataset.planId === selectedPlanId);
+        const planId = planButton.dataset.planId || "";
+        const planConfig = BILLING_CONFIG.plans[planId];
+        if (!planConfig) return;
+        const isOfferYearly = paywallContext.source === "offer" && planId === "yearly";
+        const displayPriceValue = isOfferYearly ? planConfig.priceValue * (1 - WELCOME_OFFER_DISCOUNT) : planConfig.priceValue;
+        const displayPriceLabel = isOfferYearly ? `$${displayPriceValue.toFixed(2)}` : planConfig.priceLabel;
+        const priceNode = planButton.querySelector(".paywall-plan-price-value");
+        const copyNode = planButton.querySelector(".paywall-plan-copy");
+        const badgeNode = planButton.querySelector(".paywall-plan-badge");
+        const metaLeftNode = planButton.querySelector(".paywall-plan-meta-left");
+        const metaRightNode = planButton.querySelector(".paywall-plan-meta-right");
+        if (priceNode) priceNode.textContent = displayPriceLabel;
+        if (copyNode) {
+          copyNode.textContent = planId === "lifetime"
+            ? `${displayPriceLabel} one-time`
+            : `${displayPriceLabel}/${planConfig.intervalLabel}`;
+        }
+        if (badgeNode) {
+          badgeNode.textContent = isOfferYearly ? "40% off" : (
+            planId === "yearly" ? "Best value" :
+            planId === "monthly" ? "Most flexible" :
+            planId === "lifetime" ? "Founding Member" :
+            "7-day trial"
+          );
+        }
+        if (metaLeftNode) {
+          metaLeftNode.textContent = isOfferYearly
+            ? "24h welcome offer"
+            : planId === "yearly"
+              ? "Save 67%"
+              : planId === "monthly"
+                ? "7-day trial"
+                : planId === "lifetime"
+                  ? "Launch only, limited"
+                  : "$12.94/month equivalent";
+        }
+        if (metaRightNode) {
+          metaRightNode.textContent = isOfferYearly
+            ? `$${(displayPriceValue / 12).toFixed(2)}/month equivalent`
+            : planId === "yearly"
+              ? "$3.33/month equivalent"
+              : planId === "monthly"
+                ? "Month to month"
+                : planId === "lifetime"
+                  ? "One-time purchase"
+                  : "Most flexible";
+        }
+      });
+      if (brandingNodes.trialLine) {
+        const priceLabel = paywallContext.source === "offer" && plan.id === "yearly"
+          ? `$${(plan.priceValue * (1 - WELCOME_OFFER_DISCOUNT)).toFixed(2)}`
+          : plan.priceLabel;
+        const suffix = plan.id === "lifetime"
+          ? `${BILLING_CONFIG.trialDays} days free, then ${priceLabel} one-time. Cancel anytime.`
+          : `${BILLING_CONFIG.trialDays} days free, then ${priceLabel}/${plan.intervalLabel}. Cancel anytime.`;
+        brandingNodes.trialLine.textContent = suffix;
+      }
+      if (ui.subscribeNowBtn) {
+        ui.subscribeNowBtn.textContent = `Start ${BILLING_CONFIG.trialDays}-day free trial`;
+      }
+    }
+
+    function hasActiveTrialOrSub() {
+      if (entitlement.lifetimeUnlocked || entitlement.hasActiveSubscription) return true;
+      if (!entitlement.trialEndsAt) return false;
+      return new Date(entitlement.trialEndsAt).getTime() > Date.now();
+    }
+
+    function isPro() {
+      return hasActiveTrialOrSub() || FEATURE_GATES.allowPreviewAccess;
+    }
+
+    function requireProAccess(featureId, callback) {
+      if (!FEATURE_GATES.enforceHardPaywall || isPro()) {
+        if (typeof callback === "function") callback();
+        return true;
+      }
+      openPaywall(featureId);
+      return false;
+    }
+
+    function openPaywall(source) {
+      paywallContext = { source: source || "manual" };
+      if (paywallContext.source === "onboarding" || paywallContext.source === "offer") {
+        setSelectedPlan("yearly", true);
+      }
+      renderPaywallContext();
+      renderPaywallSelection();
+      renderSubscriptionState();
+      toggleModal(ui.paywallModal, true);
+    }
+
+    function startSelectedPlanTrial() {
+      const plan = getSelectedPlan();
+      const now = new Date();
+      const ends = new Date(now.getTime() + BILLING_CONFIG.trialDays * 24 * 60 * 60 * 1000);
+      entitlement = normalizeEntitlement({
+        ...entitlement,
+        planId: plan.id,
+        selectedPlanId,
+        trialStartedAt: now.toISOString(),
+        trialEndsAt: ends.toISOString(),
+        hasActiveSubscription: false,
+        lifetimeUnlocked: false
+      });
+      saveJson(ENTITLEMENT_KEY, entitlement);
+      saveJson(ONBOARDING_KEY, true);
+      toggleModal(ui.paywallModal, false);
+      toggleModal(ui.onboardingModal, false, { bypassGuard: true });
+      renderSubscriptionState();
+      onboardingState.currentStep = 12;
+      saveJson(ONBOARDING_STATE_KEY, onboardingState);
+      setStatus("Trial preview started", `${APP_CONFIG.proName} is now marked as active locally for ${plan.label.toLowerCase()} via the entitlement preview.`);
+    }
+
+    function restorePurchasesPreview() {
+      renderSubscriptionState();
+      setStatus("Restore hook ready", "Restore purchases will connect to RevenueCat in the native store build. This web build only previews the entitlement state.");
+    }
+
+    function renderSubscriptionState() {
+      if (!brandingNodes.subscriptionBadge || !brandingNodes.subscriptionSummary) return;
+      const plan = BILLING_CONFIG.plans[entitlement.planId] || getSelectedPlan();
+      const classes = ["subscription-badge"];
+      let badge = "Paywall preview";
+      let summary = "Trial, pricing, and purchase hooks are wired for the store build. Access stays locked until the funnel leads into a started trial or subscription.";
+
+      if (entitlement.lifetimeUnlocked) {
+        classes.push("warning");
+        badge = "Lifetime active";
+        summary = `${APP_CONFIG.proName} is unlocked as Founding Member in the local entitlement preview.`;
+      } else if (hasActiveTrialOrSub()) {
+        classes.push("highlight");
+        const trialEndText = entitlement.trialEndsAt ? formatDateForStatus(entitlement.trialEndsAt) : "";
+        badge = "Trial active";
+        summary = `${plan.label} is active in the local entitlement preview${trialEndText ? ` until ${trialEndText}` : ""}.`;
+      } else {
+        classes.push("neutral");
+      }
+
+      brandingNodes.subscriptionBadge.className = classes.join(" ");
+      brandingNodes.subscriptionBadge.textContent = badge;
+      brandingNodes.subscriptionSummary.textContent = summary;
+    }
+
+    function renderPaywallContext() {
+      const isOnboardingFlow = paywallContext.source === "onboarding" || paywallContext.source === "offer";
+      const headline = isOnboardingFlow ? COPY_EN.paywall.onboarding.headline : COPY_EN.paywall.persistent.headline;
+      const subhead = isOnboardingFlow ? COPY_EN.paywall.onboarding.subhead : COPY_EN.paywall.persistent.subhead;
+      const closeLabel = isOnboardingFlow ? COPY_EN.paywall.onboarding.closeLabel : COPY_EN.paywall.persistent.closeLabel;
+      const heading = ui.paywallModal.querySelector(".section-head h2");
+      const body = ui.paywallModal.querySelector(".section-head .helper-copy");
+      if (heading) heading.textContent = headline;
+      if (body) body.textContent = subhead;
+      if (ui.closePaywallBtn) ui.closePaywallBtn.textContent = closeLabel;
+      const offerBadge = ui.paywallModal.querySelector(".trial-chip");
+      if (offerBadge) {
+        offerBadge.textContent = paywallContext.source === "offer" ? "24h offer active" : "No API key";
+      }
+    }
+
+    function handlePaywallClose() {
+      if ((paywallContext.source === "onboarding" || paywallContext.source === "offer") && !hasActiveTrialOrSub()) {
+        onboardingState.offerShown = true;
+        onboardingStep = 13;
+        onboardingState.currentStep = 13;
+        saveJson(ONBOARDING_STATE_KEY, onboardingState);
+        toggleModal(ui.paywallModal, false);
+        renderOnboardingScreen();
+        toggleModal(ui.onboardingModal, true);
+        return;
+      }
+      toggleModal(ui.paywallModal, false);
+    }
+
+    function renderOnboardingScreen() {
+      const totalSteps = 14;
+      const stepNumber = onboardingStep >= 13 ? 14 : onboardingStep + 1;
+      const pillar = getOnboardingPillar(onboardingStep);
+      ui.onboardingProgressLabel.textContent = `Step ${stepNumber} of ${totalSteps}`;
+      ui.onboardingProgressDetail.textContent = pillar;
+      ui.onboardingProgressFill.style.width = `${(stepNumber / totalSteps) * 100}%`;
+      ui.onboardingSecondaryBtn.hidden = onboardingStep === 0;
+      ui.onboardingSecondaryBtn.textContent = "Back";
+      ui.onboardingPrimaryBtn.hidden = false;
+      ui.onboardingPrimaryBtn.disabled = false;
+      ui.onboardingStage.innerHTML = "";
+      ui.onboardingStage.className = "onboarding-stage";
+      clearOnboardingLoaderTimer();
+
+      if (onboardingStep === 13) {
+        renderOfferScreen();
+        return;
+      }
+
+      const map = COPY_EN.onboarding.screens;
+      switch (onboardingStep) {
+        case 0:
+          ui.onboardingTitle.textContent = map.s1.headline;
+          ui.onboardingBody.textContent = map.s1.body;
+          ui.onboardingPrimaryBtn.textContent = map.s1.cta;
+          ui.onboardingStage.innerHTML = "";
+          break;
+        case 1:
+          renderAhaScreen();
+          break;
+        case 2:
+          renderExchangeScreen();
+          break;
+        case 3:
+          renderLeakScreen();
+          break;
+        case 4:
+          renderReflectScreen();
+          break;
+        case 5:
+          renderCommitmentScreen();
+          break;
+        case 6:
+          renderOcrDemoScreen();
+          break;
+        case 7:
+          ui.onboardingTitle.textContent = map.s8.headline;
+          ui.onboardingBody.textContent = map.s8.body;
+          ui.onboardingPrimaryBtn.textContent = map.s8.cta;
+          ui.onboardingStage.innerHTML = "";
+          break;
+        case 8:
+          renderReviewPromptScreen();
+          break;
+        case 9:
+          ui.onboardingTitle.textContent = map.s10.headline;
+          ui.onboardingBody.textContent = map.s10.body;
+          ui.onboardingPrimaryBtn.textContent = map.s10.cta;
+          ui.onboardingStage.innerHTML = "";
+          break;
+        case 10:
+          renderPriceCompareScreen();
+          break;
+        case 11:
+          renderPlanLoaderScreen();
+          break;
+        default:
+          break;
+      }
+    }
+
+    function getOnboardingPillar(step) {
+      if (step <= 5) return "Introduction";
+      if (step <= 8) return "Climax";
+      return "Conclusion";
+    }
+
+    function handleOnboardingPrimaryAction() {
+      switch (onboardingStep) {
+        case 0:
+          moveOnboardingTo(1);
+          break;
+        case 1:
+          moveOnboardingTo(2);
+          break;
+        case 2:
+          if (!onboardingState.selectedExchanges.length) return;
+          settings.preferredExchanges = onboardingState.selectedExchanges.slice();
+          saveJson(SETTINGS_KEY, settings);
+          moveOnboardingTo(3);
+          break;
+        case 3:
+          if (!onboardingState.biggestLeak) return;
+          moveOnboardingTo(4);
+          break;
+        case 4:
+          moveOnboardingTo(5);
+          break;
+        case 6:
+          runOnboardingDemo();
+          break;
+        case 7:
+          moveOnboardingTo(8);
+          break;
+        case 8:
+          moveOnboardingTo(9);
+          break;
+        case 9:
+          moveOnboardingTo(10);
+          break;
+        case 10:
+          moveOnboardingTo(11);
+          break;
+        case 13:
+          onboardingState.offerShown = true;
+          onboardingState.offerClaimed = true;
+          saveJson(ONBOARDING_STATE_KEY, onboardingState);
+          setSelectedPlan("yearly", true);
+          paywallContext = { source: "offer" };
+          renderPaywallContext();
+          renderPaywallSelection();
+          toggleModal(ui.onboardingModal, false, { bypassGuard: true });
+          toggleModal(ui.paywallModal, true);
+          break;
+        default:
+          break;
+      }
+    }
+
+    function handleOnboardingSecondaryAction() {
+      if (onboardingStep === 13) {
+        paywallContext = { source: "onboarding" };
+        renderPaywallContext();
+        toggleModal(ui.onboardingModal, false, { bypassGuard: true });
+        toggleModal(ui.paywallModal, true);
+        return;
+      }
+      if (onboardingStep <= 0) return;
+      moveOnboardingTo(onboardingStep - 1);
+    }
+
+    function moveOnboardingTo(nextStep) {
+      onboardingStep = nextStep;
+      onboardingState.currentStep = nextStep;
+      saveJson(ONBOARDING_STATE_KEY, onboardingState);
+      renderOnboardingScreen();
+    }
+
+    function renderAhaScreen() {
+      const copy = COPY_EN.onboarding.screens.s2;
+      const avgLoss = Number(onboardingState.avgLoss);
+      const hasLoss = Number.isFinite(avgLoss) && avgLoss > 0;
+      const yearlyValue = hasLoss ? Math.round(avgLoss * 24) : 0;
+      ui.onboardingTitle.textContent = copy.resultHeadline;
+      ui.onboardingBody.textContent = hasLoss
+        ? `Avoid just 2 a month and you keep about ${yearlyValue} USDT a year. ClipLog helps you see them coming.`
+        : copy.fallback;
+      ui.onboardingPrimaryBtn.textContent = copy.cta;
+      ui.onboardingStage.innerHTML = `
+        <div class="onboarding-card">
+          <label class="onboarding-input field">
+            <span>${copy.inputLabel} <strong>${hasLoss ? `${avgLoss} USDT` : ""}</strong></span>
+            <input id="onboardingAvgLossInput" type="number" step="0.01" min="0" placeholder="e.g. 50">
+          </label>
+          <div class="onboarding-result-card" id="onboardingAhaResult">
+            <span>Estimated yearly leak</span>
+            <strong>${hasLoss ? `${yearlyValue} USDT` : "—"}</strong>
+          </div>
+        </div>
+      `;
+      const input = document.getElementById("onboardingAvgLossInput");
+      if (input) {
+        input.value = onboardingState.avgLoss || "";
+        input.addEventListener("input", (event) => {
+          onboardingState.avgLoss = event.target.value;
+          saveJson(ONBOARDING_STATE_KEY, onboardingState);
+          updateAhaScreenPreview();
+        });
+      }
+    }
+
+    function updateAhaScreenPreview() {
+      const avgLoss = Number(onboardingState.avgLoss);
+      const hasLoss = Number.isFinite(avgLoss) && avgLoss > 0;
+      const yearlyValue = hasLoss ? Math.round(avgLoss * 24) : 0;
+      ui.onboardingBody.textContent = hasLoss
+        ? `Avoid just 2 a month and you keep about ${yearlyValue} USDT a year. ClipLog helps you see them coming.`
+        : COPY_EN.onboarding.screens.s2.fallback;
+      const result = document.getElementById("onboardingAhaResult");
+      if (result) {
+        result.innerHTML = `<span>Estimated yearly leak</span><strong>${hasLoss ? `${yearlyValue} USDT` : "—"}</strong>`;
+      }
+    }
+
+    function renderExchangeScreen() {
+      const copy = COPY_EN.onboarding.screens.s3;
+      ui.onboardingTitle.textContent = copy.headline;
+      ui.onboardingBody.textContent = copy.body;
+      ui.onboardingPrimaryBtn.textContent = copy.cta;
+      ui.onboardingStage.innerHTML = `
+        <div class="onboarding-card">
+          <div class="onboarding-exchange-grid">
+            ${COPY_EN.onboarding.exchanges.map((exchange) => `
+              <button class="onboarding-option ${onboardingState.selectedExchanges.includes(exchange) ? "active" : ""}" data-onboarding-exchange="${escapeHtml(exchange)}" type="button">
+                <span class="onboarding-option-label">${escapeHtml(exchange)}</span>
+                <span class="onboarding-option-meta">${onboardingState.selectedExchanges.includes(exchange) ? "Selected" : "Tap to include"}</span>
+              </button>
+            `).join("")}
+          </div>
+          <small>Pick all that apply.</small>
+        </div>
+      `;
+      ui.onboardingStage.querySelectorAll("[data-onboarding-exchange]").forEach((button) => {
+        button.addEventListener("click", () => toggleOnboardingExchange(button.dataset.onboardingExchange || ""));
+      });
+    }
+
+    function toggleOnboardingExchange(exchange) {
+      const current = new Set(onboardingState.selectedExchanges);
+      if (current.has(exchange)) current.delete(exchange);
+      else current.add(exchange);
+      onboardingState.selectedExchanges = Array.from(current);
+      saveJson(ONBOARDING_STATE_KEY, onboardingState);
+      renderExchangeScreen();
+    }
+
+    function renderLeakScreen() {
+      const copy = COPY_EN.onboarding.screens.s4;
+      ui.onboardingTitle.textContent = copy.headline;
+      ui.onboardingBody.textContent = "";
+      ui.onboardingPrimaryBtn.textContent = copy.cta;
+      ui.onboardingStage.innerHTML = `
+        <div class="onboarding-options">
+          ${copy.options.map((option) => `
+            <button class="onboarding-option ${onboardingState.biggestLeak === option.label ? "active" : ""}" data-onboarding-leak="${escapeHtml(option.label)}" type="button">
+              <span class="onboarding-option-label">${escapeHtml(option.label)}</span>
+            </button>
+          `).join("")}
+        </div>
+      `;
+      ui.onboardingStage.querySelectorAll("[data-onboarding-leak]").forEach((button) => {
+        button.addEventListener("click", () => {
+          onboardingState.biggestLeak = button.dataset.onboardingLeak || "";
+          saveJson(ONBOARDING_STATE_KEY, onboardingState);
+          renderLeakScreen();
+        });
+      });
+    }
+
+    function renderReflectScreen() {
+      const copy = COPY_EN.onboarding.screens.s5;
+      const problem = onboardingState.biggestLeak || "Your pattern";
+      ui.onboardingTitle.textContent = `${problem}. That's exactly what ClipLog is built to surface.`;
+      ui.onboardingBody.textContent = copy.body;
+      ui.onboardingPrimaryBtn.textContent = copy.cta;
+      ui.onboardingStage.innerHTML = "";
+    }
+
+    function renderCommitmentScreen() {
+      const copy = COPY_EN.onboarding.screens.s6;
+      ui.onboardingTitle.textContent = copy.headline;
+      ui.onboardingBody.textContent = copy.body;
+      ui.onboardingPrimaryBtn.hidden = true;
+      ui.onboardingStage.innerHTML = `
+        <div class="onboarding-options">
+          ${copy.options.map((option) => `
+            <button class="onboarding-option ${onboardingState.commitment === option ? "active" : ""}" data-onboarding-commitment="${escapeHtml(option)}" type="button">
+              <span class="onboarding-option-label">${escapeHtml(option)}</span>
+            </button>
+          `).join("")}
+        </div>
+      `;
+      ui.onboardingStage.querySelectorAll("[data-onboarding-commitment]").forEach((button) => {
+        button.addEventListener("click", () => {
+          onboardingState.commitment = button.dataset.onboardingCommitment || "";
+          saveJson(ONBOARDING_STATE_KEY, onboardingState);
+          ui.onboardingPrimaryBtn.hidden = false;
+          moveOnboardingTo(6);
+        });
+      });
+    }
+
+    function renderOcrDemoScreen() {
+      const copy = COPY_EN.onboarding.screens.s7;
+      ui.onboardingTitle.textContent = copy.headline;
+      ui.onboardingBody.textContent = copy.body;
+      ui.onboardingPrimaryBtn.textContent = onboardingState.demoCompleted ? "Continue" : copy.cta;
+      const result = onboardingDemoData;
+      ui.onboardingStage.innerHTML = `
+        <div class="onboarding-demo">
+          <img src="${ONBOARDING_DEMO_SAMPLE.src}" alt="OCR demo screenshot">
+          ${result ? `
+            <div class="onboarding-result-grid">
+              <div class="onboarding-result-card"><span>Coin</span><strong>${escapeHtml(result.Coin || ONBOARDING_DEMO_SAMPLE.fallback.Coin)}</strong></div>
+              <div class="onboarding-result-card"><span>Direction</span><strong>${escapeHtml(result.Direction || ONBOARDING_DEMO_SAMPLE.fallback.Direction)}</strong></div>
+              <div class="onboarding-result-card"><span>Entry</span><strong>${escapeHtml(result["Entry Price"] || ONBOARDING_DEMO_SAMPLE.fallback["Entry Price"])}</strong></div>
+              <div class="onboarding-result-card"><span>Exit</span><strong>${escapeHtml(result["Avg. Close Price"] || ONBOARDING_DEMO_SAMPLE.fallback["Avg. Close Price"])}</strong></div>
+              <div class="onboarding-result-card"><span>Realized PnL</span><strong>${escapeHtml(result["Realized PnL"] || ONBOARDING_DEMO_SAMPLE.fallback["Realized PnL"])}</strong></div>
+            </div>
+          ` : `<div class="onboarding-card"><small>Tap "${copy.cta}" to fill the trade fields from this sample screenshot.</small></div>`}
+        </div>
+      `;
+    }
+
+    async function runOnboardingDemo() {
+      if (onboardingState.demoCompleted) {
+        moveOnboardingTo(7);
+        return;
+      }
+      ui.onboardingPrimaryBtn.disabled = true;
+      ui.onboardingPrimaryBtn.textContent = "Loading…";
+      let parsed = null;
+      try {
+        if (window.Tesseract) {
+          const result = await Tesseract.recognize(ONBOARDING_DEMO_SAMPLE.src, "eng", {
+            logger: () => {}
+          });
+          parsed = parseClosedTradeText(result.data?.text || "");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      onboardingDemoData = {
+        ...ONBOARDING_DEMO_SAMPLE.fallback,
+        ...(parsed || {})
+      };
+      onboardingState.demoCompleted = true;
+      saveJson(ONBOARDING_STATE_KEY, onboardingState);
+      ui.onboardingPrimaryBtn.disabled = false;
+      renderOcrDemoScreen();
+      window.setTimeout(() => {
+        if (onboardingStep === 6) moveOnboardingTo(7);
+      }, 1200);
+    }
+
+    function renderReviewPromptScreen() {
+      const copy = COPY_EN.onboarding.screens.s9;
+      requestInAppReviewPreview();
+      ui.onboardingTitle.textContent = copy.headline;
+      ui.onboardingBody.textContent = copy.body;
+      ui.onboardingPrimaryBtn.textContent = copy.cta;
+      ui.onboardingPrimaryBtn.hidden = false;
+      ui.onboardingStage.innerHTML = `<div class="onboarding-card"><span class="pill-note">Day 1</span><p class="review-request-note">A native review request is triggered here in the store build. This web build keeps the emotional beat without the OS prompt.</p></div>`;
+    }
+
+    function requestInAppReviewPreview() {
+      if (onboardingState.reviewRequested) return;
+      onboardingState.reviewRequested = true;
+      saveJson(ONBOARDING_STATE_KEY, onboardingState);
+    }
+
+    function renderPriceCompareScreen() {
+      const copy = COPY_EN.onboarding.screens.s11;
+      const avgLoss = Number(onboardingState.avgLoss);
+      const hasLoss = Number.isFinite(avgLoss) && avgLoss > 0;
+      ui.onboardingTitle.textContent = copy.headline;
+      ui.onboardingBody.textContent = hasLoss
+        ? `One revenge trade can cost you ${avgLoss} USDT. ${APP_CONFIG.proName} is $39.99 a year. The math isn't close.`
+        : `One revenge trade can cost more than a month of disciplined gains. ${APP_CONFIG.proName} is $39.99 a year. The math isn't close.`;
+      ui.onboardingPrimaryBtn.textContent = copy.cta;
+      ui.onboardingPrimaryBtn.hidden = false;
+      ui.onboardingStage.innerHTML = "";
+    }
+
+    function renderPlanLoaderScreen() {
+      const copy = COPY_EN.onboarding.screens.s12;
+      const exchanges = onboardingState.selectedExchanges.length ? onboardingState.selectedExchanges.join(", ") : "your exchange";
+      const lines = copy.loaderLines.map((line) => line.replace("{{exchange}}", exchanges));
+      ui.onboardingTitle.textContent = copy.headline;
+      ui.onboardingBody.textContent = copy.socialProof;
+      ui.onboardingPrimaryBtn.hidden = true;
+      ui.onboardingStage.innerHTML = `
+        <div class="onboarding-loader">
+          <div class="onboarding-loader-lines">
+            ${lines.map((line, index) => `<div class="onboarding-loader-line ${index === 0 ? "active" : ""}" data-loader-line="${index}">${escapeHtml(line)}</div>`).join("")}
+          </div>
+        </div>
+      `;
+      const nodes = Array.from(ui.onboardingStage.querySelectorAll("[data-loader-line]"));
+      nodes.forEach((node, index) => {
+        window.setTimeout(() => {
+          node.classList.remove("active");
+          node.classList.add("done");
+          if (nodes[index + 1]) nodes[index + 1].classList.add("active");
+        }, index * 650);
+      });
+      onboardingLoaderTimer = window.setTimeout(() => {
+        onboardingState.currentStep = 12;
+        saveJson(ONBOARDING_STATE_KEY, onboardingState);
+        toggleModal(ui.onboardingModal, false, { bypassGuard: true });
+        openPaywall("onboarding");
+      }, lines.length * 650 + 500);
+    }
+
+    function renderOfferScreen() {
+      const copy = COPY_EN.onboarding.screens.s14;
+      ui.onboardingTitle.textContent = copy.headline;
+      ui.onboardingBody.textContent = copy.body;
+      ui.onboardingPrimaryBtn.textContent = copy.cta;
+      ui.onboardingPrimaryBtn.hidden = false;
+      ui.onboardingSecondaryBtn.hidden = false;
+      ui.onboardingSecondaryBtn.textContent = copy.secondary;
+      ui.onboardingStage.innerHTML = `
+        <div class="onboarding-card">
+          <span class="plan-badge warning">24h offer</span>
+          <strong>Yearly drops to ${formatMoney(BILLING_CONFIG.plans.yearly.priceValue * (1 - WELCOME_OFFER_DISCOUNT))} for the first year.</strong>
+          <p class="onboarding-note">Founding users get the strongest offer while the habit is still fresh.</p>
+        </div>
+      `;
+    }
+
+    function clearOnboardingLoaderTimer() {
+      if (onboardingLoaderTimer) {
+        window.clearTimeout(onboardingLoaderTimer);
+        onboardingLoaderTimer = null;
       }
     }
 
@@ -1492,7 +2833,7 @@
       config.runBtn.addEventListener("click", async () => {
         const source = state.file || state.objectUrl;
         if (!source) return;
-        await runOcrForMode(config.mode, source);
+        requireProAccess(`ocr-${config.mode}`, () => runOcrForMode(config.mode, source));
       });
 
       config.clearBtn.addEventListener("click", clearImage);
@@ -1521,7 +2862,7 @@
           config.mode === "open" ? "Open screenshot loaded" : "Closed screenshot loaded",
           config.mode === "open" ? "Ready for open OCR." : "Ready for closed OCR."
         );
-        await runOcrForMode(config.mode, state.file || state.objectUrl);
+        requireProAccess(`ocr-${config.mode}`, () => runOcrForMode(config.mode, state.file || state.objectUrl));
       }
 
       function clearImage() {
@@ -1973,49 +3314,77 @@
     }
 
     function renderReviewChart(closedRecords) {
-      if (!closedRecords.length) {
-        ui.reviewChart.innerHTML = '<div class="empty">No closed trades yet.</div>';
+      ui.reviewRangeWeekBtn.classList.toggle("active", currentReviewRange === "1W");
+      ui.reviewRangeMonthBtn.classList.toggle("active", currentReviewRange === "1M");
+      ui.reviewRangeAllBtn.classList.toggle("active", currentReviewRange === "All");
+      ui.reviewMonthNav.classList.toggle("hidden", currentReviewRange !== "1M");
+      ui.reviewMonthLabel.textContent = formatMonthLabel(currentReviewMonth);
+
+      const realizedClosed = closedRecords
+        .filter((record) => Number.isFinite(Number(record["Realized PnL"])))
+        .map((record) => ({
+          ...record,
+          reviewPnl: Number(record["Realized PnL"])
+        }))
+        .sort(compareRecordsChronologically);
+
+      if (!realizedClosed.length) {
+        ui.reviewChart.innerHTML = '<div class="empty">No realized PnL data yet.</div>';
+        ui.reviewChartSummary.innerHTML = "";
         return;
       }
 
-      const byMonth = new Map();
-      for (const record of closedRecords) {
-        const monthKey = String(record["Post date"] || "").slice(0, 7);
-        if (!monthKey) continue;
-        const current = byMonth.get(monthKey) || 0;
-        const pnl = Number(getRecordDisplayPnl(record));
-        byMonth.set(monthKey, current + (Number.isFinite(pnl) ? pnl : 0));
-      }
-
-      const items = Array.from(byMonth.entries())
-        .sort((a, b) => a[0].localeCompare(b[0]))
-        .slice(-6);
-
-      if (!items.length) {
-        ui.reviewChart.innerHTML = '<div class="empty">No monthly review data available yet.</div>';
+      const chartPoints = buildReviewSeries(realizedClosed);
+      if (!chartPoints.length) {
+        ui.reviewChart.innerHTML = '<div class="empty">No data for this range yet.</div>';
+        ui.reviewChartSummary.innerHTML = "";
         return;
       }
 
-      const maxAbs = Math.max(...items.map(([, value]) => Math.abs(value)), 1);
-      ui.reviewChart.innerHTML = "";
+      const pointValues = [0, ...chartPoints.map((point) => point.value)];
+      const minValue = Math.min(...pointValues);
+      const maxValue = Math.max(...pointValues);
+      const range = maxValue - minValue || 1;
+      const width = 640;
+      const height = 220;
+      const paddingX = 22;
+      const paddingY = 18;
+      const graphWidth = width - paddingX * 2;
+      const graphHeight = height - paddingY * 2;
+      const baselineY = paddingY + ((maxValue - 0) / range) * graphHeight;
 
-      for (const [month, value] of items) {
-        const wrap = document.createElement("div");
-        wrap.className = "review-bar-wrap";
-        const barClass = value >= 0 ? "positive" : "negative";
-        const height = Math.max((Math.abs(value) / maxAbs) * 140, 10);
-        const shortMonth = formatMonthLabel(month);
+      const svgPoints = chartPoints.map((point, index) => {
+        const x = paddingX + (chartPoints.length === 1 ? graphWidth / 2 : (index / (chartPoints.length - 1)) * graphWidth);
+        const y = paddingY + ((maxValue - point.value) / range) * graphHeight;
+        return { ...point, x, y };
+      });
 
-        wrap.innerHTML = `
-          <div class="review-bar-value ${barClass}">${formatSignedPnl(value)}</div>
-          <div class="review-bar-stack">
-            <div class="review-bar ${barClass}" style="height:${height}px;"></div>
-          </div>
-          <div class="review-bar-label">${escapeHtml(shortMonth)}</div>
-        `;
+      const polylinePoints = svgPoints.map((point) => `${point.x},${point.y}`).join(" ");
+      const areaPoints = [`${svgPoints[0].x},${baselineY}`, ...svgPoints.map((point) => `${point.x},${point.y}`), `${svgPoints[svgPoints.length - 1].x},${baselineY}`].join(" ");
+      const labels = buildReviewLabels(chartPoints);
+      const totalValue = chartPoints[chartPoints.length - 1]?.value ?? 0;
 
-        ui.reviewChart.appendChild(wrap);
-      }
+      ui.reviewChart.innerHTML = `
+        <div class="review-svg-wrap">
+          <svg class="review-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" aria-label="Review line chart">
+            <line class="review-chart-grid" x1="${paddingX}" y1="${paddingY}" x2="${width - paddingX}" y2="${paddingY}" />
+            <line class="review-chart-grid" x1="${paddingX}" y1="${baselineY}" x2="${width - paddingX}" y2="${baselineY}" />
+            <line class="review-chart-grid" x1="${paddingX}" y1="${height - paddingY}" x2="${width - paddingX}" y2="${height - paddingY}" />
+            <line class="review-chart-axis" x1="${paddingX}" y1="${paddingY}" x2="${paddingX}" y2="${height - paddingY}" />
+            <line class="review-chart-axis" x1="${paddingX}" y1="${height - paddingY}" x2="${width - paddingX}" y2="${height - paddingY}" />
+            <polygon class="review-area" points="${areaPoints}" />
+            <polyline class="review-line" points="${polylinePoints}" />
+            ${svgPoints.map((point) => `<circle class="review-point" cx="${point.x}" cy="${point.y}" r="2.1"></circle>`).join("")}
+          </svg>
+        </div>
+        <div class="review-chart-labels">${labels.map((label) => `<span>${escapeHtml(label)}</span>`).join("")}</div>
+      `;
+
+      ui.reviewChartSummary.innerHTML = `
+        <span>Range:<strong>${escapeHtml(currentReviewRange === "1M" ? formatMonthLabel(currentReviewMonth) : currentReviewRange)}</strong></span>
+        <span>Points:<strong>${chartPoints.length}</strong></span>
+        <span>Total:<strong>${escapeHtml(formatSignedPnl(totalValue))}</strong></span>
+      `;
     }
 
     function setView(view) {
@@ -2105,7 +3474,7 @@
         lines.push(CSV_HEADERS.map((header) => escapeCsv(record[header] ?? "")).join(","));
       }
 
-      downloadBlob(new Blob([lines.join("\r\n")], { type: "text/csv;charset=utf-8;" }), `trade-journal-export-${ui.exportMonth.value}.csv`);
+      downloadBlob(new Blob([lines.join("\r\n")], { type: "text/csv;charset=utf-8;" }), `${APP_CONFIG.appSlug}-export-${ui.exportMonth.value}.csv`);
       setStatus("Monthly CSV exported", `${monthRecords.length} closed trade(s) from ${ui.exportMonth.value} were downloaded locally.`);
     }
 
@@ -2116,7 +3485,7 @@
         settings,
         records
       };
-      downloadBlob(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8;" }), `trade-journal-backup-${getLocalIsoDate()}.json`);
+      downloadBlob(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8;" }), `${APP_CONFIG.appSlug}-backup-${getLocalIsoDate()}.json`);
       setStatus("Backup exported", `${records.length} trade(s) were saved locally as a JSON backup.`);
     }
 
@@ -2174,7 +3543,7 @@
         const parsed = JSON.parse(text);
         const importedRecords = Array.isArray(parsed?.records) ? parsed.records.map(normalizeRecord) : null;
         if (!importedRecords) {
-          setStatus("Import failed", "The file does not contain a valid Trade Journal backup.");
+          setStatus("Import failed", `The file does not contain a valid ${APP_CONFIG.appName} backup.`);
           return;
         }
 
@@ -2278,12 +3647,10 @@
       }
     }
 
-    function closeOnboarding() {
-      saveJson(ONBOARDING_KEY, true);
-      toggleModal(ui.onboardingModal, false);
-    }
-
-    function toggleModal(element, active) {
+    function toggleModal(element, active, options = {}) {
+      if (!active && element === ui.onboardingModal && FEATURE_GATES.enforceHardPaywall && !hasActiveTrialOrSub() && !options.bypassGuard) {
+        return;
+      }
       element.classList.toggle("active", active);
       element.setAttribute("aria-hidden", active ? "false" : "true");
     }
@@ -2317,6 +3684,13 @@
       const dateB = String(b["Post date"] || "");
       if (dateA !== dateB) return dateB.localeCompare(dateA);
       return String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""));
+    }
+
+    function compareRecordsChronologically(a, b) {
+      const dateA = String(a["Post date"] || "");
+      const dateB = String(b["Post date"] || "");
+      if (dateA !== dateB) return dateA.localeCompare(dateB);
+      return String(a.updatedAt || "").localeCompare(String(b.updatedAt || ""));
     }
 
     function buildSummary({ coin, direction, pnl, timeLabel, confidenceHints }) {
@@ -2476,6 +3850,157 @@
       const [year, month] = monthKey.split("-");
       const date = new Date(Number(year), Number(month) - 1, 1);
       return date.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
+    }
+
+    function setReviewRange(range) {
+      currentReviewRange = range;
+      renderMetrics();
+    }
+
+    function shiftReviewMonth(direction) {
+      if (!/^\d{4}-\d{2}$/.test(currentReviewMonth)) {
+        currentReviewMonth = getLocalYearMonth();
+      }
+      const [year, month] = currentReviewMonth.split("-").map(Number);
+      const date = new Date(year, month - 1 + direction, 1);
+      currentReviewMonth = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      renderMetrics();
+    }
+
+    function buildReviewSeries(records) {
+      let filtered = records.slice();
+      if (currentReviewRange === "1W") {
+        const end = new Date();
+        const start = new Date();
+        start.setDate(end.getDate() - 6);
+        const startKey = getDateKey(start);
+        const endKey = getDateKey(end);
+        filtered = filtered.filter((record) => {
+          const key = String(record["Post date"] || "");
+          return key >= startKey && key <= endKey;
+        });
+      } else if (currentReviewRange === "1M") {
+        filtered = filtered.filter((record) => String(record["Post date"] || "").startsWith(currentReviewMonth));
+      }
+
+      let running = 0;
+      return filtered.map((record, index) => {
+        running += Number(record.reviewPnl || 0);
+        return {
+          index,
+          value: running,
+          label: currentReviewRange === "1M"
+            ? formatDayNumber(record["Post date"])
+            : `T${index + 1}`
+        };
+      });
+    }
+
+    function buildReviewLabels(points) {
+      if (points.length <= 4) return points.map((point) => point.label);
+      return points.map((point, index) => {
+        const isFirst = index === 0;
+        const isLast = index === points.length - 1;
+        const everyOther = index % Math.ceil(points.length / 4) === 0;
+        return isFirst || isLast || everyOther ? point.label : "";
+      });
+    }
+
+    function formatDayNumber(dateString) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(String(dateString || ""))) return dateString || "-";
+      return String(dateString).slice(8, 10);
+    }
+
+    function formatDayLabel(dateString) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(String(dateString || ""))) return dateString || "-";
+      const [year, month, day] = String(dateString).split("-").map(Number);
+      return new Date(year, month - 1, day).toLocaleDateString("en-US", { weekday: "short" });
+    }
+
+    function formatShortDate(dateString) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(String(dateString || ""))) return dateString || "-";
+      const [year, month, day] = String(dateString).split("-").map(Number);
+      return new Date(year, month - 1, day).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    }
+
+    function formatDateForStatus(dateString) {
+      const date = new Date(dateString);
+      if (Number.isNaN(date.getTime())) return "";
+      return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    }
+
+    function getDateKey(date) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    }
+
+    function loadLocalReviewDemoData() {
+      seedLocalReviewDemoData(false);
+    }
+
+    function seedLocalReviewDemoData(silent) {
+      const demoMonth = getLocalYearMonth();
+      const baseDate = `${demoMonth}-01`;
+      const demoRecords = [
+        createDemoClosedTrade(baseDate, "BTC", "Long", 24.5, "Win", "UK"),
+        createDemoClosedTrade(offsetDate(baseDate, 3), "ETH", "Short", -11.2, "Loss", "US"),
+        createDemoClosedTrade(offsetDate(baseDate, 7), "SOL", "Long", 18.7, "Win", "Asia"),
+        createDemoClosedTrade(offsetDate(baseDate, 12), "TAO", "Short", -6.8, "Loss", "UK"),
+        createDemoClosedTrade(offsetDate(baseDate, 15), "OKB", "Long", 31.4, "Win", "US"),
+        createDemoClosedTrade(offsetDate(baseDate, 20), "BNB", "Short", 12.1, "Win", "Asia")
+      ];
+
+      records = demoRecords.concat(records.filter((record) => !String(record.id || "").startsWith("demo-review-")));
+      saveJson(STORAGE_KEY, records);
+      renderRecords();
+      renderMetrics();
+      updateHeaderSummary();
+      if (!silent) {
+        setStatus("Local demo loaded", "Demo review data was added locally for chart testing.");
+        setView("insights");
+        setReviewRange("1M");
+      }
+    }
+
+    function createDemoClosedTrade(date, coin, direction, pnl, result, session) {
+      const normalizedPnl = Number(pnl);
+      const id = `demo-review-${coin}-${date}`;
+      return normalizeRecord({
+        id,
+        createdAt: `${date}T10:00:00.000Z`,
+        updatedAt: `${date}T10:00:00.000Z`,
+        tradeState: "closed",
+        openScreenshotName: "",
+        closeScreenshotName: "",
+        "Post date": date,
+        "session": session,
+        "Coin": coin,
+        "Direction": direction,
+        "1% Risk": "",
+        "TF trade taken": "1hr",
+        "Status": inferStatusFromResult(result),
+        "Realized PnL": String(normalizedPnl),
+        "Closed PnL": String(normalizedPnl),
+        "Display PnL": String(normalizedPnl),
+        "Did you follow your rules": "Yep",
+        "TV link": "",
+        "Notes": "Local demo review data",
+        "Emotions": "",
+        "Win or Loss?": result
+      });
+    }
+
+    function offsetDate(baseDate, offset) {
+      const [year, month, day] = baseDate.split("-").map(Number);
+      const date = new Date(year, month - 1, day + offset);
+      return getDateKey(date);
+    }
+
+    function hasClosedTrades(list) {
+      return list.map(normalizeRecord).some((record) => record && record.tradeState === "closed");
+    }
+
+    function hasLocalDemoRecords(list) {
+      return list.some((record) => String(record?.id || "").startsWith("demo-review-"));
     }
 
     function getLocalIsoDate() {
