@@ -719,16 +719,24 @@
       line-height: 1.45;
     }
 
+    #onboardingModal .modal-card {
+      width: min(720px, 100%);
+      height: min(88vh, 820px);
+      max-height: none;
+      overflow: hidden;
+      padding: 18px;
+    }
+
     .onboarding-copy h2 {
-      font-size: clamp(1.65rem, 4.6vw, 1.95rem);
+      font-size: clamp(1.35rem, 3.8vw, 1.7rem);
       font-weight: 500;
-      line-height: 1.08;
+      line-height: 1.12;
       letter-spacing: -0.04em;
     }
 
     .onboarding-copy .helper-copy {
-      font-size: clamp(1.04rem, 3.2vw, 1.12rem);
-      line-height: 1.62;
+      font-size: clamp(0.95rem, 2.7vw, 1.02rem);
+      line-height: 1.45;
     }
 
     .paywall-subcta {
@@ -737,7 +745,10 @@
     }
 
     .onboarding-flow {
-      gap: 20px;
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr) auto;
+      gap: 14px;
+      height: 100%;
     }
 
     .onboarding-progress,
@@ -773,7 +784,40 @@
     }
 
     .onboarding-stage {
-      min-height: 260px;
+      position: relative;
+      min-height: 0;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 14px;
+    }
+
+    .onboarding-stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(4, 12, 19, 0.2), rgba(4, 12, 19, 0.62));
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .onboarding-stage-bg {
+      position: absolute;
+      inset: 0;
+      background-position: center;
+      background-size: cover;
+      opacity: 0.42;
+      filter: saturate(1.05) contrast(1.02);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .onboarding-stage-content {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 10px;
     }
 
     .onboarding-card,
@@ -784,7 +828,7 @@
       border-radius: 22px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       background: rgba(255, 255, 255, 0.035);
-      padding: 18px;
+      padding: 14px;
     }
 
     .onboarding-card {
@@ -802,7 +846,7 @@
     .onboarding-result-grid,
     .onboarding-loader-lines {
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
 
     .onboarding-option {
@@ -846,68 +890,7 @@
 
     .onboarding-demo {
       display: grid;
-      gap: 14px;
-    }
-
-    .onboarding-stage-media {
-      display: grid;
-      gap: 16px;
-    }
-
-    .onboarding-visual-card {
-      display: grid;
-      gap: 12px;
-      padding: 14px;
-      border-radius: 22px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
-    }
-
-    .onboarding-visual {
-      display: block;
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      object-fit: cover;
-      border-radius: 18px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      background: #07111a;
-    }
-
-    .onboarding-visual.square {
-      aspect-ratio: 1 / 1;
-    }
-
-    .onboarding-visual.quad-problem {
-      object-position: left top;
-    }
-
-    .onboarding-visual.quad-privacy {
-      object-position: right top;
-    }
-
-    .onboarding-visual.quad-pattern {
-      object-position: left bottom;
-    }
-
-    .onboarding-visual.quad-speed {
-      object-position: right bottom;
-    }
-
-    .onboarding-visual-copy {
-      display: grid;
-      gap: 6px;
-    }
-
-    .onboarding-visual-copy strong {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .onboarding-visual-copy p {
-      color: var(--muted);
-      font-size: 0.94rem;
-      line-height: 1.45;
+      gap: 10px;
     }
 
     .onboarding-inline-stat {
@@ -1312,6 +1295,11 @@
       .panel,
       .modal-card {
         padding: 16px;
+      }
+
+      #onboardingModal .modal-card {
+        height: min(92vh, 760px);
+        padding: 14px;
       }
 
       .import-grid,
@@ -3128,17 +3116,9 @@
     function renderOnboardingStageWithArtwork(artKey, content) {
       const artwork = ONBOARDING_ARTWORK[artKey];
       if (!artwork) return content;
-      const variantClass = artwork.variant === "square" ? "square" : "";
-      const cropClass = artwork.crop || "";
       return `
-        <div class="onboarding-stage-media">
-          <div class="onboarding-visual-card">
-            <img class="onboarding-visual ${variantClass} ${cropClass}" src="${artwork.src}" alt="${escapeHtml(artwork.alt)}">
-            <div class="onboarding-visual-copy">
-              <strong>${escapeHtml(artwork.title)}</strong>
-              <p>${escapeHtml(artwork.body)}</p>
-            </div>
-          </div>
+        <div class="onboarding-stage-bg" style="background-image: url('${artwork.src}')"></div>
+        <div class="onboarding-stage-content">
           ${content}
         </div>
       `;
