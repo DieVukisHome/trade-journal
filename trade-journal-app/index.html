@@ -682,6 +682,7 @@
       display: grid;
       gap: 6px;
       background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
     }
 
     .onboarding-option.active {
@@ -698,6 +699,7 @@
 
     .onboarding-option-label {
       font-weight: 700;
+      color: var(--text);
     }
 
     .onboarding-option-meta,
@@ -707,6 +709,10 @@
     .review-request-note {
       color: var(--muted);
       line-height: 1.45;
+    }
+
+    .onboarding-option span {
+      color: inherit;
     }
 
     .onboarding-demo {
@@ -1764,6 +1770,12 @@
       allowPreviewAccess: false
     };
 
+    const DEV_FLAGS = {
+      enableAutoSeedReviewDemo:
+        new URLSearchParams(window.location.search).get("reviewDemo") === "1" ||
+        window.localStorage.getItem("cliplog-dev-review-demo") === "1"
+    };
+
     const ONBOARDING_STATE_KEY = "cliplog-onboarding-state-v1";
     const WELCOME_OFFER_DISCOUNT = 0.4;
     const ONBOARDING_DEMO_SAMPLE = {
@@ -2106,7 +2118,7 @@
       entitlement = normalizeEntitlement(entitlement);
       onboardingState = normalizeOnboardingState(onboardingState);
       setSelectedPlan(entitlement.selectedPlanId || selectedPlanId, true);
-      if (window.location.hostname === "localhost" && !hasClosedTrades(records) && !hasLocalDemoRecords(records)) {
+      if (DEV_FLAGS.enableAutoSeedReviewDemo && !hasClosedTrades(records) && !hasLocalDemoRecords(records)) {
         seedLocalReviewDemoData(true);
       }
       setRecordStateFilter("all");
@@ -2927,14 +2939,14 @@
       const coin = extractCoinFromText(joined, lines) || extractCoinFromSymbol(symbolLine);
       const direction = inferDirection(joined);
       const openTime = extractFirstDateTime(joined, ["Time", "Open Time"]);
-      const avgPrice = extractNumericAfterLabels(joined, ["Avg. Price", "Avg Price"]);
-      const filled = extractNumericAfterLabels(joined, ["Filled(USDT)", "Filled"]);
-      const amount = extractNumericAfterLabels(joined, ["Amount(USDT)", "Amount"]);
+      const avgPrice = extractNumericAfterLabels(joined, ["Avg. Price", "Avg Price", "Fill price", "Fill Price"]);
+      const filled = extractNumericAfterLabels(joined, ["Filled(USDT)", "Filled (USDT)", "Filled(USDC)", "Filled (USDC)", "Filled"]);
+      const amount = extractNumericAfterLabels(joined, ["Amount(USDT)", "Amount (USDT)", "Order amount (USDC)", "Order amount(USDC)", "Amount(USDC)", "Amount (USDC)", "Amount"]);
       const notes = mergeNotes("", [
         openTime ? `Open Time: ${openTime}` : "",
         avgPrice ? `Avg Price: ${normalizeNumberString(avgPrice)}` : "",
-        filled ? `Filled(USDT): ${normalizeNumberString(filled)}` : "",
-        amount ? `Amount(USDT): ${normalizeNumberString(amount)}` : ""
+        filled ? `Filled: ${normalizeNumberString(filled)}` : "",
+        amount ? `Amount: ${normalizeNumberString(amount)}` : ""
       ]);
 
       return {
@@ -2958,13 +2970,20 @@
       const symbolLine = extractSymbolLine(lines);
       const coin = extractCoinFromText(joined, lines) || extractCoinFromSymbol(symbolLine);
       const direction = inferDirection(joined);
-      const realizedPnl = parseSignedNumber(extractNumericAfterLabels(joined, ["Realized PnL(USDT)", "Realized PnL"]));
+      const realizedPnl = parseSignedNumber(extractNumericAfterLabels(joined, [
+        "Realized PnL (USDC)",
+        "Realized PnL(USDC)",
+        "Realized PnL (USDT)",
+        "Realized PnL(USDT)",
+        "Realized PnL"
+      ]));
       const closedPnl = parseSignedNumber(extractNumericAfterLabels(joined, ["Closed PnL(USDT)", "Closed PnL"]));
       const displayPnl = realizedPnl !== "" ? realizedPnl : closedPnl;
-      const closeTime = extractFirstDateTime(joined, ["Close Time", "Closed Time"]);
-      const openTime = extractFirstDateTime(joined, ["Open Time"]);
-      const entryPrice = extractNumericAfterLabels(joined, ["Entry Price"]);
-      const avgClose = extractNumericAfterLabels(joined, ["Avg. Close Price", "Avg Close Price"]);
+      const closeTime = extractFirstDateTime(joined, ["Close Time", "Closed Time", "Closed"]);
+      const openTime = extractFirstDateTime(joined, ["Time opened", "Time Opened", "Open Time"]);
+      const entryPrice = extractNumericAfterLabels(joined, ["Entry price", "Entry Price"]);
+      const exitPrice = extractNumericAfterLabels(joined, ["Exit price", "Exit Price", "Avg. Close Price", "Avg Close Price"]);
+      const maxHeld = extractNumericAfterLabels(joined, ["Max held (USDC)", "Max held(USDC)", "Max held"]);
       const inferredResult = inferResult(displayPnl);
       const inferredStatus = inferStatusFromResult(inferredResult);
 
@@ -2981,7 +3000,8 @@
           openTime ? `Open Time: ${openTime}` : "",
           closeTime ? `Close Time: ${closeTime}` : "",
           entryPrice ? `Entry Price: ${normalizeNumberString(entryPrice)}` : "",
-          avgClose ? `Avg Close Price: ${normalizeNumberString(avgClose)}` : ""
+          exitPrice ? `Exit Price: ${normalizeNumberString(exitPrice)}` : "",
+          maxHeld ? `Max Held: ${normalizeNumberString(maxHeld)}` : ""
         ]),
         _debugSummary: buildSummary({
           coin,
@@ -3717,6 +3737,9 @@
       const exact = normalizedLines.find((line) => /[A-Z0-9]{3,20}USDT$/.test(line.normalized));
       if (exact) return exact.normalized;
 
+      const perpSymbol = normalizedLines.find((line) => /[A-Z0-9]{2,20}USD[C]?(?:UMXPERP|PERP)$/.test(line.normalized));
+      if (perpSymbol) return perpSymbol.normalized;
+
       const fuzzy = normalizedLines.find((line) => /[A-Z0-9]{3,20}US[DO0]T?$/.test(line.normalized));
       if (fuzzy) return fuzzy.normalized.replace(/US[DO0]T?$/, "USDT");
 
@@ -3725,7 +3748,10 @@
 
     function extractCoinFromSymbol(symbolLine) {
       const normalized = String(symbolLine || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
-      return normalized.replace(/USDT$/, "");
+      if (!normalized) return "";
+      return normalized
+        .replace(/USD[C]?(?:UMXPERP|PERP)$/, "")
+        .replace(/USDT$/, "");
     }
 
     function extractCoinFromText(text, lines) {
@@ -3733,14 +3759,22 @@
       const direct = compact.match(/\b([A-Z0-9]{2,20})USDT\b/);
       if (direct) return direct[1];
 
+      const perpDirect = compact.match(/\b([A-Z0-9]{2,20})USD[C]?(?:UMXPERP|PERP)\b/);
+      if (perpDirect) return perpDirect[1];
+
       const firstLine = String(lines?.[0] || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
       const firstMatch = firstLine.match(/^([A-Z0-9]{2,20})USDT$/);
       if (firstMatch) return firstMatch[1];
+
+      const firstPerpMatch = firstLine.match(/^([A-Z0-9]{2,20})USD[C]?(?:UMXPERP|PERP)$/);
+      if (firstPerpMatch) return firstPerpMatch[1];
 
       const topLines = (lines || []).slice(0, 3).map((line) => line.toUpperCase().replace(/[^A-Z0-9]/g, ""));
       for (const line of topLines) {
         const fuzzy = line.match(/^([A-Z0-9]{2,20})US[DO0]T?$/);
         if (fuzzy) return fuzzy[1];
+        const perp = line.match(/^([A-Z0-9]{2,20})USD[C]?(?:UMXPERP|PERP)$/);
+        if (perp) return perp[1];
       }
       return "";
     }
@@ -3767,6 +3801,8 @@
     }
 
     function inferDirection(text) {
+      if (/\bbuy\b/i.test(text)) return "Long";
+      if (/\bsell\b/i.test(text)) return "Short";
       if (/\bopen\s*short\b/i.test(text) || /\bshort\b/i.test(text)) return "Short";
       if (/\bopen\s*long\b/i.test(text) || /\blong\b/i.test(text)) return "Long";
       return "";
