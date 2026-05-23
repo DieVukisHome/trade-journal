@@ -2046,34 +2046,30 @@
 
     const ONBOARDING_ARTWORK = {
       problem: {
-        src: "./assets/onboarding/funnel-sheet.png",
+        src: "./assets/onboarding/problem-frame.png",
         alt: "Abstract illustration of repeated trading mistakes turning into a journal flow.",
         variant: "portrait",
-        crop: "quad-problem",
         title: "The same mistake is hard to spot when nothing is logged.",
         body: "ClipLog turns the screenshot into a record while the trade still feels fresh."
       },
       privacy: {
-        src: "./assets/onboarding/funnel-sheet.png",
+        src: "./assets/onboarding/privacy-local.png",
         alt: "Abstract illustration of trade data staying locked inside a phone.",
         variant: "square",
-        crop: "quad-privacy",
         title: "Built around on-device review.",
         body: "Even while we tailor the OCR flow, your screenshots stay on your phone."
       },
       pattern: {
-        src: "./assets/onboarding/funnel-sheet.png",
+        src: "./assets/onboarding/pattern-visible.png",
         alt: "Abstract illustration of scattered data becoming a visible trend line.",
         variant: "square",
-        crop: "quad-pattern",
         title: "The pattern only becomes obvious once the trades line up.",
         body: "This is the shift from isolated pain to something you can actually review."
       },
       speed: {
-        src: "./assets/onboarding/funnel-sheet.png",
+        src: "./assets/onboarding/speed-ocr.png",
         alt: "Abstract illustration of a trade screenshot transforming into a completed journal entry.",
         variant: "portrait",
-        crop: "quad-speed",
         title: "This only works if logging feels instant.",
         body: "Fast enough after the trade. Clean enough to review later."
       }
@@ -2758,7 +2754,11 @@
           ui.onboardingTitle.textContent = map.s8.headline;
           ui.onboardingBody.textContent = map.s8.body;
           ui.onboardingPrimaryBtn.textContent = map.s8.cta;
-          ui.onboardingStage.innerHTML = "";
+          ui.onboardingStage.innerHTML = renderOnboardingStageWithArtwork("speed", `
+            <div class="onboarding-card">
+              <span class="onboarding-inline-stat">15 seconds keeps the journaling habit alive after every trade.</span>
+            </div>
+          `);
           break;
         case 8:
           renderReviewPromptScreen();
@@ -2871,7 +2871,7 @@
         ? `Avoid just 2 a month and you keep about ${yearlyValue} USDT a year. ClipLog helps you see them coming.`
         : copy.fallback;
       ui.onboardingPrimaryBtn.textContent = copy.cta;
-      ui.onboardingStage.innerHTML = renderOnboardingStageWithArtwork("problem", `
+      ui.onboardingStage.innerHTML = `
         <div class="onboarding-card">
           <label class="onboarding-input field">
             <span>${copy.inputLabel} <strong>${hasLoss ? `${avgLoss} USDT` : ""}</strong></span>
@@ -2882,7 +2882,7 @@
             <strong>${hasLoss ? `${yearlyValue} USDT` : "—"}</strong>
           </div>
         </div>
-      `);
+      `;
       const input = document.getElementById("onboardingAvgLossInput");
       if (input) {
         input.value = onboardingState.avgLoss || "";
