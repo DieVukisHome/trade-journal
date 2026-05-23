@@ -803,26 +803,26 @@
       transition: width 180ms ease;
     }
 
-    .onboarding-swipe-dots {
-      display: flex;
+    .onboarding-next-arrow {
+      justify-self: end;
+      width: 54px;
+      height: 54px;
+      border-radius: 999px;
+      border: 1px solid rgba(127, 199, 255, 0.34);
+      background: rgba(8, 22, 34, 0.9);
+      color: var(--text);
+      font-size: 1.7rem;
+      line-height: 1;
+      padding: 0;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 7px;
-      margin: 2px 0 0;
-      min-height: 10px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
     }
 
-    .onboarding-swipe-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.18);
-      transition: transform 140ms ease, background 140ms ease;
-    }
-
-    .onboarding-swipe-dot.active {
-      background: var(--accent-2);
-      transform: scale(1.18);
+    .onboarding-next-arrow:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
     }
 
     .onboarding-stage {
@@ -1859,7 +1859,7 @@
           <p class="onboarding-support-line" id="onboardingSupportLine"></p>
         </div>
         <div class="onboarding-stage" id="onboardingStage"></div>
-        <div class="onboarding-swipe-dots" id="onboardingSwipeDots" aria-hidden="true"></div>
+        <button class="onboarding-next-arrow" id="onboardingNextArrow" type="button" aria-label="Next">›</button>
         <div class="actions">
           <button class="secondary" id="onboardingSecondaryBtn" type="button" hidden>Back</button>
           <button class="primary" id="onboardingPrimaryBtn" type="button">Show me</button>
@@ -2345,7 +2345,7 @@
       onboardingModal: document.getElementById("onboardingModal"),
       onboardingProgressDetail: document.getElementById("onboardingProgressDetail"),
       onboardingProgressFill: document.getElementById("onboardingProgressFill"),
-      onboardingSwipeDots: document.getElementById("onboardingSwipeDots"),
+      onboardingNextArrow: document.getElementById("onboardingNextArrow"),
       onboardingTitle: document.getElementById("onboardingTitle"),
       onboardingBody: document.getElementById("onboardingBody"),
       onboardingSupportLine: document.getElementById("onboardingSupportLine"),
@@ -2450,6 +2450,7 @@
     ui.filterAllBtn.addEventListener("click", () => setRecordStateFilter("all"));
     ui.onboardingPrimaryBtn.addEventListener("click", handleOnboardingPrimaryAction);
     ui.onboardingSecondaryBtn.addEventListener("click", handleOnboardingSecondaryAction);
+    ui.onboardingNextArrow.addEventListener("click", handleOnboardingPrimaryAction);
     ui.onboardingStage.addEventListener("touchstart", handleOnboardingTouchStart, { passive: true });
     ui.onboardingStage.addEventListener("touchend", handleOnboardingTouchEnd, { passive: true });
     ui.onboardingStage.addEventListener("pointerdown", handleOnboardingPointerDown);
@@ -2773,7 +2774,6 @@
       const stepNumber = onboardingStep >= 13 ? 14 : onboardingStep + 1;
       ui.onboardingProgressDetail.textContent = "";
       ui.onboardingProgressFill.style.width = `${(stepNumber / totalSteps) * 100}%`;
-      renderOnboardingSwipeDots(stepNumber, totalSteps);
       setOnboardingSupportLine("");
       ui.onboardingSecondaryBtn.hidden = onboardingStep === 0;
       ui.onboardingSecondaryBtn.textContent = "Back";
@@ -2841,6 +2841,7 @@
         default:
           break;
       }
+      syncOnboardingNextArrowState();
     }
 
     function handleOnboardingPrimaryAction() {
@@ -2921,12 +2922,10 @@
       ui.onboardingSupportLine.style.display = value ? "block" : "none";
     }
 
-    function renderOnboardingSwipeDots(stepNumber, totalSteps) {
-      if (!ui.onboardingSwipeDots) return;
-      ui.onboardingSwipeDots.innerHTML = Array.from({ length: totalSteps }, (_, index) => {
-        const isActive = index === stepNumber - 1;
-        return `<span class="onboarding-swipe-dot${isActive ? " active" : ""}"></span>`;
-      }).join("");
+    function syncOnboardingNextArrowState() {
+      if (!ui.onboardingNextArrow || !ui.onboardingPrimaryBtn) return;
+      ui.onboardingNextArrow.hidden = ui.onboardingPrimaryBtn.hidden;
+      ui.onboardingNextArrow.disabled = ui.onboardingPrimaryBtn.disabled;
     }
 
     function handleOnboardingTouchStart(event) {
@@ -3137,6 +3136,7 @@
       }
       ui.onboardingPrimaryBtn.disabled = true;
       ui.onboardingPrimaryBtn.textContent = "Loading…";
+      syncOnboardingNextArrowState();
       let parsed = null;
       try {
         if (window.Tesseract) {
@@ -3156,6 +3156,7 @@
       saveJson(ONBOARDING_STATE_KEY, onboardingState);
       ui.onboardingPrimaryBtn.disabled = false;
       renderOcrDemoScreen();
+      syncOnboardingNextArrowState();
       window.setTimeout(() => {
         if (onboardingStep === 6) moveOnboardingTo(7);
       }, 1200);
