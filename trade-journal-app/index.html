@@ -3017,7 +3017,7 @@
         ? `Avoid just 2 a month and you keep about ${yearlyValue} USDT a year. ClipLog helps you see them coming.`
         : copy.fallback;
       ui.onboardingPrimaryBtn.textContent = copy.cta;
-      ui.onboardingStage.innerHTML = `
+      ui.onboardingStage.innerHTML = renderOnboardingStageContent(`
         <div class="onboarding-card">
           <label class="onboarding-input field">
             <span>${copy.inputLabel} <strong>${hasLoss ? `${avgLoss} USDT` : ""}</strong></span>
@@ -3028,7 +3028,7 @@
             <strong>${hasLoss ? `${yearlyValue} USDT` : "—"}</strong>
           </div>
         </div>
-      `;
+      `);
       const input = document.getElementById("onboardingAvgLossInput");
       if (input) {
         input.value = onboardingState.avgLoss || "";
@@ -3090,7 +3090,7 @@
       ui.onboardingTitle.textContent = copy.headline;
       ui.onboardingBody.textContent = "";
       ui.onboardingPrimaryBtn.textContent = copy.cta;
-      ui.onboardingStage.innerHTML = `
+      ui.onboardingStage.innerHTML = renderOnboardingStageContent(`
         <div class="onboarding-options">
           ${copy.options.map((option) => `
             <button class="onboarding-option ${onboardingState.biggestLeak === option.label ? "active" : ""}" data-onboarding-leak="${escapeHtml(option.label)}" type="button">
@@ -3098,7 +3098,7 @@
             </button>
           `).join("")}
         </div>
-      `;
+      `);
       ui.onboardingStage.querySelectorAll("[data-onboarding-leak]").forEach((button) => {
         button.addEventListener("click", () => {
           onboardingState.biggestLeak = button.dataset.onboardingLeak || "";
@@ -3123,7 +3123,7 @@
       ui.onboardingTitle.textContent = copy.headline;
       ui.onboardingBody.textContent = copy.body;
       ui.onboardingPrimaryBtn.hidden = true;
-      ui.onboardingStage.innerHTML = `
+      ui.onboardingStage.innerHTML = renderOnboardingStageContent(`
         <div class="onboarding-options">
           ${copy.options.map((option) => `
             <button class="onboarding-option ${onboardingState.commitment === option ? "active" : ""}" data-onboarding-commitment="${escapeHtml(option)}" type="button">
@@ -3131,7 +3131,7 @@
             </button>
           `).join("")}
         </div>
-      `;
+      `);
       ui.onboardingStage.querySelectorAll("[data-onboarding-commitment]").forEach((button) => {
         button.addEventListener("click", () => {
           onboardingState.commitment = button.dataset.onboardingCommitment || "";
@@ -3204,7 +3204,7 @@
       ui.onboardingBody.textContent = copy.body;
       ui.onboardingPrimaryBtn.textContent = copy.cta;
       ui.onboardingPrimaryBtn.hidden = false;
-      ui.onboardingStage.innerHTML = `<div class="onboarding-card"><span class="pill-note">Day 1</span><p class="review-request-note">One trade in. Your pattern starts building here.</p></div>`;
+      ui.onboardingStage.innerHTML = renderOnboardingStageContent(`<div class="onboarding-card"><span class="pill-note">Day 1</span><p class="review-request-note">One trade in. Your pattern starts building here.</p></div>`);
     }
 
     function requestInAppReviewPreview() {
@@ -3234,13 +3234,13 @@
       ui.onboardingTitle.textContent = copy.headline;
       ui.onboardingBody.textContent = copy.socialProof;
       ui.onboardingPrimaryBtn.hidden = true;
-      ui.onboardingStage.innerHTML = `
+      ui.onboardingStage.innerHTML = renderOnboardingStageContent(`
         <div class="onboarding-loader">
           <div class="onboarding-loader-lines">
             ${lines.map((line, index) => `<div class="onboarding-loader-line ${index === 0 ? "active" : ""}" data-loader-line="${index}">${escapeHtml(line)}</div>`).join("")}
           </div>
         </div>
-      `;
+      `);
       const nodes = Array.from(ui.onboardingStage.querySelectorAll("[data-loader-line]"));
       nodes.forEach((node, index) => {
         window.setTimeout(() => {
@@ -3265,13 +3265,13 @@
       ui.onboardingPrimaryBtn.hidden = false;
       ui.onboardingSecondaryBtn.hidden = false;
       ui.onboardingSecondaryBtn.textContent = copy.secondary;
-      ui.onboardingStage.innerHTML = `
+      ui.onboardingStage.innerHTML = renderOnboardingStageContent(`
         <div class="onboarding-card">
           <span class="plan-badge warning">24h offer</span>
           <strong>Yearly drops to ${formatMoney(BILLING_CONFIG.plans.yearly.priceValue * (1 - WELCOME_OFFER_DISCOUNT))} for the first year.</strong>
           <p class="onboarding-note">Founding users get the strongest offer while the habit is still fresh.</p>
         </div>
-      `;
+      `);
     }
 
     function renderOnboardingStageWithArtwork(artKey, content) {
@@ -3283,6 +3283,10 @@
           ${content}
         </div>
       `;
+    }
+
+    function renderOnboardingStageContent(content) {
+      return `<div class="onboarding-stage-content">${content}</div>`;
     }
 
     function clearOnboardingLoaderTimer() {
