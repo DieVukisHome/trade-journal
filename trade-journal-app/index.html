@@ -748,8 +748,8 @@
     }
 
     .onboarding-copy .helper-copy {
-      font-size: clamp(1.18rem, 3.4vw, 1.42rem);
-      line-height: 1.32;
+      font-size: clamp(1.34rem, 3.9vw, 1.64rem);
+      line-height: 1.26;
     }
 
     .paywall-subcta {
@@ -777,6 +777,15 @@
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
+    }
+
+    #onboardingProgressLabel {
+      color: var(--text);
+      font-size: 0.96rem;
+      font-weight: 600;
+      border-color: rgba(255, 255, 255, 0.18);
+      background: rgba(20, 33, 47, 0.92);
+      opacity: 1;
     }
 
     .onboarding-progress-bar {
@@ -900,7 +909,7 @@
     .review-request-note {
       color: var(--muted);
       line-height: 1.45;
-      font-size: 1.12rem;
+      font-size: clamp(1.2rem, 3.3vw, 1.4rem);
     }
 
     .onboarding-option span {
@@ -922,18 +931,19 @@
       background: transparent;
       border: 0;
       color: var(--text);
-      font-size: 1.22rem;
-      line-height: 1.35;
+      font-size: clamp(1.26rem, 3.5vw, 1.48rem);
+      line-height: 1.28;
     }
 
     .onboarding-demo img {
       width: 100%;
-      border-radius: 12px;
+      border-radius: 0;
       border: 0;
       display: block;
       max-height: 170px;
       object-fit: cover;
       object-position: center;
+      background: transparent;
     }
 
     .onboarding-result-grid {
