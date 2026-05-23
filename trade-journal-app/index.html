@@ -800,17 +800,17 @@
       position: relative;
       min-height: 0;
       overflow: hidden;
-      border-radius: 22px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.03);
-      padding: 14px;
+      border-radius: 18px;
+      border: 0;
+      background: transparent;
+      padding: 8px 4px;
     }
 
     .onboarding-stage::after {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(4, 12, 19, 0.2), rgba(4, 12, 19, 0.62));
+      background: linear-gradient(135deg, rgba(6, 16, 26, 0.82) 8%, rgba(6, 16, 26, 0.36) 52%, rgba(6, 16, 26, 0.72) 100%);
       pointer-events: none;
       z-index: 1;
     }
@@ -818,10 +818,11 @@
     .onboarding-stage-bg {
       position: absolute;
       inset: 0;
-      background-position: center;
-      background-size: cover;
-      opacity: 0.42;
-      filter: saturate(1.05) contrast(1.02);
+      background-position: right bottom;
+      background-repeat: no-repeat;
+      background-size: min(58%, 360px) auto;
+      opacity: 0.46;
+      filter: saturate(1.02) contrast(1.02);
       z-index: 0;
       pointer-events: none;
     }
@@ -838,15 +839,15 @@
     .onboarding-demo,
     .onboarding-loader,
     .onboarding-result-card {
-      border-radius: 22px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.035);
-      padding: 14px;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
+      padding: 0;
     }
 
     .onboarding-card {
       display: grid;
-      gap: 14px;
+      gap: 10px;
     }
 
     .onboarding-input {
@@ -867,16 +868,19 @@
       text-align: left;
       display: grid;
       gap: 6px;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.025);
       color: var(--text);
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 12px;
     }
 
     .onboarding-option.active {
       border-color: rgba(86, 208, 160, 0.4);
       background:
-        linear-gradient(180deg, rgba(86, 208, 160, 0.12), rgba(255, 255, 255, 0.03)),
-        rgba(8, 17, 27, 0.92);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
+        linear-gradient(180deg, rgba(86, 208, 160, 0.14), rgba(255, 255, 255, 0.02)),
+        rgba(8, 17, 27, 0.76);
+      box-shadow: none;
     }
 
     .onboarding-exchange-grid {
@@ -911,19 +915,22 @@
       align-items: center;
       gap: 8px;
       width: fit-content;
-      padding: 10px 14px;
+      padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       color: var(--text);
-      font-size: 0.94rem;
+      font-size: 0.9rem;
     }
 
     .onboarding-demo img {
       width: 100%;
-      border-radius: 18px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
       display: block;
+      max-height: 170px;
+      object-fit: cover;
+      object-position: center;
     }
 
     .onboarding-result-grid {
@@ -932,8 +939,8 @@
 
     .onboarding-result-card strong {
       display: block;
-      margin-top: 8px;
-      font-size: 1.04rem;
+      margin-top: 4px;
+      font-size: 1rem;
       overflow-wrap: anywhere;
     }
 
