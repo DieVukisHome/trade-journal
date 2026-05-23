@@ -861,7 +861,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(6, 16, 26, 0.9) 0%, rgba(6, 16, 26, 0.62) 38%, rgba(6, 16, 26, 0.24) 72%, rgba(6, 16, 26, 0.05) 100%);
+      background: rgba(6, 16, 26, 0.45);
       pointer-events: none;
       z-index: 1;
     }
@@ -1346,11 +1346,13 @@
 
     #onboardingModal,
     #paywallModal {
-      background:
-        radial-gradient(circle at 12% 8%, rgba(86, 208, 160, 0.12), transparent 28%),
-        radial-gradient(circle at 88% 0%, rgba(127, 199, 255, 0.12), transparent 30%),
-        linear-gradient(180deg, #06101a 0%, #0b1621 58%, #08121b 100%);
+      background: #08121b;
       backdrop-filter: none;
+    }
+
+    #onboardingModal .modal-card,
+    #paywallModal .modal-card {
+      background: rgba(9, 18, 28, 0.98);
     }
 
     .modal.active {
