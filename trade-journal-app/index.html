@@ -112,10 +112,39 @@
 
     .hero-copy {
       display: grid;
-      gap: 10px;
+      gap: 12px;
       max-width: 760px;
       position: relative;
       z-index: 1;
+    }
+
+    .hero-copy h1 {
+      font-size: clamp(2.4rem, 6vw, 4.1rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .hero-subline {
+      font-size: clamp(1.08rem, 2vw, 1.22rem);
+      color: var(--text);
+      max-width: 44rem;
+    }
+
+    .hero-secondary {
+      font-size: 1rem;
+    }
+
+    .hero-trust {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      color: var(--muted);
+      font-size: 0.95rem;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
     }
 
     .hero-copy p,
@@ -485,6 +514,7 @@
       background: rgba(255, 255, 255, 0.035);
       padding: 18px;
       transition: border-color 140ms ease, transform 140ms ease, background 140ms ease;
+      color: var(--text);
     }
 
     .paywall-plan:hover {
@@ -514,6 +544,7 @@
     .paywall-plan-top strong,
     .paywall-plan-price strong {
       font-size: 1.02rem;
+      color: var(--text);
     }
 
     .paywall-plan-price {
@@ -525,6 +556,7 @@
       font-size: 1.38rem;
       line-height: 1;
       letter-spacing: -0.04em;
+      color: var(--text);
     }
 
     .paywall-plan-copy,
@@ -572,6 +604,21 @@
       flex-wrap: wrap;
     }
 
+    .trial-summary strong {
+      color: var(--text);
+    }
+
+    .paywall-compare-intro {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .paywall-compare-intro h3,
+    .paywall-compare-intro strong {
+      color: var(--text);
+    }
+
     .paywall-comparison {
       display: grid;
       gap: 0;
@@ -582,8 +629,11 @@
     }
 
     .paywall-comparison-header,
-    .paywall-comparison-row {
-      padding: 14px 16px;
+    .paywall-comparison-row,
+    .paywall-hero-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0;
     }
 
     .paywall-comparison-header {
@@ -591,15 +641,94 @@
       font-weight: 700;
     }
 
-    .paywall-comparison-row + .paywall-comparison-row {
+    .paywall-comparison-row + .paywall-comparison-row,
+    .paywall-hero-row + .paywall-comparison-row,
+    .paywall-comparison-header + .paywall-hero-row {
       border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    .paywall-comparison-row strong,
-    .paywall-comparison-header strong {
-      width: 50%;
+    .paywall-column {
+      padding: 16px;
       min-width: 0;
       overflow-wrap: anywhere;
+    }
+
+    .paywall-column.dim {
+      background: rgba(255, 255, 255, 0.02);
+      color: rgba(243, 247, 251, 0.7);
+    }
+
+    .paywall-column.pro {
+      background: linear-gradient(180deg, rgba(86, 208, 160, 0.12), rgba(55, 138, 221, 0.08));
+      color: var(--text);
+    }
+
+    .paywall-column.pro strong,
+    .paywall-column.pro span,
+    .paywall-column.pro p,
+    .paywall-column.dim strong,
+    .paywall-column.dim span,
+    .paywall-column.dim p {
+      color: inherit;
+    }
+
+    .paywall-hero-row .paywall-column.pro {
+      background: linear-gradient(180deg, rgba(86, 208, 160, 0.2), rgba(55, 138, 221, 0.14));
+      box-shadow: inset 0 0 0 1px rgba(86, 208, 160, 0.18);
+    }
+
+    .paywall-hero-row .paywall-column.pro strong {
+      font-size: 1.04rem;
+    }
+
+    .paywall-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      margin-bottom: 8px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .paywall-column.pro .paywall-mark {
+      background: rgba(86, 208, 160, 0.18);
+      color: var(--accent);
+    }
+
+    .paywall-column.dim .paywall-mark {
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(243, 247, 251, 0.66);
+    }
+
+    .paywall-copy-stack {
+      display: grid;
+      gap: 6px;
+    }
+
+    .paywall-copy-stack strong {
+      color: inherit;
+    }
+
+    .paywall-copy-stack p {
+      margin: 0;
+      color: inherit;
+      line-height: 1.45;
+    }
+
+    .onboarding-copy h2 {
+      font-size: clamp(1.65rem, 4.6vw, 1.95rem);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .onboarding-copy .helper-copy {
+      font-size: clamp(1.04rem, 3.2vw, 1.12rem);
+      line-height: 1.62;
     }
 
     .paywall-subcta {
@@ -718,6 +847,80 @@
     .onboarding-demo {
       display: grid;
       gap: 14px;
+    }
+
+    .onboarding-stage-media {
+      display: grid;
+      gap: 16px;
+    }
+
+    .onboarding-visual-card {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+    }
+
+    .onboarding-visual {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: #07111a;
+    }
+
+    .onboarding-visual.square {
+      aspect-ratio: 1 / 1;
+    }
+
+    .onboarding-visual.quad-problem {
+      object-position: left top;
+    }
+
+    .onboarding-visual.quad-privacy {
+      object-position: right top;
+    }
+
+    .onboarding-visual.quad-pattern {
+      object-position: left bottom;
+    }
+
+    .onboarding-visual.quad-speed {
+      object-position: right bottom;
+    }
+
+    .onboarding-visual-copy {
+      display: grid;
+      gap: 6px;
+    }
+
+    .onboarding-visual-copy strong {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .onboarding-visual-copy p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.45;
+    }
+
+    .onboarding-inline-stat {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      font-size: 0.94rem;
     }
 
     .onboarding-demo img {
@@ -1131,7 +1334,12 @@
     <section class="hero">
       <div class="hero-copy">
         <h1 id="heroAppName"></h1>
-        <p>Capture your trade the moment it happens, review OCR suggestions, and keep everything on-device without handing over exchange API access.</p>
+        <p class="hero-subline">The futures journal you'll actually keep. Screenshot in, trade logged — no API key, no cloud.</p>
+        <p class="hero-secondary">For day-traders on Binance, OKX, Bitget &amp; BingX.</p>
+        <div class="actions">
+          <button class="primary" id="heroStartTrialBtn" type="button">Start free trial</button>
+        </div>
+        <div class="hero-trust">100% on-device · Your screenshots never leave your phone.</div>
       </div>
     </section>
 
@@ -1613,38 +1821,23 @@
         <div class="paywall-headline">
           <div class="trial-summary">
             <div>
-              <strong>Start your 7-day free trial.</strong>
               <div class="trial-line" id="trialLine">7 days free, then $9.99/month. Cancel anytime.</div>
             </div>
             <span class="trial-chip">No API key</span>
           </div>
           <div class="paywall-grid" id="paywallPlans">
-            <button class="paywall-plan" data-plan-id="weekly" type="button">
-              <div class="paywall-plan-top">
-                <div class="paywall-plan-price">
-                  <strong class="paywall-plan-label">Weekly</strong>
-                  <span class="paywall-price paywall-plan-price-value">$2.99</span>
-                </div>
-                <span class="plan-badge paywall-plan-badge">7-day trial</span>
-              </div>
-              <div class="paywall-plan-copy">$2.99/week</div>
-              <div class="paywall-plan-meta">
-                <span class="helper-copy paywall-plan-meta-left">$12.94/month equivalent</span>
-                <span class="helper-copy paywall-plan-meta-right">Most flexible</span>
-              </div>
-            </button>
             <button class="paywall-plan active" data-plan-id="yearly" type="button">
               <div class="paywall-plan-top">
                 <div class="paywall-plan-price">
                   <strong class="paywall-plan-label">Yearly</strong>
                   <span class="paywall-price paywall-plan-price-value">$39.99</span>
                 </div>
-                <span class="plan-badge highlight paywall-plan-badge">Best value</span>
+                <span class="plan-badge highlight paywall-plan-badge">Recommended · Best value</span>
               </div>
               <div class="paywall-plan-copy">$39.99/year</div>
               <div class="paywall-plan-meta">
-                <span class="helper-copy paywall-plan-meta-left">Save 67%</span>
-                <span class="helper-copy paywall-plan-meta-right">$3.33/month equivalent</span>
+                <span class="helper-copy paywall-plan-meta-left">$3.33/month · save 67%</span>
+                <span class="helper-copy paywall-plan-meta-right">Yearly plan</span>
               </div>
             </button>
             <button class="paywall-plan" data-plan-id="monthly" type="button">
@@ -1657,8 +1850,22 @@
               </div>
               <div class="paywall-plan-copy">$9.99/month</div>
               <div class="paywall-plan-meta">
-                <span class="helper-copy paywall-plan-meta-left">7-day trial</span>
-                <span class="helper-copy paywall-plan-meta-right">Month to month</span>
+                <span class="helper-copy paywall-plan-meta-left">Month to month</span>
+                <span class="helper-copy paywall-plan-meta-right">7-day trial</span>
+              </div>
+            </button>
+            <button class="paywall-plan" data-plan-id="weekly" type="button">
+              <div class="paywall-plan-top">
+                <div class="paywall-plan-price">
+                  <strong class="paywall-plan-label">Weekly</strong>
+                  <span class="paywall-price paywall-plan-price-value">$2.99</span>
+                </div>
+                <span class="plan-badge paywall-plan-badge">7-day trial</span>
+              </div>
+              <div class="paywall-plan-copy">$2.99/week</div>
+              <div class="paywall-plan-meta">
+                <span class="helper-copy paywall-plan-meta-left">$12.94/month equivalent</span>
+                <span class="helper-copy paywall-plan-meta-right">Highest monthly price</span>
               </div>
             </button>
             <button class="paywall-plan" data-plan-id="lifetime" type="button">
@@ -1671,34 +1878,81 @@
               </div>
               <div class="paywall-plan-copy">$79 one-time</div>
               <div class="paywall-plan-meta">
-                <span class="helper-copy paywall-plan-meta-left">Launch only, limited</span>
+                <span class="helper-copy paywall-plan-meta-left">Only for the first 500 users</span>
                 <span class="helper-copy paywall-plan-meta-right">One-time purchase</span>
               </div>
             </button>
           </div>
         </div>
         <div class="setting-card">
-          <h3>By hand vs. <span data-brand="pro"></span></h3>
+          <div class="paywall-compare-intro">
+            <h3>Same mistakes. Every month.</h3>
+            <p class="helper-copy">You don't have a strategy problem. You have a "never wrote it down" problem — so the pattern stays invisible.</p>
+          </div>
           <div class="paywall-comparison">
             <div class="paywall-comparison-header">
-              <strong>By hand / spreadsheet</strong>
-              <strong data-brand="pro"></strong>
+              <div class="paywall-column dim">
+                <strong>Trading without it</strong>
+              </div>
+              <div class="paywall-column pro">
+                <strong><span data-brand="pro"></span></strong>
+              </div>
+            </div>
+            <div class="paywall-hero-row">
+              <div class="paywall-column dim">
+                <div class="paywall-copy-stack">
+                  <span class="paywall-mark">✗</span>
+                  <strong>Every loss feels like a one-off.</strong>
+                </div>
+              </div>
+              <div class="paywall-column pro">
+                <div class="paywall-copy-stack">
+                  <span class="paywall-mark">✓</span>
+                  <strong>Your pattern, finally visible.</strong>
+                </div>
+              </div>
             </div>
             <div class="paywall-comparison-row">
-              <span>Type every field manually</span>
-              <span>Screenshot → trade in 15 seconds</span>
+              <div class="paywall-column dim">
+                <div class="paywall-copy-stack">
+                  <span class="paywall-mark">✗</span>
+                  <p>You mean to journal. You don't.</p>
+                </div>
+              </div>
+              <div class="paywall-column pro">
+                <div class="paywall-copy-stack">
+                  <span class="paywall-mark">✓</span>
+                  <p>Screenshot in — logged in 15s.</p>
+                </div>
+              </div>
             </div>
             <div class="paywall-comparison-row">
-              <span>Scattered, rarely updated</span>
-              <span>Every trade, logged automatically</span>
+              <div class="paywall-column dim">
+                <div class="paywall-copy-stack">
+                  <span class="paywall-mark">✗</span>
+                  <p>Same FOMO. Same revenge trade.</p>
+                </div>
+              </div>
+              <div class="paywall-column pro">
+                <div class="paywall-copy-stack">
+                  <span class="paywall-mark">✓</span>
+                  <p>You face it after every trade — not bury it.</p>
+                </div>
+              </div>
             </div>
             <div class="paywall-comparison-row">
-              <span>No pattern visible</span>
-              <span>See your FOMO, revenge trades &amp; plan breaks</span>
-            </div>
-            <div class="paywall-comparison-row">
-              <span>Your keys on a server (other apps)</span>
-              <span>100% on-device · no API key</span>
+              <div class="paywall-column dim">
+                <div class="paywall-copy-stack">
+                  <span class="paywall-mark">✗</span>
+                  <p>API keys on someone's server.</p>
+                </div>
+              </div>
+              <div class="paywall-column pro">
+                <div class="paywall-copy-stack">
+                  <span class="paywall-mark">✓</span>
+                  <p>100% on-device. No key, no cloud.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1790,9 +2044,47 @@
       }
     };
 
+    const ONBOARDING_ARTWORK = {
+      problem: {
+        src: "./assets/onboarding/funnel-sheet.png",
+        alt: "Abstract illustration of repeated trading mistakes turning into a journal flow.",
+        variant: "portrait",
+        crop: "quad-problem",
+        title: "The same mistake is hard to spot when nothing is logged.",
+        body: "ClipLog turns the screenshot into a record while the trade still feels fresh."
+      },
+      privacy: {
+        src: "./assets/onboarding/funnel-sheet.png",
+        alt: "Abstract illustration of trade data staying locked inside a phone.",
+        variant: "square",
+        crop: "quad-privacy",
+        title: "Built around on-device review.",
+        body: "Even while we tailor the OCR flow, your screenshots stay on your phone."
+      },
+      pattern: {
+        src: "./assets/onboarding/funnel-sheet.png",
+        alt: "Abstract illustration of scattered data becoming a visible trend line.",
+        variant: "square",
+        crop: "quad-pattern",
+        title: "The pattern only becomes obvious once the trades line up.",
+        body: "This is the shift from isolated pain to something you can actually review."
+      },
+      speed: {
+        src: "./assets/onboarding/funnel-sheet.png",
+        alt: "Abstract illustration of a trade screenshot transforming into a completed journal entry.",
+        variant: "portrait",
+        crop: "quad-speed",
+        title: "This only works if logging feels instant.",
+        body: "Fast enough after the trade. Clean enough to review later."
+      }
+    };
+
     const COPY_EN = {
       hero: {
-        cta: "Start free trial"
+        subline: "The futures journal you'll actually keep. Screenshot in, trade logged — no API key, no cloud.",
+        secondary: "For day-traders on Binance, OKX, Bitget & BingX.",
+        cta: "Start free trial",
+        trust: "100% on-device · Your screenshots never leave your phone."
       },
       onboarding: {
         screens: {
@@ -1963,6 +2255,7 @@
       reviewPrevMonthBtn: document.getElementById("reviewPrevMonthBtn"),
       reviewNextMonthBtn: document.getElementById("reviewNextMonthBtn"),
       loadReviewDemoBtn: document.getElementById("loadReviewDemoBtn"),
+      heroStartTrialBtn: document.getElementById("heroStartTrialBtn"),
       exportMonth: document.getElementById("exportMonth"),
       ocrStatus: document.getElementById("ocrStatus"),
       recordsList: document.getElementById("recordsList"),
@@ -2056,6 +2349,7 @@
     let onboardingDemoData = null;
 
     applyBranding();
+    applyMarketingCopy();
 
     ui.startAccountSize.value = settings.startAccountSize || "";
     ui.exportMonth.value = getLocalYearMonth();
@@ -2081,6 +2375,15 @@
     ui.showTradesBtn.addEventListener("click", () => setView("trades"));
     ui.showInsightsBtn.addEventListener("click", () => setView("insights"));
     ui.showSettingsBtn.addEventListener("click", () => setView("settings"));
+    ui.heroStartTrialBtn.addEventListener("click", () => {
+      if (FEATURE_GATES.enforceHardPaywall && !hasActiveTrialOrSub()) {
+        onboardingStep = Math.min(onboardingState.currentStep || 0, 11);
+        renderOnboardingScreen();
+        toggleModal(ui.onboardingModal, true);
+        return;
+      }
+      openPaywall("hero");
+    });
     ui.setOpenModeBtn.addEventListener("click", () => setJournalMode("open"));
     ui.setCloseModeBtn.addEventListener("click", () => setJournalMode("close"));
     ui.filterOpenBtn.addEventListener("click", () => setRecordStateFilter("open"));
@@ -2154,6 +2457,16 @@
       document.querySelectorAll("[data-brand='pro']").forEach((node) => {
         node.textContent = APP_CONFIG.proName;
       });
+    }
+
+    function applyMarketingCopy() {
+      const heroSubline = document.querySelector(".hero-subline");
+      const heroSecondary = document.querySelector(".hero-secondary");
+      const heroTrust = document.querySelector(".hero-trust");
+      if (heroSubline) heroSubline.textContent = COPY_EN.hero.subline;
+      if (heroSecondary) heroSecondary.textContent = COPY_EN.hero.secondary;
+      if (heroTrust) heroTrust.textContent = COPY_EN.hero.trust;
+      if (ui.heroStartTrialBtn) ui.heroStartTrialBtn.textContent = COPY_EN.hero.cta;
     }
 
     function createDefaultEntitlement() {
@@ -2235,7 +2548,7 @@
         }
         if (badgeNode) {
           badgeNode.textContent = isOfferYearly ? "40% off" : (
-            planId === "yearly" ? "Best value" :
+            planId === "yearly" ? "Recommended · Best value" :
             planId === "monthly" ? "Most flexible" :
             planId === "lifetime" ? "Founding Member" :
             "7-day trial"
@@ -2245,23 +2558,23 @@
           metaLeftNode.textContent = isOfferYearly
             ? "24h welcome offer"
             : planId === "yearly"
-              ? "Save 67%"
+              ? "$3.33/month · save 67%"
               : planId === "monthly"
-                ? "7-day trial"
+                ? "Month to month"
                 : planId === "lifetime"
-                  ? "Launch only, limited"
+                  ? "Only for the first 500 users"
                   : "$12.94/month equivalent";
         }
         if (metaRightNode) {
           metaRightNode.textContent = isOfferYearly
             ? `$${(displayPriceValue / 12).toFixed(2)}/month equivalent`
             : planId === "yearly"
-              ? "$3.33/month equivalent"
+              ? "Yearly plan"
               : planId === "monthly"
-                ? "Month to month"
+                ? "7-day trial"
                 : planId === "lifetime"
                   ? "One-time purchase"
-                  : "Most flexible";
+                  : "Highest monthly price";
         }
       });
       if (brandingNodes.trialLine) {
@@ -2417,7 +2730,11 @@
           ui.onboardingTitle.textContent = map.s1.headline;
           ui.onboardingBody.textContent = map.s1.body;
           ui.onboardingPrimaryBtn.textContent = map.s1.cta;
-          ui.onboardingStage.innerHTML = "";
+          ui.onboardingStage.innerHTML = renderOnboardingStageWithArtwork("problem", `
+            <div class="onboarding-card">
+              <span class="onboarding-inline-stat">Two minutes now can save weeks of repeating the same trade.</span>
+            </div>
+          `);
           break;
         case 1:
           renderAhaScreen();
@@ -2450,7 +2767,11 @@
           ui.onboardingTitle.textContent = map.s10.headline;
           ui.onboardingBody.textContent = map.s10.body;
           ui.onboardingPrimaryBtn.textContent = map.s10.cta;
-          ui.onboardingStage.innerHTML = "";
+          ui.onboardingStage.innerHTML = renderOnboardingStageWithArtwork("pattern", `
+            <div class="onboarding-card">
+              <span class="onboarding-inline-stat">Thirty days of review is enough to make the pattern impossible to ignore.</span>
+            </div>
+          `);
           break;
         case 10:
           renderPriceCompareScreen();
@@ -2550,7 +2871,7 @@
         ? `Avoid just 2 a month and you keep about ${yearlyValue} USDT a year. ClipLog helps you see them coming.`
         : copy.fallback;
       ui.onboardingPrimaryBtn.textContent = copy.cta;
-      ui.onboardingStage.innerHTML = `
+      ui.onboardingStage.innerHTML = renderOnboardingStageWithArtwork("problem", `
         <div class="onboarding-card">
           <label class="onboarding-input field">
             <span>${copy.inputLabel} <strong>${hasLoss ? `${avgLoss} USDT` : ""}</strong></span>
@@ -2561,7 +2882,7 @@
             <strong>${hasLoss ? `${yearlyValue} USDT` : "—"}</strong>
           </div>
         </div>
-      `;
+      `);
       const input = document.getElementById("onboardingAvgLossInput");
       if (input) {
         input.value = onboardingState.avgLoss || "";
@@ -2591,7 +2912,7 @@
       ui.onboardingTitle.textContent = copy.headline;
       ui.onboardingBody.textContent = copy.body;
       ui.onboardingPrimaryBtn.textContent = copy.cta;
-      ui.onboardingStage.innerHTML = `
+      ui.onboardingStage.innerHTML = renderOnboardingStageWithArtwork("privacy", `
         <div class="onboarding-card">
           <div class="onboarding-exchange-grid">
             ${COPY_EN.onboarding.exchanges.map((exchange) => `
@@ -2603,7 +2924,7 @@
           </div>
           <small>Pick all that apply.</small>
         </div>
-      `;
+      `);
       ui.onboardingStage.querySelectorAll("[data-onboarding-exchange]").forEach((button) => {
         button.addEventListener("click", () => toggleOnboardingExchange(button.dataset.onboardingExchange || ""));
       });
@@ -2647,7 +2968,11 @@
       ui.onboardingTitle.textContent = `${problem}. That's exactly what ClipLog is built to surface.`;
       ui.onboardingBody.textContent = copy.body;
       ui.onboardingPrimaryBtn.textContent = copy.cta;
-      ui.onboardingStage.innerHTML = "";
+      ui.onboardingStage.innerHTML = renderOnboardingStageWithArtwork("pattern", `
+        <div class="onboarding-card">
+          <span class="onboarding-inline-stat">Your trades become reviewable instead of forgettable.</span>
+        </div>
+      `);
     }
 
     function renderCommitmentScreen() {
@@ -2680,7 +3005,7 @@
       ui.onboardingBody.textContent = copy.body;
       ui.onboardingPrimaryBtn.textContent = onboardingState.demoCompleted ? "Continue" : copy.cta;
       const result = onboardingDemoData;
-      ui.onboardingStage.innerHTML = `
+      ui.onboardingStage.innerHTML = renderOnboardingStageWithArtwork("speed", `
         <div class="onboarding-demo">
           <img src="${ONBOARDING_DEMO_SAMPLE.src}" alt="OCR demo screenshot">
           ${result ? `
@@ -2693,7 +3018,7 @@
             </div>
           ` : `<div class="onboarding-card"><small>Tap "${copy.cta}" to fill the trade fields from this sample screenshot.</small></div>`}
         </div>
-      `;
+      `);
     }
 
     async function runOnboardingDemo() {
@@ -2753,7 +3078,11 @@
         : `One revenge trade can cost more than a month of disciplined gains. ${APP_CONFIG.proName} is $39.99 a year. The math isn't close.`;
       ui.onboardingPrimaryBtn.textContent = copy.cta;
       ui.onboardingPrimaryBtn.hidden = false;
-      ui.onboardingStage.innerHTML = "";
+      ui.onboardingStage.innerHTML = renderOnboardingStageWithArtwork("pattern", `
+        <div class="onboarding-card">
+          <span class="onboarding-inline-stat">${APP_CONFIG.proName} keeps the review loop alive long enough for the pattern to show up.</span>
+        </div>
+      `);
     }
 
     function renderPlanLoaderScreen() {
@@ -2799,6 +3128,25 @@
           <span class="plan-badge warning">24h offer</span>
           <strong>Yearly drops to ${formatMoney(BILLING_CONFIG.plans.yearly.priceValue * (1 - WELCOME_OFFER_DISCOUNT))} for the first year.</strong>
           <p class="onboarding-note">Founding users get the strongest offer while the habit is still fresh.</p>
+        </div>
+      `;
+    }
+
+    function renderOnboardingStageWithArtwork(artKey, content) {
+      const artwork = ONBOARDING_ARTWORK[artKey];
+      if (!artwork) return content;
+      const variantClass = artwork.variant === "square" ? "square" : "";
+      const cropClass = artwork.crop || "";
+      return `
+        <div class="onboarding-stage-media">
+          <div class="onboarding-visual-card">
+            <img class="onboarding-visual ${variantClass} ${cropClass}" src="${artwork.src}" alt="${escapeHtml(artwork.alt)}">
+            <div class="onboarding-visual-copy">
+              <strong>${escapeHtml(artwork.title)}</strong>
+              <p>${escapeHtml(artwork.body)}</p>
+            </div>
+          </div>
+          ${content}
         </div>
       `;
     }
