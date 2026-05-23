@@ -820,7 +820,29 @@
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
     }
 
+    .onboarding-prev-arrow {
+      justify-self: start;
+      width: 54px;
+      height: 54px;
+      border-radius: 999px;
+      border: 1px solid rgba(127, 199, 255, 0.34);
+      background: rgba(8, 22, 34, 0.9);
+      color: var(--text);
+      font-size: 1.7rem;
+      line-height: 1;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+    }
+
     .onboarding-next-arrow:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .onboarding-prev-arrow:disabled {
       opacity: 0.35;
       cursor: not-allowed;
     }
@@ -922,6 +944,7 @@
       color: var(--text);
       opacity: 1;
       text-shadow: none;
+      -webkit-text-fill-color: var(--text);
     }
 
     .onboarding-option-meta,
@@ -938,6 +961,7 @@
       color: var(--text);
       opacity: 1;
       text-shadow: none;
+      -webkit-text-fill-color: var(--text);
     }
 
     .onboarding-demo {
@@ -1859,6 +1883,7 @@
           <p class="onboarding-support-line" id="onboardingSupportLine"></p>
         </div>
         <div class="onboarding-stage" id="onboardingStage"></div>
+        <button class="onboarding-prev-arrow" id="onboardingPrevArrow" type="button" aria-label="Previous">‹</button>
         <button class="onboarding-next-arrow" id="onboardingNextArrow" type="button" aria-label="Next">›</button>
         <div class="actions">
           <button class="secondary" id="onboardingSecondaryBtn" type="button" hidden>Back</button>
@@ -2346,6 +2371,7 @@
       onboardingProgressDetail: document.getElementById("onboardingProgressDetail"),
       onboardingProgressFill: document.getElementById("onboardingProgressFill"),
       onboardingNextArrow: document.getElementById("onboardingNextArrow"),
+      onboardingPrevArrow: document.getElementById("onboardingPrevArrow"),
       onboardingTitle: document.getElementById("onboardingTitle"),
       onboardingBody: document.getElementById("onboardingBody"),
       onboardingSupportLine: document.getElementById("onboardingSupportLine"),
@@ -2451,6 +2477,7 @@
     ui.onboardingPrimaryBtn.addEventListener("click", handleOnboardingPrimaryAction);
     ui.onboardingSecondaryBtn.addEventListener("click", handleOnboardingSecondaryAction);
     ui.onboardingNextArrow.addEventListener("click", handleOnboardingPrimaryAction);
+    ui.onboardingPrevArrow.addEventListener("click", handleOnboardingSecondaryAction);
     ui.onboardingStage.addEventListener("touchstart", handleOnboardingTouchStart, { passive: true });
     ui.onboardingStage.addEventListener("touchend", handleOnboardingTouchEnd, { passive: true });
     ui.onboardingStage.addEventListener("pointerdown", handleOnboardingPointerDown);
@@ -2865,6 +2892,10 @@
         case 4:
           moveOnboardingTo(5);
           break;
+        case 5:
+          if (!onboardingState.commitment) return;
+          moveOnboardingTo(6);
+          break;
         case 6:
           runOnboardingDemo();
           break;
@@ -2923,9 +2954,11 @@
     }
 
     function syncOnboardingNextArrowState() {
-      if (!ui.onboardingNextArrow || !ui.onboardingPrimaryBtn) return;
+      if (!ui.onboardingNextArrow || !ui.onboardingPrimaryBtn || !ui.onboardingPrevArrow) return;
       ui.onboardingNextArrow.hidden = ui.onboardingPrimaryBtn.hidden;
       ui.onboardingNextArrow.disabled = ui.onboardingPrimaryBtn.disabled;
+      ui.onboardingPrevArrow.hidden = false;
+      ui.onboardingPrevArrow.disabled = onboardingStep <= 0;
     }
 
     function handleOnboardingTouchStart(event) {
