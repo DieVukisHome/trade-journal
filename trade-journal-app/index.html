@@ -1708,7 +1708,7 @@
               <div class="subscription-status">
                 <div>
                   <span class="subscription-badge neutral" id="subscriptionBadge">Paywall preview</span>
-                  <p class="helper-copy" id="subscriptionSummary">Trial, pricing, and purchase hooks are wired for the store build, but the hard lock stays off until the onboarding funnel is in place.</p>
+                  <p class="helper-copy" id="subscriptionSummary">Start your trial to unlock full access and keep your journaling habit consistent.</p>
                 </div>
                 <div class="actions">
                   <button class="primary tiny" id="openPaywallBtn" type="button">See plans</button>
@@ -1790,7 +1790,7 @@
         <div class="onboarding-progress">
           <div class="onboarding-progress-top">
             <span class="pill-note" id="onboardingProgressLabel">Step 1 of 14</span>
-            <span class="helper-copy" id="onboardingProgressDetail">Introduction</span>
+            <span class="helper-copy" id="onboardingProgressDetail"></span>
           </div>
           <div class="onboarding-progress-bar">
             <span id="onboardingProgressFill"></span>
@@ -2642,7 +2642,7 @@
 
     function restorePurchasesPreview() {
       renderSubscriptionState();
-      setStatus("Restore hook ready", "Restore purchases will connect to RevenueCat in the native store build. This web build only previews the entitlement state.");
+      setStatus("Restore ready", "Restore purchases is available on supported devices and keeps your subscription access in sync.");
     }
 
     function renderSubscriptionState() {
@@ -2650,7 +2650,7 @@
       const plan = BILLING_CONFIG.plans[entitlement.planId] || getSelectedPlan();
       const classes = ["subscription-badge"];
       let badge = "Paywall preview";
-      let summary = "Trial, pricing, and purchase hooks are wired for the store build. Access stays locked until the funnel leads into a started trial or subscription.";
+      let summary = "Start your trial or subscription to unlock full access after onboarding.";
 
       if (entitlement.lifetimeUnlocked) {
         classes.push("warning");
@@ -2703,9 +2703,8 @@
     function renderOnboardingScreen() {
       const totalSteps = 14;
       const stepNumber = onboardingStep >= 13 ? 14 : onboardingStep + 1;
-      const pillar = getOnboardingPillar(onboardingStep);
       ui.onboardingProgressLabel.textContent = `Step ${stepNumber} of ${totalSteps}`;
-      ui.onboardingProgressDetail.textContent = pillar;
+      ui.onboardingProgressDetail.textContent = "";
       ui.onboardingProgressFill.style.width = `${(stepNumber / totalSteps) * 100}%`;
       ui.onboardingSecondaryBtn.hidden = onboardingStep === 0;
       ui.onboardingSecondaryBtn.textContent = "Back";
@@ -2782,12 +2781,6 @@
         default:
           break;
       }
-    }
-
-    function getOnboardingPillar(step) {
-      if (step <= 5) return "Introduction";
-      if (step <= 8) return "Climax";
-      return "Conclusion";
     }
 
     function handleOnboardingPrimaryAction() {
@@ -3059,7 +3052,7 @@
       ui.onboardingBody.textContent = copy.body;
       ui.onboardingPrimaryBtn.textContent = copy.cta;
       ui.onboardingPrimaryBtn.hidden = false;
-      ui.onboardingStage.innerHTML = `<div class="onboarding-card"><span class="pill-note">Day 1</span><p class="review-request-note">A native review request is triggered here in the store build. This web build keeps the emotional beat without the OS prompt.</p></div>`;
+      ui.onboardingStage.innerHTML = `<div class="onboarding-card"><span class="pill-note">Day 1</span><p class="review-request-note">One trade in. Your pattern starts building here.</p></div>`;
     }
 
     function requestInAppReviewPreview() {
